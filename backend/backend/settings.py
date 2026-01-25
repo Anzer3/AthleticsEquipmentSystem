@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'equipment',
     'measurement',
     'log',
+    'event',
 ]
 
 MIDDLEWARE = [
