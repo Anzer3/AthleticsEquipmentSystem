@@ -5,6 +5,7 @@ services:
     container_name: backend
     volumes:
       - ./backend:/app
+      - staticfiles:/staticfiles
     environment:
       DB_HOST: db
       DB_PORT: 5432
@@ -45,6 +46,7 @@ services:
       - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
+      - staticfiles:/staticfiles:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
@@ -55,3 +57,4 @@ volumes:
   postgres_data:
   caddy_data:
   caddy_config:
+  staticfiles:

@@ -1,5 +1,15 @@
 :80 {
-    reverse_proxy /api/* backend:8000
-    reverse_proxy /admin/* backend:8000
-    # reverse_proxy /* frontend:3000
+
+    handle_path /static/* {
+        root * /staticfiles
+        file_server
+    }
+
+    handle /api/* {
+        reverse_proxy backend:8000
+    }
+
+    handle /admin/* {
+        reverse_proxy backend:8000
+    }
 }
