@@ -20,7 +20,7 @@ class EquipmentType(models.Model):
 # overall equipment model
 class Equipment(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    athlete_number = models.IntegerField()
+    athlete_number = models.CharField(max_length=15)
     equipment_type = models.ForeignKey(EquipmentType, on_delete=models.SET_NULL, null=True)
     measured = models.BooleanField(default=False)
     status = models.ForeignKey(EquipmentStatus, on_delete=models.SET_NULL, null=True)
