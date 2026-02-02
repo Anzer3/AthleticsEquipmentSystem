@@ -17,14 +17,18 @@ services:
       DJANGO_SUPERUSER_EMAIL: morce@morce.com
     depends_on:
       - db
+    ports:
+      - "8000:8000"
 
-  # frontend:
-  #   build: ./frontend
-  #   container_name: frontend
-  #   volumes:
-  #     - ./frontend:/app
-  #   depends_on:
-  #     - backend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
 
   db:
     image: postgres:16
@@ -51,7 +55,7 @@ services:
       - caddy_config:/config
     depends_on:
       - backend
-      # - frontend
+      - frontend
 
 volumes:
   postgres_data:

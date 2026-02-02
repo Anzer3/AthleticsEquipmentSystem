@@ -1,0 +1,96 @@
+/* src/pages/Homepage.css */
+
+.homepage-container {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 80px); /* Výška okna mínus výška navigace */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  overflow: hidden; /* Aby logo nepřetékalo ven */
+  background-color: #FFFFFF; /* Čisté bílé pozadí dle manuálu [cite: 57] */
+}
+
+/* Jemné pozadí s logem */
+.background-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px; /* Velikost podkladového loga */
+  max-width: 90%;
+  opacity: 0.04; /* Velmi jemná průhlednost (4%) */
+  pointer-events: none; /* Aby na to nešlo kliknout */
+  z-index: 0;
+}
+
+/* Obsah stránky (musí být nad pozadím) */
+.hero-content {
+  z-index: 1;
+  max-width: 800px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Hlavní nadpis */
+.hero-title {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 800; /* Extra tučné */
+  font-size: 3.5rem;
+  color: #0070BB; /* Primární modrá  */
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+/* Podnadpis / Perex */
+.hero-subtitle {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: #1A1A1A; /* Tmavě šedá/černá dle brandu [cite: 58] */
+  margin-bottom: 40px;
+  line-height: 1.5;
+}
+
+/* Tlačítko "Začít" */
+.cta-button {
+  display: inline-block;
+  background-color: #0070BB; /* Modrá */
+  color: #FFFFFF; /* Bílé písmo */
+  font-family: 'Dosis', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  padding: 15px 40px;
+  border-radius: 50px; /* Zaoblené tlačítko ladí k fontu */
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 112, 187, 0.3);
+  border: 2px solid #0070BB;
+}
+
+/* Hover efekt pro tlačítko */
+.cta-button:hover {
+  background-color: #91F5AD; /* Brandová zelená  */
+  color: #1A1A1A; /* Černé písmo pro kontrast */
+  border-color: #91F5AD;
+  transform: translateY(-3px); /* Jemný posun nahoru */
+  box-shadow: 0 6px 20px rgba(145, 245, 173, 0.4);
+}
+
+/* Animace příletu */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsivita pro mobily */
+@media (max-width: 600px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .hero-subtitle {
+    font-size: 1.2rem;
+  }
+}

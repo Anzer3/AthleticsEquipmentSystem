@@ -12,4 +12,5 @@
     handle /admin* {
         reverse_proxy backend:8000
     }
+    reverse_proxy frontend:3001
 }
