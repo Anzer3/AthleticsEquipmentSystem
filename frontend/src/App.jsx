@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 
 // moje podstránky
 import Homepage from './pages/Homepage'
+import DataLoadPage from './pages/DataLoadPage';
 
 // ochrana route
 // import RequireAuth from './components/RequireAuth.jsx';
@@ -20,6 +21,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />
+        <Route path="/dataload" element={<DataLoadPage />} />
       </Routes>
     </>
   )
