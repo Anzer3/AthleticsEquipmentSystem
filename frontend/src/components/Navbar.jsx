@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { getMe, logout } from '../services/api';
-import logo from '../assets/Think-different-Academy_LOGO_oficialni_1.png';
+import logo from '../assets/WPA_header_icon.webp';
 import './css/Navbar.css';
 
 const Navbar = () => {
@@ -57,32 +57,9 @@ const Navbar = () => {
         {/* 1. LEVÁ ČÁST - Logo */}
         <div className="navbar-left">
           <a href="/">
-            <img src={logo} alt="Think Different Academy" className="navbar-logo" />
+            <img src={logo} alt="Olomouc WPA Women's Grand Prix" className="navbar-logo" />
           </a>
-        </div>
-
-        {/* 2. STŘED - Navigace (Viditelné pouze na desktopu) */}
-        <div className="navbar-center desktop-only">
-          <NavLink
-            to="/"
-            className={({ isActive }) => (isActive ? "nav-btn active" : "nav-btn")}
-          >
-            Domů
-          </NavLink>
-          <NavLink
-            to="/courses"
-            className={({ isActive }) => (isActive ? "nav-btn active" : "nav-btn")}
-          >
-            Kurzy
-          </NavLink>
-          {isAuthenticated && (
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) => (isActive ? "nav-btn active" : "nav-btn")}
-            >
-              Dashboard
-            </NavLink>
-          )}
+          <div class="navbar-text">Olomouc WPA Women's Grand Prix - July 2-4, 2026</div>
         </div>
 
         {/* 3. PRAVÁ ČÁST - Login/Logout (Viditelné pouze na desktopu) */}
