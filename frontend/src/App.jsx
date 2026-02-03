@@ -9,9 +9,10 @@ import Navbar from "./components/Navbar";
 // moje podstránky
 import Homepage from './pages/Homepage'
 import DataLoadPage from './pages/DataLoadPage';
+import Login from './pages/Login';
 
 // ochrana route
-// import RequireAuth from './components/RequireAuth.jsx';
+import RequireAuth from './components/RequireAuth.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -20,8 +21,10 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Homepage />} />
         <Route path="/dataload" element={<DataLoadPage />} />
+        <Route path="/" element={<RequireAuth><Homepage /></RequireAuth>} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </>
   )

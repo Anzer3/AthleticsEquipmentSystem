@@ -1,6 +1,8 @@
 from django.db import models
 import uuid
 
+from event.models import Category
+
 # equipment status
 class EquipmentStatus(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -21,6 +23,7 @@ class EquipmentType(models.Model):
 class Equipment(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     athlete_number = models.CharField(max_length=15)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     equipment_type = models.ForeignKey(EquipmentType, on_delete=models.SET_NULL, null=True)
     measured = models.BooleanField(default=False)
     status = models.ForeignKey(EquipmentStatus, on_delete=models.SET_NULL, null=True)
