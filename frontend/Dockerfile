@@ -1,28 +1,21 @@
-FROM node:20-alpine AS base
+# 1. Base image
+FROM node:20-alpine
 
-
-FROM base AS deps
-
-RUN apk add --no-cache libc6-compat
+# 2. Pracovní adresář
 WORKDIR /app
 
-COPY package.json ./
-RUN npm i
+# 3. Zkopíruj package.json a nainstaluj závislosti
+COPY package.json package-lock.json ./
+RUN npm install
 
-
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# 4. Zkopíruj celý frontend
 COPY . .
 
-RUN npm run build
-
-
-FROM nginx:alpine AS runner
-
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
+# 5. Expose port (Vite dev server / preview)
 EXPOSE 3001
 
-CMD ["nginx", "-g", "daemon off;"]
+# 6. Spustit dev server (pro development)
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+# 6b. Nebo production preview (po build)
+# CMD ["sh", "-c", "npm run build && npm run preview -- --port 3001 --host 0.0.0.0"]

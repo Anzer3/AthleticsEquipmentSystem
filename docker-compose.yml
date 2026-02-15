@@ -29,6 +29,7 @@ services:
       - "3001:3001"
     depends_on:
       - backend
+    command: ["sh", "-c", "npm run build && npm run preview -- --port 3001 --host 0.0.0.0"]
 
   db:
     image: postgres:16
