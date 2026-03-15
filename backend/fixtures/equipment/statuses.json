@@ -3,24 +3,32 @@
 		"model": "equipment.equipmentstatus",
 		"pk": "66666666-6666-6666-6666-666666666001",
 		"fields": {
-			"name": "Registered",
-			"description": "Equipment registered in system"
+			"name": "Dostupné",
+			"description": "Připravené k vydání"
 		}
 	},
-	{
-		"model": "equipment.equipmentstatus",
-		"pk": "66666666-6666-6666-6666-666666666002",
-		"fields": {
-			"name": "Measured",
-			"description": "Measurements completed"
-		}
-	},
+    {
+        "model": "equipment.equipmentstatus",
+        "pk": "66666666-6666-6666-6666-666666666004",
+        "fields": {
+            "name": "Na sektoru",
+            "description": "Aktuálně se používá"
+        }
+    },
 	{
 		"model": "equipment.equipmentstatus",
 		"pk": "66666666-6666-6666-6666-666666666003",
 		"fields": {
-			"name": "Issued",
-			"description": "Issued back to athlete"
+			"name": "Navráceno",
+			"description": "Vráceno zpět do skladu"
 		}
-	}
+	},
+    {
+        "model": "equipment.equipmentstatus",
+        "pk": "66666666-6666-6666-6666-666666666006",
+        "fields": {
+            "name": "Neschváleno",
+            "description": "Nesplňuje požadavky"
+        }
+    }
 ]

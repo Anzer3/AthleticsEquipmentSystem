@@ -3,24 +3,24 @@
         "model": "equipment.equipmenttype",
         "pk": "55555555-5555-5555-5555-555555555001",
         "fields": {
-            "name": "Javelin",
-            "description": "Competition javelin"
+            "name": "Oštěp",
+            "description": "Soutěžní oštěp"
         }
     },
     {
         "model": "equipment.equipmenttype",
         "pk": "55555555-5555-5555-5555-555555555002",
         "fields": {
-            "name": "Shot Put",
-            "description": "Metal shot for throw"
+            "name": "Koule",
+            "description": "Koule pro vrh"
         }
     },
     {
         "model": "equipment.equipmenttype",
         "pk": "55555555-5555-5555-5555-555555555003",
         "fields": {
-            "name": "Discus",
-            "description": "Competition discus"
+            "name": "Disk",
+            "description": "Soutěžní disk"
         }
     }
 ]

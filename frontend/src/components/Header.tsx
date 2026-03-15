@@ -1,22 +1,13 @@
 import type { ComponentType } from 'react'
 import {
-  ClipboardDocumentListIcon,
   Cog6ToothIcon,
   CubeIcon,
-  HomeIcon,
+  DocumentChartBarIcon,
   UserCircleIcon,
-  WrenchScrewdriverIcon,
 } from '@heroicons/react/24/outline'
 import logo from '../assets/WPA_icon.webp'
 
-type RoutePath =
-  | '/'
-  | '/login'
-  | '/dashboard'
-  | '/equipment'
-  | '/events'
-  | '/measurements'
-  | '/logs'
+type RoutePath = '/login' | '/equipment' | '/events' | '/measurements'
 
 type NavItem = {
   path: RoutePath
@@ -26,22 +17,19 @@ type NavItem = {
 
 type HeaderProps = {
   username: string | null
-  currentPath: RoutePath
+  currentPath: string
   navItems: NavItem[]
   isLoggedIn: boolean
-  onNavigate: (path: RoutePath) => void
+  onNavigate: (path: string) => void
   onNavigateLogin: () => void
   onLogout: () => void
 }
 
 const iconByPath: Record<RoutePath, ComponentType<{ className?: string }>> = {
-  '/': HomeIcon,
   '/login': UserCircleIcon,
-  '/dashboard': ClipboardDocumentListIcon,
   '/equipment': CubeIcon,
   '/events': Cog6ToothIcon,
-  '/measurements': WrenchScrewdriverIcon,
-  '/logs': ClipboardDocumentListIcon,
+  '/measurements': DocumentChartBarIcon,
 }
 
 export default function Header({
@@ -69,9 +57,9 @@ export default function Header({
             <button
               type="button"
               className="truncate border-none bg-transparent text-left text-xl leading-tight font-bold text-white md:text-2xl"
-              onClick={() => onNavigate('/')}
+              onClick={() => onNavigate(isLoggedIn ? '/equipment' : '/login')}
             >
-              Para atletika - Sprava nacini
+              Para atletika - Správa náčiní
             </button>
             <p className="m-0 truncate text-sm text-white/90 md:text-base">
               Olomouc WPA Women's Grand Prix - July 2-4, 2026
@@ -91,7 +79,7 @@ export default function Header({
                 className="rounded-md border border-white bg-white px-3 py-1.5 text-sm font-semibold text-gray-800 hover:bg-gray-100"
                 onClick={onLogout}
               >
-                Logout
+                Odhlásit se
               </button>
             </>
           ) : (
@@ -100,15 +88,15 @@ export default function Header({
               className="rounded-md border border-white bg-white px-3 py-1.5 text-sm font-semibold text-gray-800 hover:bg-gray-100"
               onClick={onNavigateLogin}
             >
-              Login
+              Přihlásit se
             </button>
           )}
         </div>
       </div>
 
-      <nav className="flex gap-2 overflow-x-auto whitespace-nowrap px-4 pb-1.5 md:px-6">
+      <nav className="flex gap-2 overflow-x-auto whitespace-nowrap px-4 md:px-6">
         {visibleItems.map((item) => {
-          const Icon = iconByPath[item.path]
+          const Icon = iconByPath[item.path as RoutePath]
 
           return (
             <button

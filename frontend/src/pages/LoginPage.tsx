@@ -25,10 +25,14 @@ export default function LoginPage({ onSubmit }: LoginPageProps) {
   }
 
   return (
-    <section className="w-full max-w-2xl rounded-xl border border-[var(--light_red)] bg-white p-6 shadow-sm">
-      <h1 className="text-2xl font-bold text-gray-900">Login</h1>
-      <form className="mt-2 flex flex-col gap-3" onSubmit={handleSubmit}>
-        <label htmlFor="username" className="text-sm font-semibold text-gray-700">Username</label>
+    <section className="w-full max-w-2xl overflow-hidden rounded-2xl border border-[var(--light_red)] bg-white shadow-sm">
+      <div className="bg-gradient-to-r from-red-50 via-white to-red-50 px-6 py-5">
+        <h1 className="text-2xl font-black text-gray-900">Přihlášení</h1>
+        <p className="mt-1 text-sm text-gray-600">Přihlaste se do správy náčiní a soutěží.</p>
+      </div>
+
+      <form className="flex flex-col gap-3 px-6 py-5" onSubmit={handleSubmit}>
+        <label htmlFor="username" className="text-sm font-bold text-gray-700">Username</label>
         <input
           id="username"
           type="text"
@@ -38,7 +42,7 @@ export default function LoginPage({ onSubmit }: LoginPageProps) {
           required
         />
 
-        <label htmlFor="password" className="text-sm font-semibold text-gray-700">Password</label>
+        <label htmlFor="password" className="text-sm font-bold text-gray-700">Password</label>
         <input
           id="password"
           type="password"
@@ -52,10 +56,10 @@ export default function LoginPage({ onSubmit }: LoginPageProps) {
 
         <button
           type="submit"
-          className="mt-2 inline-flex w-fit rounded-md border border-[var(--dark-red-btn)] bg-[var(--dark-red-btn)] px-4 py-2 text-sm font-semibold text-white hover:brightness-95 disabled:opacity-60 disabled:cursor-default"
+          className="mt-2 inline-flex w-fit rounded-md border border-[var(--dark-red-btn)] bg-[var(--dark-red-btn)] px-4 py-2 text-sm font-bold text-white shadow-sm hover:brightness-95 disabled:cursor-default disabled:opacity-60"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Prihlasovani...' : 'Prihlasit se'}
+          {isSubmitting ? 'Přihlašování...' : 'Přihlásit se'}
         </button>
       </form>
     </section>

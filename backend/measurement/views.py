@@ -2,7 +2,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from .models import Measurement
-from .serializers import MeasurementSerializer
+from .serializers import (
+    MeasurementDetailSerializer,
+    MeasurementListSerializer,
+    MeasurementWriteSerializer,
+)
 
 # ---------------------
 # Measurement list
@@ -11,15 +15,15 @@ from .serializers import MeasurementSerializer
 @api_view(['GET', 'POST'])
 def measurement_list(request):
     if request.method == 'GET':
-        measurements = Measurement.objects.all()
-        serializer = MeasurementSerializer(measurements, many=True)
+        measurements = Measurement.objects.all().order_by('-measured_at')
+        serializer = MeasurementListSerializer(measurements, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = MeasurementSerializer(data=request.data)
+        serializer = MeasurementWriteSerializer(data=request.data)
         if serializer.is_valid():
             measurement = serializer.save()
-            return Response(MeasurementSerializer(measurement).data, status=201)
+            return Response(MeasurementDetailSerializer(measurement).data, status=201)
         return Response(serializer.errors, status=400)
 
 # ---------------------
@@ -34,14 +38,14 @@ def measurement_detail(request, uuid):
         return Response(status=404)
 
     if request.method == 'GET':
-        serializer = MeasurementSerializer(measurement)
+        serializer = MeasurementDetailSerializer(measurement)
         return Response(serializer.data)
 
     elif request.method == 'PATCH':
-        serializer = MeasurementSerializer(measurement, data=request.data, partial=True)
+        serializer = MeasurementWriteSerializer(measurement, data=request.data, partial=True)
         if serializer.is_valid():
             measurement = serializer.save()
-            return Response(MeasurementSerializer(measurement).data)
+            return Response(MeasurementDetailSerializer(measurement).data)
         return Response(serializer.errors, status=400)
 
     elif request.method == 'DELETE':

@@ -2,19 +2,16 @@ import { useEffect, useState } from 'react'
 import { login, logout, me } from './api/auth'
 import Footer from './components/Footer'
 import Header from './components/Header'
-import DashboardPage from './pages/DashboardPage'
-import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
-import ModulePage from './pages/ModulePage'
+import {
+  EquipmentDetailPage,
+  EquipmentPage,
+  EventsPage,
+  LoginPage,
+  MeasurementDetailPage,
+  MeasurementsPage,
+} from './pages'
 
-type RoutePath =
-  | '/'
-  | '/login'
-  | '/dashboard'
-  | '/equipment'
-  | '/events'
-  | '/measurements'
-  | '/logs'
+type StaticRoutePath = '/login' | '/equipment' | '/events' | '/measurements'
 
 type RouteInfo = {
   label: string
@@ -22,58 +19,47 @@ type RouteInfo = {
   showInNav: boolean
 }
 
-const ROUTES: Record<RoutePath, RouteInfo> = {
-  '/': {
-    label: 'Home',
-    isProtected: false,
-    showInNav: false,
-  },
+const ROUTES: Record<StaticRoutePath, RouteInfo> = {
   '/login': {
-    label: 'Login',
+    label: 'Přihlášení',
     isProtected: false,
     showInNav: false,
-  },
-  '/dashboard': {
-    label: 'Dashboard',
-    isProtected: true,
-    showInNav: true,
   },
   '/equipment': {
-    label: 'Prehled nacini',
+    label: 'Náčiní',
     isProtected: true,
     showInNav: true,
   },
   '/events': {
-    label: 'Priprava soutezi',
+    label: 'Soutěže',
     isProtected: true,
     showInNav: true,
   },
   '/measurements': {
-    label: 'Mereni',
-    isProtected: true,
-    showInNav: true,
-  },
-  '/logs': {
-    label: 'Logs',
+    label: 'Záznamy měření',
     isProtected: true,
     showInNav: true,
   },
 }
 
-function isRoutePath(value: string): value is RoutePath {
-  return value in ROUTES
+function isEquipmentDetailPath(value: string): boolean {
+  return /^\/equipment\/[0-9a-fA-F-]{36}\/?$/.test(value)
 }
 
-function getCurrentPath(): RoutePath {
-  return isRoutePath(window.location.pathname) ? window.location.pathname : '/'
+function isMeasurementDetailPath(value: string): boolean {
+  return /^\/measurements\/[0-9a-fA-F-]{36}\/?$/.test(value)
+}
+
+function getCurrentPath(): string {
+  return window.location.pathname
 }
 
 function App() {
-  const [path, setPath] = useState<RoutePath>(getCurrentPath())
+  const [path, setPath] = useState<string>(getCurrentPath())
   const [username, setUsername] = useState<string | null>(null)
   const [loadingUser, setLoadingUser] = useState(true)
 
-  const navigate = (nextPath: RoutePath) => {
+  const navigate = (nextPath: string) => {
     if (window.location.pathname !== nextPath) {
       window.history.pushState({}, '', nextPath)
     }
@@ -104,8 +90,26 @@ function App() {
       return
     }
 
-    if (ROUTES[path].isProtected && !username) {
+    if (path === '/') {
+      navigate(username ? '/equipment' : '/login')
+      return
+    }
+
+    if (path === '/login' && username) {
+      navigate('/equipment')
+      return
+    }
+
+    const isStaticProtectedRoute = path in ROUTES && ROUTES[path as StaticRoutePath].isProtected
+    const isProtectedDetailRoute = isEquipmentDetailPath(path) || isMeasurementDetailPath(path)
+
+    if ((isStaticProtectedRoute || isProtectedDetailRoute) && !username) {
       navigate('/login')
+      return
+    }
+
+    if (!(path in ROUTES) && !isEquipmentDetailPath(path) && !isMeasurementDetailPath(path)) {
+      navigate(username ? '/equipment' : '/login')
     }
   }, [loadingUser, path, username])
 
@@ -117,7 +121,7 @@ function App() {
     }
 
     setUsername(result.username ?? submittedUsername)
-    navigate('/dashboard')
+    navigate('/equipment')
     return null
   }
 
@@ -127,13 +131,19 @@ function App() {
     navigate('/login')
   }
 
-  const navItems = (Object.entries(ROUTES) as Array<[RoutePath, RouteInfo]>)
+  const navItems = (Object.entries(ROUTES) as Array<[StaticRoutePath, RouteInfo]>)
     .filter(([, routeInfo]) => routeInfo.showInNav)
     .map(([routePath, routeInfo]) => ({
       path: routePath,
       label: routeInfo.label,
       isProtected: routeInfo.isProtected,
     }))
+
+  const currentNavPath = isEquipmentDetailPath(path)
+    ? '/equipment'
+    : isMeasurementDetailPath(path)
+      ? '/measurements'
+      : path
 
   const renderPage = () => {
     if (loadingUser) {
@@ -155,94 +165,33 @@ function App() {
       )
     }
 
-    if (path === '/') {
-      return (
-        <div className="w-full flex justify-center">
-          <HomePage username={username} onGoToLogin={() => navigate('/login')} />
-        </div>
-      )
-    }
-
     if (!username) {
       return null
     }
 
-    if (path === '/dashboard') {
-      return <DashboardPage username={username} />
+    if (path === '/equipment') {
+      return <EquipmentPage onNavigateToDetail={(uuid) => navigate(`/equipment/${uuid}`)} />
     }
 
-    if (path === '/equipment') {
-      return (
-        <ModulePage
-          title="Prehled nacini"
-          description="Evidence nacini a jejich aktualni stav v systemu."
-          listEndpoint="/api/equipments/"
-          detailEndpointBase="/api/equipments/"
-          fields={[
-            { key: 'athlete_number', label: 'Cislo atleta' },
-            { key: 'category', label: 'Kategorie' },
-            { key: 'equipment_type', label: 'Typ nacini' },
-            { key: 'measured', label: 'Zmereno' },
-            { key: 'status', label: 'Stav' },
-          ]}
-          filterKeys={['category', 'equipment_type', 'status', 'measured']}
-        />
-      )
+    if (isEquipmentDetailPath(path)) {
+      const uuid = path.split('/')[2]
+      return <EquipmentDetailPage equipmentUuid={uuid} onBack={() => navigate('/equipment')} />
     }
 
     if (path === '/events') {
-      return (
-        <ModulePage
-          title="Priprava soutezi"
-          description="Prehled a planovani souteznich udalosti."
-          listEndpoint="/api/events/"
-          detailEndpointBase="/api/events/"
-          fields={[
-            { key: 'name', label: 'Nazev' },
-            { key: 'category', label: 'Kategorie' },
-            { key: 'status', label: 'Stav' },
-            { key: 'start_time', label: 'Zacatek' },
-            { key: 'location', label: 'Lokace' },
-          ]}
-          filterKeys={['category', 'status', 'location']}
-        />
-      )
+      return <EventsPage />
     }
 
     if (path === '/measurements') {
-      return (
-        <ModulePage
-          title="Mereni"
-          description="Zaznamy mereni atletickeho nacini."
-          listEndpoint="/api/measurements/"
-          detailEndpointBase="/api/measurements/"
-          fields={[
-            { key: 'equipment', label: 'Nacini' },
-            { key: 'status', label: 'Stav mereni' },
-            { key: 'property', label: 'Vlastnost' },
-            { key: 'value', label: 'Hodnota' },
-            { key: 'unit', label: 'Jednotka' },
-          ]}
-          filterKeys={['status', 'property', 'unit']}
-        />
-      )
+      return <MeasurementsPage onNavigateToDetail={(uuid) => navigate(`/measurements/${uuid}`)} />
     }
 
-    return (
-      <ModulePage
-        title="Logs"
-        description="Auditni log operaci v systemu."
-        listEndpoint="/api/logs/"
-        detailEndpointBase="/api/logs/"
-        fields={[
-          { key: 'action', label: 'Akce' },
-          { key: 'user', label: 'Uzivatel' },
-          { key: 'detail', label: 'Detail' },
-          { key: 'timestamp', label: 'Cas' },
-        ]}
-        filterKeys={['action', 'user']}
-      />
-    )
+    if (isMeasurementDetailPath(path)) {
+      const uuid = path.split('/')[2]
+      return <MeasurementDetailPage measurementUuid={uuid} onBack={() => navigate('/measurements')} />
+    }
+
+    return null
   }
 
   return (
@@ -250,7 +199,7 @@ function App() {
       <Header
         isLoggedIn={Boolean(username)}
         username={username}
-        currentPath={path}
+        currentPath={currentNavPath}
         navItems={navItems}
         onNavigate={navigate}
         onNavigateLogin={() => navigate('/login')}

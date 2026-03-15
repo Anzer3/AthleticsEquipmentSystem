@@ -1,8 +1,14 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Equipment, EquipmentType
-from .serializers import EquipmentSerializer, EquipmentTypeSerializer
+from .models import Equipment, EquipmentStatus, EquipmentType
+from .serializers import (
+    EquipmentDetailSerializer,
+    EquipmentListSerializer,
+    EquipmentStatusSerializer,
+    EquipmentTypeSerializer,
+    EquipmentWriteSerializer,
+)
 
 # ---------------------
 # Equipment list
@@ -12,14 +18,14 @@ from .serializers import EquipmentSerializer, EquipmentTypeSerializer
 def equipment_list(request):
     if request.method == 'GET':
         equipments = Equipment.objects.all()
-        serializer = EquipmentSerializer(equipments, many=True)
+        serializer = EquipmentListSerializer(equipments, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = EquipmentSerializer(data=request.data)
+        serializer = EquipmentWriteSerializer(data=request.data)
         if serializer.is_valid():
             equipment = serializer.save()
-            return Response(EquipmentSerializer(equipment).data, status=201)
+            return Response(EquipmentDetailSerializer(equipment).data, status=201)
         return Response(serializer.errors, status=400)
     
 # ---------------------
@@ -34,19 +40,26 @@ def equipment_detail(request, uuid):
         return Response(status=404)
 
     if request.method == 'GET':
-        serializer = EquipmentSerializer(equipment)
+        serializer = EquipmentDetailSerializer(equipment)
         return Response(serializer.data)
 
     elif request.method == 'PATCH':
-        serializer = EquipmentSerializer(equipment, data=request.data, partial=True)
+        serializer = EquipmentWriteSerializer(equipment, data=request.data, partial=True)
         if serializer.is_valid():
             equipment = serializer.save()
-            return Response(EquipmentSerializer(equipment).data)
+            return Response(EquipmentDetailSerializer(equipment).data)
         return Response(serializer.errors, status=400)
 
     elif request.method == 'DELETE':
         equipment.delete()
         return Response(status=204)
+
+
+@api_view(['GET'])
+def equipment_status_list(request):
+    statuses = EquipmentStatus.objects.all()
+    serializer = EquipmentStatusSerializer(statuses, many=True)
+    return Response(serializer.data)
     
 # ---------------------
 # EquipmentType list
