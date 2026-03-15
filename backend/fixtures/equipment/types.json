@@ -1,0 +1,26 @@
+[
+    {
+        "model": "equipment.equipmenttype",
+        "pk": "55555555-5555-5555-5555-555555555001",
+        "fields": {
+            "name": "Javelin",
+            "description": "Competition javelin"
+        }
+    },
+    {
+        "model": "equipment.equipmenttype",
+        "pk": "55555555-5555-5555-5555-555555555002",
+        "fields": {
+            "name": "Shot Put",
+            "description": "Metal shot for throw"
+        }
+    },
+    {
+        "model": "equipment.equipmenttype",
+        "pk": "55555555-5555-5555-5555-555555555003",
+        "fields": {
+            "name": "Discus",
+            "description": "Competition discus"
+        }
+    }
+]

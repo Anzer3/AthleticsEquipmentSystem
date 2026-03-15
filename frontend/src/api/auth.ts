@@ -1,38 +1,65 @@
 import { getCsrfToken } from '../utils/csrf'
 
-export async function login(username: string, password: string) {
-  const res = await fetch('/api/auth/login/', {
+type LoginResponse = {
+  success: boolean
+  username?: string
+  error?: string
+}
+
+type MeResponse = {
+  username: string | null
+}
+
+export async function login(username: string, password: string): Promise<LoginResponse> {
+  await fetch('/api/auth/csrf/', {
+    method: 'GET',
+    credentials: 'include',
+  })
+
+  const csrfToken = getCsrfToken()
+
+  const response = await fetch('/api/auth/login/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-CSRFToken': getCsrfToken() || '',
+      ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {}),
     },
+    credentials: 'include',
     body: JSON.stringify({ username, password }),
-    credentials: 'include', // musí být, aby šla session cookie
   })
 
-  if (!res.ok) {
-    const data = await res.json()
-    throw new Error(data.detail || 'Login failed')
+  const data = (await response.json()) as LoginResponse
+  if (!response.ok) {
+    return {
+      success: false,
+      error: data.error ?? 'Login failed',
+    }
   }
 
-  return res.json()
+  return data
 }
 
-export async function logout() {
-  const res = await fetch('/api/auth/logout/', {
+export async function logout(): Promise<void> {
+  const csrfToken = getCsrfToken()
+
+  await fetch('/api/auth/logout/', {
     method: 'POST',
-    headers: { 'X-CSRFToken': getCsrfToken() || '' },
+    headers: {
+      ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {}),
+    },
     credentials: 'include',
   })
-  if (!res.ok) throw new Error('Logout failed')
-  return res.json()
 }
 
-export async function me() {
-  const res = await fetch('/api/auth/me/', {
+export async function me(): Promise<MeResponse> {
+  const response = await fetch('/api/auth/me/', {
+    method: 'GET',
     credentials: 'include',
   })
-  if (!res.ok) return null
-  return res.json()
+
+  if (!response.ok) {
+    return { username: null }
+  }
+
+  return (await response.json()) as MeResponse
 }

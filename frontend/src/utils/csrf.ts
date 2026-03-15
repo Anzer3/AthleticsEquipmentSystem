@@ -1,5 +1,4 @@
-// utils/csrf.ts
-export function getCsrfToken(): string | null {
-  const match = document.cookie.match(new RegExp('(^| )csrftoken=([^;]+)'))
-  return match ? match[2] : null
+export function getCsrfToken(): string {
+  const match = document.cookie.match(/(^| )csrftoken=([^;]+)/)
+  return match ? decodeURIComponent(match[2]) : ''
 }

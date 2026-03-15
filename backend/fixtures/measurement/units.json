@@ -1,0 +1,26 @@
+[
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0001",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999001",
+			"unit": "g"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0002",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999002",
+			"unit": "mm"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0003",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999003",
+			"unit": "g"
+		}
+	}
+]

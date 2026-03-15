@@ -1,2 +1,0 @@
-Generace českého profilu
-docker compose exec backend python manage.py shell < scripts/czech_profile.py

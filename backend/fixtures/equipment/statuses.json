@@ -1,0 +1,26 @@
+[
+	{
+		"model": "equipment.equipmentstatus",
+		"pk": "66666666-6666-6666-6666-666666666001",
+		"fields": {
+			"name": "Registered",
+			"description": "Equipment registered in system"
+		}
+	},
+	{
+		"model": "equipment.equipmentstatus",
+		"pk": "66666666-6666-6666-6666-666666666002",
+		"fields": {
+			"name": "Measured",
+			"description": "Measurements completed"
+		}
+	},
+	{
+		"model": "equipment.equipmentstatus",
+		"pk": "66666666-6666-6666-6666-666666666003",
+		"fields": {
+			"name": "Issued",
+			"description": "Issued back to athlete"
+		}
+	}
+]

@@ -1,0 +1,18 @@
+[
+	{
+		"model": "measurement.measurementstatus",
+		"pk": "88888888-8888-8888-8888-888888888001",
+		"fields": {
+			"name": "Valid",
+			"description": "Measurement passed checks"
+		}
+	},
+	{
+		"model": "measurement.measurementstatus",
+		"pk": "88888888-8888-8888-8888-888888888002",
+		"fields": {
+			"name": "Pending",
+			"description": "Measurement waiting for review"
+		}
+	}
+]

@@ -1,0 +1,29 @@
+[
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999001",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555001",
+			"name": "Weight",
+			"description": "Javelin weight in grams"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999002",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555001",
+			"name": "Length",
+			"description": "Javelin length in mm"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999003",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555002",
+			"name": "Weight",
+			"description": "Shot put weight in grams"
+		}
+	}
+]

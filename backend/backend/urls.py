@@ -7,6 +7,5 @@ urlpatterns = [
     path('api/measurements/', include('measurement.urls')),
     path('api/equipments/', include('equipment.urls')),
     path('api/events/', include('event.urls')),
-    path('api/dataload/', include('dataload.urls')),
     path('api/auth/', include('auth.urls')),
 ]

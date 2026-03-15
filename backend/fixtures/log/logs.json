@@ -1,0 +1,32 @@
+[
+  {
+    "model": "log.logentry",
+    "pk": "cccccccc-cccc-cccc-cccc-cccccccc0001",
+    "fields": {
+      "action": "equipment_registered",
+      "user": "referee_anna",
+      "detail": "Registered javelin for athlete A-101",
+      "timestamp": "2026-07-01T08:12:00Z"
+    }
+  },
+  {
+    "model": "log.logentry",
+    "pk": "cccccccc-cccc-cccc-cccc-cccccccc0002",
+    "fields": {
+      "action": "measurement_saved",
+      "user": "measurer_tomas",
+      "detail": "Saved weight and length for equipment A-101",
+      "timestamp": "2026-07-01T08:32:00Z"
+    }
+  },
+  {
+    "model": "log.logentry",
+    "pk": "cccccccc-cccc-cccc-cccc-cccccccc0003",
+    "fields": {
+      "action": "equipment_issued",
+      "user": "referee_lucie",
+      "detail": "Issued measured discus back to athlete A-309",
+      "timestamp": "2026-07-01T09:10:00Z"
+    }
+  }
+]

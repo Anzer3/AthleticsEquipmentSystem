@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  font-family: Lato, sans-serif;
+  color: #111827;
+  background: var(--white_color);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Custom Colors */
+  --dark-red-btn: rgb(178, 21, 29);
+  --dark-red-header: rgb(237 28 38);
+  --light_red: rgb(251, 198, 201);
+  --white_color: rgb(243, 243, 243);
+
+}
+
+#root {
+  min-height: 100vh;
+}
+
+body {
+  margin: 0;
+  background: var(--white_color);
+  color: #111827;
+  font-family: Lato, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: Lato, sans-serif;
+}
