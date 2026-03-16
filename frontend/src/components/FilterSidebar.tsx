@@ -1,4 +1,5 @@
 import { FunnelIcon } from '@heroicons/react/24/outline'
+import ActionButton from './ActionButton'
 
 type FilterSection = {
   title: string
@@ -21,19 +22,18 @@ export default function FilterSidebar({
   onClearAll,
 }: FilterSidebarProps) {
   return (
-    <aside className="w-full rounded-2xl border border-[var(--line-soft)] bg-white p-4 shadow-sm xl:w-72 xl:min-w-72">
+    <aside className="w-full rounded-2xl border border-[var(--line-soft)] bg-white p-4 shadow-sm lg:min-w-64 lg:self-start lg:sticky lg:top-4">
       <div className="mb-3 flex items-center justify-between gap-2">
         <h2 className="m-0 inline-flex items-center gap-2 text-lg font-black text-gray-900">
           <FunnelIcon className="h-5 w-5 text-[var(--dark-red-btn)]" />
           {title}
         </h2>
-        <button
-          type="button"
-          className="rounded-md border border-[var(--dark-red-btn)] bg-white px-2 py-1 text-xs font-semibold text-[var(--dark-red-btn)] hover:bg-red-50"
+        <ActionButton
+          className="rounded-md border-[var(--dark-red-btn)] px-2 py-1 text-xs text-[var(--dark-red-btn)] hover:bg-red-50"
           onClick={onClearAll}
         >
           Smazat
-        </button>
+        </ActionButton>
       </div>
 
       {sections.map((section) => (

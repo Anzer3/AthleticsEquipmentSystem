@@ -30,13 +30,13 @@ const ROUTES: Record<StaticRoutePath, RouteInfo> = {
     isProtected: true,
     showInNav: true,
   },
-  '/events': {
-    label: 'Soutěže',
+  '/measurements': {
+    label: 'Měření',
     isProtected: true,
     showInNav: true,
   },
-  '/measurements': {
-    label: 'Záznamy měření',
+  '/events': {
+    label: 'Soutěže',
     isProtected: true,
     showInNav: true,
   },
@@ -206,7 +206,7 @@ function App() {
         onLogout={handleLogout}
       />
 
-      <main className="flex-1 flex items-start justify-center p-4 md:p-6">{renderPage()}</main>
+      <main className="flex-1 flex items-start justify-center p-3 sm:p-4 md:p-6">{renderPage()}</main>
 
       <Footer />
     </div>

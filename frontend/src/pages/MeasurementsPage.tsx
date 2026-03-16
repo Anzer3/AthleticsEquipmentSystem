@@ -47,7 +47,7 @@ export default function MeasurementsPage({ onNavigateToDetail }: MeasurementsPag
   )
 
   return (
-    <ModuleContainer title="Záznamy měření" subtitle="Kliknutím otevřete detail kompletního měření.">
+    <ModuleContainer title="Měření" subtitle="Kliknutím otevřete detail kompletního měření.">
       {loading ? <InfoState text="Načítám záznamy měření..." /> : null}
       {error ? <InfoState text={error} variant="error" /> : null}
 

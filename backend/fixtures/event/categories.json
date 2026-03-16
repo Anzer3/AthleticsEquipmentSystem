@@ -3,7 +3,7 @@
 		"model": "event.category",
 		"pk": "11111111-1111-1111-1111-111111111001",
 		"fields": {
-			"name": "F11 Women",
+			"name": "F11",
 			"gender": 0
 		}
 	},
@@ -11,7 +11,7 @@
 		"model": "event.category",
 		"pk": "11111111-1111-1111-1111-111111111002",
 		"fields": {
-			"name": "F12 Women",
+			"name": "F12",
 			"gender": 0
 		}
 	},
@@ -19,7 +19,7 @@
 		"model": "event.category",
 		"pk": "11111111-1111-1111-1111-111111111003",
 		"fields": {
-			"name": "M11 Men",
+			"name": "M11",
 			"gender": 1
 		}
 	},
@@ -27,7 +27,71 @@
 		"model": "event.category",
 		"pk": "11111111-1111-1111-1111-111111111004",
 		"fields": {
-			"name": "M12 Men",
+			"name": "M12",
+			"gender": 1
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111005",
+		"fields": {
+			"name": "F40",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111006",
+		"fields": {
+			"name": "F41",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111007",
+		"fields": {
+			"name": "F46",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111008",
+		"fields": {
+			"name": "M40",
+			"gender": 1
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111009",
+		"fields": {
+			"name": "M41",
+			"gender": 1
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111010",
+		"fields": {
+			"name": "M46",
+			"gender": 1
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111011",
+		"fields": {
+			"name": "F57",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111012",
+		"fields": {
+			"name": "M57",
 			"gender": 1
 		}
 	}

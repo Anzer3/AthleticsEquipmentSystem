@@ -3,6 +3,7 @@
 		"model": "equipment.equipment",
 		"pk": "77777777-7777-7777-7777-777777777001",
 		"fields": {
+			"equipment_number": "1",
 			"athlete_number": "045",
 			"category": "11111111-1111-1111-1111-111111111001",
 			"equipment_type": "55555555-5555-5555-5555-555555555001",
@@ -16,6 +17,7 @@
 		"model": "equipment.equipment",
 		"pk": "77777777-7777-7777-7777-777777777002",
 		"fields": {
+			"equipment_number": "2",
 			"athlete_number": "696",
 			"category": "11111111-1111-1111-1111-111111111003",
 			"equipment_type": "55555555-5555-5555-5555-555555555002",
@@ -29,6 +31,7 @@
 		"model": "equipment.equipment",
 		"pk": "77777777-7777-7777-7777-777777777003",
 		"fields": {
+			"equipment_number": "3",
 			"athlete_number": "584",
 			"category": "11111111-1111-1111-1111-111111111004",
 			"equipment_type": "55555555-5555-5555-5555-555555555003",
@@ -42,6 +45,7 @@
 		"model": "equipment.equipment",
 		"pk": "77777777-7777-7777-7777-777777777004",
 		"fields": {
+			"equipment_number": "4",
 			"athlete_number": "587",
 			"category": "11111111-1111-1111-1111-111111111002",
 			"equipment_type": "55555555-5555-5555-5555-555555555001",
@@ -55,6 +59,7 @@
 		"model": "equipment.equipment",
 		"pk": "77777777-7777-7777-7777-777777777005",
 		"fields": {
+			"equipment_number": "5",
 			"athlete_number": "123",
 			"category": "11111111-1111-1111-1111-111111111003",
 			"equipment_type": "55555555-5555-5555-5555-555555555002",
@@ -68,6 +73,7 @@
 		"model": "equipment.equipment",
 		"pk": "77777777-7777-7777-7777-777777777006",
 		"fields": {
+			"equipment_number": "6",
 			"athlete_number": "908",
 			"category": "11111111-1111-1111-1111-111111111001",
 			"equipment_type": "55555555-5555-5555-5555-555555555003",
@@ -75,6 +81,118 @@
 			"status": "66666666-6666-6666-6666-666666666003",
 			"created_at": "2026-07-01T08:55:00Z",
 			"updated_at": "2026-07-01T09:15:00Z"
+		}
+	},
+	{
+		"model": "equipment.equipment",
+		"pk": "77777777-7777-7777-7777-777777777007",
+		"fields": {
+			"equipment_number": "7",
+			"athlete_number": "412",
+			"category": "11111111-1111-1111-1111-111111111005",
+			"equipment_type": "55555555-5555-5555-5555-555555555001",
+			"measured": true,
+			"status": "66666666-6666-6666-6666-666666666001",
+			"created_at": "2026-07-01T09:00:00Z",
+			"updated_at": "2026-07-01T09:18:00Z"
+		}
+	},
+	{
+		"model": "equipment.equipment",
+		"pk": "77777777-7777-7777-7777-777777777008",
+		"fields": {
+			"equipment_number": "8",
+			"athlete_number": "277",
+			"category": "11111111-1111-1111-1111-111111111006",
+			"equipment_type": "55555555-5555-5555-5555-555555555002",
+			"measured": false,
+			"status": "66666666-6666-6666-6666-666666666004",
+			"created_at": "2026-07-01T09:05:00Z",
+			"updated_at": "2026-07-01T09:05:00Z"
+		}
+	},
+	{
+		"model": "equipment.equipment",
+		"pk": "77777777-7777-7777-7777-777777777009",
+		"fields": {
+			"equipment_number": "9",
+			"athlete_number": "533",
+			"category": "11111111-1111-1111-1111-111111111007",
+			"equipment_type": "55555555-5555-5555-5555-555555555003",
+			"measured": true,
+			"status": "66666666-6666-6666-6666-666666666003",
+			"created_at": "2026-07-01T09:10:00Z",
+			"updated_at": "2026-07-01T09:24:00Z"
+		}
+	},
+	{
+		"model": "equipment.equipment",
+		"pk": "77777777-7777-7777-7777-777777777010",
+		"fields": {
+			"equipment_number": "10",
+			"athlete_number": "801",
+			"category": "11111111-1111-1111-1111-111111111008",
+			"equipment_type": "55555555-5555-5555-5555-555555555004",
+			"measured": false,
+			"status": "66666666-6666-6666-6666-666666666006",
+			"created_at": "2026-07-01T09:20:00Z",
+			"updated_at": "2026-07-01T09:20:00Z"
+		}
+	},
+	{
+		"model": "equipment.equipment",
+		"pk": "77777777-7777-7777-7777-777777777011",
+		"fields": {
+			"equipment_number": "11",
+			"athlete_number": "636",
+			"category": "11111111-1111-1111-1111-111111111009",
+			"equipment_type": "55555555-5555-5555-5555-555555555005",
+			"measured": true,
+			"status": "66666666-6666-6666-6666-666666666001",
+			"created_at": "2026-07-01T09:25:00Z",
+			"updated_at": "2026-07-01T09:40:00Z"
+		}
+	},
+	{
+		"model": "equipment.equipment",
+		"pk": "77777777-7777-7777-7777-777777777012",
+		"fields": {
+			"equipment_number": "12",
+			"athlete_number": "914",
+			"category": "11111111-1111-1111-1111-111111111010",
+			"equipment_type": "55555555-5555-5555-5555-555555555001",
+			"measured": false,
+			"status": "66666666-6666-6666-6666-666666666004",
+			"created_at": "2026-07-01T09:30:00Z",
+			"updated_at": "2026-07-01T09:30:00Z"
+		}
+	},
+	{
+		"model": "equipment.equipment",
+		"pk": "77777777-7777-7777-7777-777777777013",
+		"fields": {
+			"equipment_number": "13",
+			"athlete_number": "705",
+			"category": "11111111-1111-1111-1111-111111111011",
+			"equipment_type": "55555555-5555-5555-5555-555555555002",
+			"measured": true,
+			"status": "66666666-6666-6666-6666-666666666003",
+			"created_at": "2026-07-01T09:35:00Z",
+			"updated_at": "2026-07-01T09:55:00Z"
+		}
+	},
+	{
+		"model": "equipment.equipment",
+		"pk": "77777777-7777-7777-7777-777777777014",
+		"fields": {
+			"equipment_number": "14",
+			"athlete_number": "990",
+			"category": "11111111-1111-1111-1111-111111111012",
+			"equipment_type": "55555555-5555-5555-5555-555555555003",
+			"measured": false,
+			"status": "66666666-6666-6666-6666-666666666001",
+			"created_at": "2026-07-01T09:40:00Z",
+			"updated_at": "2026-07-01T09:40:00Z"
 		}
 	}
 ]

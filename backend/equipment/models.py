@@ -22,6 +22,7 @@ class EquipmentType(models.Model):
 # overall equipment model
 class Equipment(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    equipment_number = models.CharField(max_length=15, unique=True, null=False, default=0)
     athlete_number = models.CharField(max_length=15)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     equipment_type = models.ForeignKey(EquipmentType, on_delete=models.SET_NULL, null=True)

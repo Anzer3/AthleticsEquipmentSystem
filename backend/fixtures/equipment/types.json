@@ -4,7 +4,7 @@
         "pk": "55555555-5555-5555-5555-555555555001",
         "fields": {
             "name": "Oštěp",
-            "description": "Soutěžní oštěp"
+            "description": "Oštěp pro hod oštěpem"
         }
     },
     {
@@ -12,7 +12,7 @@
         "pk": "55555555-5555-5555-5555-555555555002",
         "fields": {
             "name": "Koule",
-            "description": "Koule pro vrh"
+            "description": "Koule pro vrh koulí"
         }
     },
     {
@@ -20,7 +20,23 @@
         "pk": "55555555-5555-5555-5555-555555555003",
         "fields": {
             "name": "Disk",
-            "description": "Soutěžní disk"
+            "description": "Disk pro hod diskem"
+        }
+    },
+    {
+        "model": "equipment.equipmenttype",
+        "pk": "55555555-5555-5555-5555-555555555004",
+        "fields": {
+            "name": "Kladivo",
+            "description": "Kladivo pro hod kladivem"
+        }
+    },   
+    {
+        "model": "equipment.equipmenttype",
+        "pk": "55555555-5555-5555-5555-555555555005",
+        "fields": {
+            "name": "Kuželka",
+            "description": "Kuželka pro hod kuželkou"
         }
     }
 ]

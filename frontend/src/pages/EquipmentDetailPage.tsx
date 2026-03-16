@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import ActionButton from '../components/ActionButton'
 import InfoState from '../components/InfoState'
 import ModuleContainer from '../components/ModuleContainer'
 import { formatValue } from '../utils/presentation'
@@ -51,13 +52,12 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack }: Equipment
 
   return (
     <ModuleContainer title="Detail náčiní" subtitle="UUID je zobrazené pouze v detailu záznamu.">
-      <button
-        type="button"
-        className="mb-4 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50"
+      <ActionButton
+        className="mb-4 border-gray-300 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50"
         onClick={onBack}
       >
         Zpět na seznam
-      </button>
+      </ActionButton>
 
       {loading ? <InfoState text="Načítám detail náčiní..." /> : null}
       {error ? <InfoState text={error} variant="error" /> : null}

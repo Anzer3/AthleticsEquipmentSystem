@@ -1,10 +1,11 @@
 import type { ComponentType } from 'react'
 import {
-  Cog6ToothIcon,
   CubeIcon,
-  DocumentChartBarIcon,
+  ScaleIcon,
+  TrophyIcon,
   UserCircleIcon,
 } from '@heroicons/react/24/outline'
+import ActionButton from './ActionButton'
 import logo from '../assets/WPA_icon.webp'
 
 type RoutePath = '/login' | '/equipment' | '/events' | '/measurements'
@@ -28,8 +29,8 @@ type HeaderProps = {
 const iconByPath: Record<RoutePath, ComponentType<{ className?: string }>> = {
   '/login': UserCircleIcon,
   '/equipment': CubeIcon,
-  '/events': Cog6ToothIcon,
-  '/measurements': DocumentChartBarIcon,
+  '/events': TrophyIcon,
+  '/measurements': ScaleIcon,
 }
 
 export default function Header({
@@ -45,18 +46,18 @@ export default function Header({
 
   return (
     <header className="border-b-[10px] border-[#ececec] bg-[var(--dark-red-header)]">
-      <div className="flex items-center justify-between gap-4 px-4 py-3 md:px-6">
+      <div className="flex flex-col items-start justify-between gap-3 px-4 py-3 sm:flex-row sm:items-center md:px-6">
         <div className="flex min-w-0 items-center gap-3">
           <img
             src={logo}
             alt="WPA logo"
-            className="h-12 w-12 rounded-full border-2 border-white object-cover"
+            className="h-10 w-10 rounded-full border-2 border-white object-cover sm:h-12 sm:w-12"
           />
 
           <div className="flex min-w-0 flex-col gap-0.5">
             <button
               type="button"
-              className="truncate border-none bg-transparent text-left text-xl leading-tight font-bold text-white md:text-2xl"
+              className="truncate border-none bg-transparent text-left text-lg leading-tight font-bold text-white sm:text-xl md:text-2xl"
               onClick={() => onNavigate(isLoggedIn ? '/equipment' : '/login')}
             >
               Para atletika - Správa náčiní
@@ -74,44 +75,31 @@ export default function Header({
                 <UserCircleIcon className="h-5 w-5" />
                 {username}
               </span>
-              <button
-                type="button"
-                className="rounded-md border border-white bg-white px-3 py-1.5 text-sm font-semibold text-gray-800 hover:bg-gray-100"
-                onClick={onLogout}
-              >
+              <ActionButton onClick={onLogout}>
                 Odhlásit se
-              </button>
+              </ActionButton>
             </>
           ) : (
-            <button
-              type="button"
-              className="rounded-md border border-white bg-white px-3 py-1.5 text-sm font-semibold text-gray-800 hover:bg-gray-100"
-              onClick={onNavigateLogin}
-            >
+            <ActionButton onClick={onNavigateLogin}>
               Přihlásit se
-            </button>
+            </ActionButton>
           )}
         </div>
       </div>
 
-      <nav className="flex gap-2 overflow-x-auto whitespace-nowrap px-4 md:px-6">
+      <nav className="flex flex-wrap gap-2 px-4 md:px-6">
         {visibleItems.map((item) => {
           const Icon = iconByPath[item.path as RoutePath]
 
           return (
-            <button
+            <ActionButton
               key={item.path}
-              type="button"
-              className={`inline-flex items-center gap-2 rounded-t-md px-4 py-2 text-base font-semibold transition-colors md:text-lg ${
-                currentPath === item.path
-                  ? 'bg-[var(--dark-red-btn)] text-white'
-                  : 'text-white/90 hover:bg-[var(--dark-red-btn)]/70 hover:text-white'
-              }`}
+              variant={currentPath === item.path ? 'tab-active' : 'tab'}
               onClick={() => onNavigate(item.path)}
             >
               <Icon className="h-5 w-5" />
               {item.label}
-            </button>
+            </ActionButton>
           )
         })}
       </nav>

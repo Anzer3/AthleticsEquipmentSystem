@@ -5,13 +5,16 @@ import {
   ScaleIcon,
   Squares2X2Icon,
 } from '@heroicons/react/24/outline'
+import EquipmentTile from '../components/EquipmentTile'
 import FilterSidebar from '../components/FilterSidebar'
 import InfoState from '../components/InfoState'
 import ModuleContainer from '../components/ModuleContainer'
+import SearchInput from '../components/SearchInput'
+import StatTile from '../components/StatTile'
 
 type Equipment = {
   uuid: string
-  athlete_number: string
+  equipment_number: string
   category: string
   equipment_type: string
   status: string
@@ -84,7 +87,7 @@ export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps
     const measuredFilter = filters['Změřeno'] ?? []
 
     return items.filter((item) => {
-      const bySearch = item.athlete_number.toLowerCase().includes(search.toLowerCase())
+      const bySearch = item.equipment_number.toLowerCase().includes(search.toLowerCase())
       const measuredText = item.measured ? 'Ano' : 'Ne'
       const byType = typeFilter.length === 0 || typeFilter.includes(item.equipment_type)
       const byStatus = statusFilter.length === 0 || statusFilter.includes(item.status)
@@ -141,7 +144,7 @@ export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps
   }
 
   return (
-    <div className="w-full max-w-[1400px] grid gap-4 xl:grid-cols-[18rem_1fr]">
+    <div className="w-full max-w-[1400px] grid gap-4 lg:grid-cols-[17rem_1fr]">
       <FilterSidebar
         sections={sections}
         selectedValues={filters}
@@ -153,27 +156,20 @@ export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps
         title="Náčiní"
         subtitle=""
       >
-        <div className="mb-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <article className="rounded-xl border border-[var(--light_red)] bg-red-50 p-3 shadow-sm">
-            <h2 className="text-xs font-bold uppercase tracking-wide text-gray-600">Celkem náčiní</h2>
-            <p className="mt-1 text-2xl font-black text-[var(--dark-red-btn)]">{items.length}</p>
-          </article>
+        <div className="mb-5 grid grid-cols-5 gap-2 md:gap-3">
+          <StatTile title="Celkem náčiní" value={items.length} highlighted />
 
           {statusStats.map((status) => (
-            <article key={status.name} className="rounded-xl border border-[var(--line-soft)] bg-white p-3 shadow-sm">
-              <h2 className="text-xs font-bold uppercase tracking-wide text-gray-600">{status.name}</h2>
-              <p className="mt-1 text-2xl font-black text-gray-900">{status.count}</p>
-            </article>
+            <StatTile key={status.name} title={status.name} value={status.count} />
           ))}
         </div>
 
         <div className="mb-4">
-          <input
-            type="search"
+          <SearchInput
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={setSearch}
             placeholder="Hledat podle čísla atleta"
-            className="w-full rounded-xl border-2 border-[var(--dark-red-btn)]/35 bg-white px-4 py-3 text-base font-semibold text-gray-900 shadow-sm outline-none placeholder:text-gray-500 focus:border-[var(--dark-red-btn)] focus:ring-4 focus:ring-[var(--light_red)] md:max-w-md"
+            maxWidthClassName="md:max-w-md"
           />
         </div>
 
@@ -183,40 +179,17 @@ export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps
         {!loading && !error ? (
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {filteredItems.map((item) => (
-              <button
+              <EquipmentTile
                 key={item.uuid}
-                type="button"
-                onClick={() => onNavigateToDetail(item.uuid)}
-                className="rounded-2xl border border-[var(--line-soft)] bg-gradient-to-b from-white to-gray-50 p-4 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-[var(--dark-red-btn)] hover:shadow-md"
-              >
-                {(() => {
-                  const Icon = getTypeIcon(item.equipment_type)
-                  return (
-                    <div className="mb-3 inline-flex rounded-xl bg-red-100 p-2.5 text-[var(--dark-red-btn)]">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                  )
-                })()}
-
-                <div className="flex items-center justify-between gap-2">
-                  <h2 className="text-lg font-black text-gray-900">Číslo atleta: {item.athlete_number}</h2>
-                  <span
-                    className={`rounded-full px-2 py-1 text-xs font-semibold ${
-                      item.measured
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-yellow-100 text-yellow-700'
-                    }`}
-                  >
-                    {item.measured ? 'Změřeno' : 'Čeká na měření'}
-                  </span>
-                </div>
-
-                <div className="mt-3 space-y-1.5 text-sm text-gray-600">
-                  <p><span className="font-bold text-gray-700">Typ:</span> {item.equipment_type}</p>
-                  <p><span className="font-bold text-gray-700">Kategorie:</span> {item.category}</p>
-                  <p><span className="font-bold text-gray-700">Aktuální stav:</span> {item.status}</p>
-                </div>
-              </button>
+                uuid={item.uuid}
+                equipmentNumber={item.equipment_number}
+                equipmentType={item.equipment_type}
+                category={item.category}
+                status={item.status}
+                measured={item.measured}
+                icon={getTypeIcon(item.equipment_type)}
+                onOpenDetail={onNavigateToDetail}
+              />
             ))}
           </div>
         ) : null}

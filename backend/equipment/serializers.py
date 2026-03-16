@@ -20,6 +20,7 @@ class EquipmentListSerializer(serializers.ModelSerializer):
         model = Equipment
         fields = [
             'uuid',
+            'equipment_number',
             'athlete_number',
             'category',
             'equipment_type',
@@ -37,6 +38,7 @@ class EquipmentDetailSerializer(serializers.ModelSerializer):
         model = Equipment
         fields = [
             'uuid',
+            'equipment_number',
             'athlete_number',
             'category',
             'category_name',
@@ -54,6 +56,7 @@ class EquipmentWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Equipment
         fields = [
+            'equipment_number',
             'athlete_number',
             'category',
             'equipment_type',

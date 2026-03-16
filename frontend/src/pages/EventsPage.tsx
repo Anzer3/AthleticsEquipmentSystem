@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import InfoState from '../components/InfoState'
 import ModuleContainer from '../components/ModuleContainer'
+import SearchInput from '../components/SearchInput'
 import { formatValue } from '../utils/presentation'
 
 type EventItem = {
@@ -46,12 +47,11 @@ export default function EventsPage() {
   return (
     <ModuleContainer title="Soutěže" subtitle="Přehled soutěží včetně časového harmonogramu.">
       <div className="mb-4">
-        <input
-          type="search"
+        <SearchInput
           value={search}
-          onChange={(event) => setSearch(event.target.value)}
+          onChange={setSearch}
           placeholder="Hledat soutěž"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--dark-red-btn)] focus:ring-2 focus:ring-[var(--light_red)] md:max-w-xs"
+          maxWidthClassName="md:max-w-xs"
         />
       </div>
 
