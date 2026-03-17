@@ -29,10 +29,10 @@ export default function FilterSidebar({
           {title}
         </h2>
         <ActionButton
-          className="rounded-md border-[var(--dark-red-btn)] px-2 py-1 text-xs text-[var(--dark-red-btn)] hover:bg-red-50"
+          className="rounded-md bg-red-600 border-red-600 px-3 py-1.5 text-xs font-bold text-white shadow-sm transition-colors hover:bg-red-700 hover:border-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
           onClick={onClearAll}
         >
-          Smazat
+          Vymazat filtry
         </ActionButton>
       </div>
 
