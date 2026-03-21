@@ -22,5 +22,93 @@
 			"measured_property": "99999999-9999-9999-9999-999999999003",
 			"unit": "g"
 		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0004",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999004",
+			"unit": "mm"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0005",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999005",
+			"unit": "g"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0006",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999006",
+			"unit": "mm"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0007",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999007",
+			"unit": "mm"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0008",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999008",
+			"unit": "g"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0009",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999009",
+			"unit": "mm"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0010",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999010",
+			"unit": "mm"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0011",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999011",
+			"unit": "g"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0012",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999012",
+			"unit": "mm"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0013",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999013",
+			"unit": "mm"
+		}
+	},
+	{
+		"model": "measurement.measurementunit",
+		"pk": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0014",
+		"fields": {
+			"measured_property": "99999999-9999-9999-9999-999999999014",
+			"unit": "mm"
+		}
 	}
 ]

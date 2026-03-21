@@ -17,22 +17,6 @@
 	},
 	{
 		"model": "event.category",
-		"pk": "11111111-1111-1111-1111-111111111003",
-		"fields": {
-			"name": "M11",
-			"gender": 1
-		}
-	},
-	{
-		"model": "event.category",
-		"pk": "11111111-1111-1111-1111-111111111004",
-		"fields": {
-			"name": "M12",
-			"gender": 1
-		}
-	},
-	{
-		"model": "event.category",
 		"pk": "11111111-1111-1111-1111-111111111005",
 		"fields": {
 			"name": "F40",
@@ -57,42 +41,10 @@
 	},
 	{
 		"model": "event.category",
-		"pk": "11111111-1111-1111-1111-111111111008",
-		"fields": {
-			"name": "M40",
-			"gender": 1
-		}
-	},
-	{
-		"model": "event.category",
-		"pk": "11111111-1111-1111-1111-111111111009",
-		"fields": {
-			"name": "M41",
-			"gender": 1
-		}
-	},
-	{
-		"model": "event.category",
-		"pk": "11111111-1111-1111-1111-111111111010",
-		"fields": {
-			"name": "M46",
-			"gender": 1
-		}
-	},
-	{
-		"model": "event.category",
 		"pk": "11111111-1111-1111-1111-111111111011",
 		"fields": {
 			"name": "F57",
 			"gender": 0
-		}
-	},
-	{
-		"model": "event.category",
-		"pk": "11111111-1111-1111-1111-111111111012",
-		"fields": {
-			"name": "M57",
-			"gender": 1
 		}
 	}
 ]

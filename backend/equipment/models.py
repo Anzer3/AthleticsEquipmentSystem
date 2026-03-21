@@ -32,3 +32,11 @@ class Equipment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return f"UUID: {str(self.uuid)[:8]} - Type: {self.equipment_type.name if self.equipment_type else 'N/A'} - Status: {self.status.name if self.status else 'N/A'}"
+    
+
+class EquipmentTypeProperty(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    equipment_type = models.ForeignKey(EquipmentType, on_delete=models.CASCADE)
+    name = models.CharField(max_length=30)
+    def __str__(self):
+        return f"{self.equipment_type.name} - {self.name}"

@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import csrf_view, login_view, logout_view, me_view
+from .views import CsrfView, LoginView, LogoutView, MeView
 
 urlpatterns = [
-    path('csrf/', csrf_view),
-    path('login/', login_view),
-    path('logout/', logout_view),
-    path('me/', me_view),
+    path('csrf/', CsrfView.as_view()),
+    path('login/', LoginView.as_view()),
+    path('logout/', LogoutView.as_view()),
+    path('me/', MeView.as_view()),
 ]

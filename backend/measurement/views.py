@@ -1,8 +1,11 @@
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import Measurement
+from equipment.models import Equipment
+
+from .models import Measurement, MeasuredProperty
 from .serializers import (
+    MeasuredPropertyForEquipmentSerializer,
     MeasurementDetailSerializer,
     MeasurementListSerializer,
     MeasurementWriteSerializer,
@@ -12,42 +15,81 @@ from .serializers import (
 # Measurement list
 # ---------------------
 
-@api_view(['GET', 'POST'])
-def measurement_list(request):
-    if request.method == 'GET':
+class MeasurementListView(APIView):
+    def get(self, request):
         measurements = Measurement.objects.all().order_by('-measured_at')
+        equipment_uuid = request.query_params.get('equipment_uuid')
+        if equipment_uuid:
+            measurements = measurements.filter(equipment__uuid=equipment_uuid)
         serializer = MeasurementListSerializer(measurements, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    def post(self, request):
         serializer = MeasurementWriteSerializer(data=request.data)
         if serializer.is_valid():
             measurement = serializer.save()
             return Response(MeasurementDetailSerializer(measurement).data, status=201)
         return Response(serializer.errors, status=400)
 
+
+class MeasurementPropertiesView(APIView):
+    def get(self, request):
+        equipment_uuid = request.query_params.get('equipment_uuid')
+        if not equipment_uuid:
+            return Response({"detail": "Missing query parameter: equipment_uuid"}, status=400)
+
+        try:
+            equipment = Equipment.objects.select_related('equipment_type').get(uuid=equipment_uuid)
+        except Equipment.DoesNotExist:
+            return Response({"detail": "Equipment not found"}, status=404)
+
+        if not equipment.equipment_type:
+            return Response({
+                "equipment_uuid": str(equipment.uuid),
+                "equipment_type": None,
+                "properties": [],
+            })
+
+        properties = MeasuredProperty.objects.filter(equipment_type=equipment.equipment_type)
+        serializer = MeasuredPropertyForEquipmentSerializer(properties, many=True)
+
+        return Response({
+            "equipment_uuid": str(equipment.uuid),
+            "equipment_type": equipment.equipment_type.name,
+            "properties": serializer.data,
+        })
+
 # ---------------------
 # Measurement detail
 # ---------------------
 
-@api_view(['GET', 'PATCH', 'DELETE'])
-def measurement_detail(request, uuid):
-    try:
-        measurement = Measurement.objects.get(uuid=uuid)
-    except Measurement.DoesNotExist:
-        return Response(status=404)
+class MeasurementDetailView(APIView):
+    def get_object(self, uuid):
+        try:
+            return Measurement.objects.get(uuid=uuid)
+        except Measurement.DoesNotExist:
+            return None
 
-    if request.method == 'GET':
+    def get(self, request, uuid):
+        measurement = self.get_object(uuid)
+        if measurement is None:
+            return Response(status=404)
         serializer = MeasurementDetailSerializer(measurement)
         return Response(serializer.data)
 
-    elif request.method == 'PATCH':
+    def patch(self, request, uuid):
+        measurement = self.get_object(uuid)
+        if measurement is None:
+            return Response(status=404)
         serializer = MeasurementWriteSerializer(measurement, data=request.data, partial=True)
         if serializer.is_valid():
             measurement = serializer.save()
             return Response(MeasurementDetailSerializer(measurement).data)
         return Response(serializer.errors, status=400)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, uuid):
+        measurement = self.get_object(uuid)
+        if measurement is None:
+            return Response(status=404)
         measurement.delete()
         return Response(status=204)

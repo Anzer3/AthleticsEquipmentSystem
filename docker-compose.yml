@@ -11,9 +11,9 @@ services:
       POSTGRES_DB: athletics_equipment_db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      DJANGO_SUPERUSER_USERNAME: morce
+      DJANGO_SUPERUSER_USERNAME: Rozhodci
       DJANGO_SUPERUSER_PASSWORD: 123
-      DJANGO_SUPERUSER_EMAIL: morce@morce.com
+      DJANGO_SUPERUSER_EMAIL: rozhodci@rozhodci.com
     depends_on:
       - db
     ports:

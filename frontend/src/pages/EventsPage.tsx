@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import InfoState from '../components/InfoState'
-import ModuleContainer from '../components/ModuleContainer'
 import SearchInput from '../components/SearchInput'
 import { formatValue } from '../utils/presentation'
 
@@ -45,7 +44,12 @@ export default function EventsPage() {
   )
 
   return (
-    <ModuleContainer title="Soutěže" subtitle="Přehled soutěží včetně časového harmonogramu.">
+    <div className="w-full max-w-[1400px]">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 md:text-3xl">Soutěže</h1>
+        <p className="mt-1 text-sm text-[var(--ink-soft)] md:text-base">Přehled soutěží včetně časového harmonogramu.</p>
+      </div>
+
       <div className="mb-4">
         <SearchInput
           value={search}
@@ -71,6 +75,6 @@ export default function EventsPage() {
       ) : null}
 
       {!loading && !error && filtered.length === 0 ? <InfoState text="Nebyly nalezeny žádné soutěže." /> : null}
-    </ModuleContainer>
+    </div>
   )
 }

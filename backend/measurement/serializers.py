@@ -1,9 +1,10 @@
 from rest_framework import serializers
-from .models import Measurement
+from .models import Measurement, MeasuredProperty, MeasurementUnit
 
 class MeasurementListSerializer(serializers.ModelSerializer):
     measured_equipment = serializers.SerializerMethodField()
     measured_property = serializers.SerializerMethodField()
+    unit_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Measurement
@@ -12,6 +13,8 @@ class MeasurementListSerializer(serializers.ModelSerializer):
             'measured_equipment',
             'measured_at',
             'measured_property',
+            'value',
+            'unit_name',
         ]
 
     def get_measured_equipment(self, obj):
@@ -24,6 +27,9 @@ class MeasurementListSerializer(serializers.ModelSerializer):
 
     def get_measured_property(self, obj):
         return obj.property.name if obj.property else '-'
+
+    def get_unit_name(self, obj):
+        return obj.unit.unit if obj.unit else '-'
 
 
 class MeasurementDetailSerializer(serializers.ModelSerializer):
@@ -116,3 +122,29 @@ class MeasurementWriteSerializer(serializers.ModelSerializer):
             'value',
             'unit',
         ]
+
+
+class MeasurementUnitOptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MeasurementUnit
+        fields = [
+            'uuid',
+            'unit',
+        ]
+
+
+class MeasuredPropertyForEquipmentSerializer(serializers.ModelSerializer):
+    units = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MeasuredProperty
+        fields = [
+            'uuid',
+            'name',
+            'description',
+            'units',
+        ]
+
+    def get_units(self, obj):
+        units = MeasurementUnit.objects.filter(measured_property=obj)
+        return MeasurementUnitOptionSerializer(units, many=True).data

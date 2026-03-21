@@ -1,17 +1,16 @@
 import type { ComponentType } from 'react'
 import {
   CubeIcon,
-  ScaleIcon,
   TrophyIcon,
   UserCircleIcon,
+  WrenchScrewdriverIcon,
+  ClipboardDocumentIcon,
 } from '@heroicons/react/24/outline'
 import ActionButton from './ActionButton'
 import logo from '../assets/WPA_icon.webp'
 
-type RoutePath = '/login' | '/equipment' | '/events' | '/measurements'
-
 type NavItem = {
-  path: RoutePath
+  path: string
   label: string
   isProtected: boolean
 }
@@ -22,15 +21,15 @@ type HeaderProps = {
   navItems: NavItem[]
   isLoggedIn: boolean
   onNavigate: (path: string) => void
-  onNavigateLogin: () => void
   onLogout: () => void
 }
 
-const iconByPath: Record<RoutePath, ComponentType<{ className?: string }>> = {
+const iconByPath: Record<string, ComponentType<{ className?: string }>> = {
   '/login': UserCircleIcon,
   '/equipment': CubeIcon,
   '/events': TrophyIcon,
-  '/measurements': ScaleIcon,
+  '/completion': WrenchScrewdriverIcon,
+  '/new-measurement': ClipboardDocumentIcon,
 }
 
 export default function Header({
@@ -39,7 +38,6 @@ export default function Header({
   navItems,
   isLoggedIn,
   onNavigate,
-  onNavigateLogin,
   onLogout,
 }: HeaderProps) {
   const visibleItems = navItems.filter((item) => isLoggedIn || !item.isProtected)
@@ -75,21 +73,17 @@ export default function Header({
                 <UserCircleIcon className="h-5 w-5" />
                 {username}
               </span>
-              <ActionButton onClick={onLogout}>
+              <ActionButton onClick={onLogout} className="bg-white text-red-600 border-2">
                 Odhlásit se
               </ActionButton>
             </>
-          ) : (
-            <ActionButton onClick={onNavigateLogin}>
-              Přihlásit se
-            </ActionButton>
-          )}
+          ) : null}
         </div>
       </div>
 
       <nav className="flex flex-wrap gap-2 px-4 md:px-6">
         {visibleItems.map((item) => {
-          const Icon = iconByPath[item.path as RoutePath]
+          const Icon = iconByPath[item.path] || CubeIcon
 
           return (
             <ActionButton

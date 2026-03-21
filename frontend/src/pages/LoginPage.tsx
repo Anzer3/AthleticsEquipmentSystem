@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { LockClosedIcon, UserIcon } from '@heroicons/react/24/outline'
+import { EyeIcon, EyeSlashIcon, LockClosedIcon, UserIcon } from '@heroicons/react/24/outline'
 
 type LoginPageProps = {
   onSubmit: (username: string, password: string) => Promise<string | null>
@@ -8,6 +8,7 @@ type LoginPageProps = {
 export default function LoginPage({ onSubmit }: LoginPageProps) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -63,13 +64,21 @@ export default function LoginPage({ onSubmit }: LoginPageProps) {
               </div>
               <input
                 id="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="block w-full rounded-xl border border-gray-200 bg-gray-50/50 py-3 pl-10 pr-3 text-sm text-gray-900 transition-all outline-none focus:border-[var(--dark-red-btn)] focus:bg-white focus:ring-2 focus:ring-red-100"
+                className="block w-full rounded-xl border border-gray-200 bg-gray-50/50 py-3 pl-10 pr-11 text-sm text-gray-900 transition-all outline-none focus:border-[var(--dark-red-btn)] focus:bg-white focus:ring-2 focus:ring-red-100"
                 placeholder="••••••••"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((value) => !value)}
+                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 transition-colors hover:text-gray-600"
+                aria-label={showPassword ? 'Skrýt heslo' : 'Zobrazit heslo'}
+              >
+                {showPassword ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
+              </button>
             </div>
           </div>
 

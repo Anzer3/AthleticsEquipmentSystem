@@ -16,7 +16,7 @@ export default function StatTile({ title, value, highlighted = false, details, s
     <article
       className={`relative min-w-0 rounded-xl px-3 py-3 shadow-md transition-all duration-300 ${
         highlighted
-          ? 'border-2 border-[var(--dark-red-btn)] bg-gradient-to-br from-red-50 to-white'
+          ? 'border-2 border-[var(--dark-red-btn)] bg-gradient-to-br from-sky-50 to-white'
           : 'border border-gray-200 bg-white hover:border-[var(--light_red)]'
       }`}
     >

@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Equipment, EquipmentStatus, EquipmentType
@@ -14,14 +14,13 @@ from .serializers import (
 # Equipment list
 # ---------------------
 
-@api_view(['GET', 'POST'])
-def equipment_list(request):
-    if request.method == 'GET':
+class EquipmentListView(APIView):
+    def get(self, request):
         equipments = Equipment.objects.all()
         serializer = EquipmentListSerializer(equipments, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    def post(self, request):
         serializer = EquipmentWriteSerializer(data=request.data)
         if serializer.is_valid():
             equipment = serializer.save()
@@ -32,47 +31,55 @@ def equipment_list(request):
 # Equipment detail
 # ---------------------
 
-@api_view(['GET', 'PATCH', 'DELETE'])
-def equipment_detail(request, uuid):
-    try:
-        equipment = Equipment.objects.get(uuid=uuid)
-    except Equipment.DoesNotExist:
-        return Response(status=404)
+class EquipmentDetailView(APIView):
+    def get_object(self, uuid):
+        try:
+            return Equipment.objects.get(uuid=uuid)
+        except Equipment.DoesNotExist:
+            return None
 
-    if request.method == 'GET':
+    def get(self, request, uuid):
+        equipment = self.get_object(uuid)
+        if equipment is None:
+            return Response(status=404)
         serializer = EquipmentDetailSerializer(equipment)
         return Response(serializer.data)
 
-    elif request.method == 'PATCH':
+    def patch(self, request, uuid):
+        equipment = self.get_object(uuid)
+        if equipment is None:
+            return Response(status=404)
         serializer = EquipmentWriteSerializer(equipment, data=request.data, partial=True)
         if serializer.is_valid():
             equipment = serializer.save()
             return Response(EquipmentDetailSerializer(equipment).data)
         return Response(serializer.errors, status=400)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, uuid):
+        equipment = self.get_object(uuid)
+        if equipment is None:
+            return Response(status=404)
         equipment.delete()
         return Response(status=204)
 
 
-@api_view(['GET'])
-def equipment_status_list(request):
-    statuses = EquipmentStatus.objects.all()
-    serializer = EquipmentStatusSerializer(statuses, many=True)
-    return Response(serializer.data)
+class EquipmentStatusListView(APIView):
+    def get(self, request):
+        statuses = EquipmentStatus.objects.all()
+        serializer = EquipmentStatusSerializer(statuses, many=True)
+        return Response(serializer.data)
     
 # ---------------------
 # EquipmentType list
 # ---------------------
 
-@api_view(['GET', 'POST'])
-def equipment_type_list(request):
-    if request.method == 'GET':
+class EquipmentTypeListView(APIView):
+    def get(self, request):
         equipment_types = EquipmentType.objects.all()
         serializer = EquipmentTypeSerializer(equipment_types, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    def post(self, request):
         serializer = EquipmentTypeSerializer(data=request.data)
         if serializer.is_valid():
             equipment_type = serializer.save()
@@ -83,24 +90,33 @@ def equipment_type_list(request):
 # EquipmentType detail
 # ---------------------
 
-@api_view(['GET', 'PATCH', 'DELETE'])
-def equipment_type_detail(request, uuid):
-    try:
-        equipment_type = EquipmentType.objects.get(uuid=uuid)
-    except EquipmentType.DoesNotExist:
-        return Response(status=404)
+class EquipmentTypeDetailView(APIView):
+    def get_object(self, uuid):
+        try:
+            return EquipmentType.objects.get(uuid=uuid)
+        except EquipmentType.DoesNotExist:
+            return None
 
-    if request.method == 'GET':
+    def get(self, request, uuid):
+        equipment_type = self.get_object(uuid)
+        if equipment_type is None:
+            return Response(status=404)
         serializer = EquipmentTypeSerializer(equipment_type)
         return Response(serializer.data)
 
-    elif request.method == 'PATCH':
+    def patch(self, request, uuid):
+        equipment_type = self.get_object(uuid)
+        if equipment_type is None:
+            return Response(status=404)
         serializer = EquipmentTypeSerializer(equipment_type, data=request.data, partial=True)
         if serializer.is_valid():
             equipment_type = serializer.save()
             return Response(EquipmentTypeSerializer(equipment_type).data)
         return Response(serializer.errors, status=400)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, uuid):
+        equipment_type = self.get_object(uuid)
+        if equipment_type is None:
+            return Response(status=404)
         equipment_type.delete()
         return Response(status=204)

@@ -1,42 +1,50 @@
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Event
 from .serializers import EventSerializer
 
 
-@api_view(['GET', 'POST'])
-def event_list(request):
-    if request.method == 'GET':
+class EventListView(APIView):
+    def get(self, request):
         events = Event.objects.all()
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    def post(self, request):
         serializer = EventSerializer(data=request.data)
         if serializer.is_valid():
             event = serializer.save()
             return Response(EventSerializer(event).data, status=201)
         return Response(serializer.errors, status=400)
     
-@api_view(['GET', 'PATCH', 'DELETE'])
-def event_detail(request, uuid):
-    try:
-        event = Event.objects.get(uuid=uuid)
-    except Event.DoesNotExist:
-        return Response(status=404)
+class EventDetailView(APIView):
+    def get_object(self, uuid):
+        try:
+            return Event.objects.get(uuid=uuid)
+        except Event.DoesNotExist:
+            return None
 
-    if request.method == 'GET':
+    def get(self, request, uuid):
+        event = self.get_object(uuid)
+        if event is None:
+            return Response(status=404)
         serializer = EventSerializer(event)
         return Response(serializer.data)
 
-    elif request.method == 'PATCH':
+    def patch(self, request, uuid):
+        event = self.get_object(uuid)
+        if event is None:
+            return Response(status=404)
         serializer = EventSerializer(event, data=request.data, partial=True)
         if serializer.is_valid():
             event = serializer.save()
             return Response(EventSerializer(event).data)
         return Response(serializer.errors, status=400)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, uuid):
+        event = self.get_object(uuid)
+        if event is None:
+            return Response(status=404)
         event.delete()
         return Response(status=204)

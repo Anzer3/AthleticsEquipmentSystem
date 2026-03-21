@@ -4,8 +4,8 @@
 		"pk": "99999999-9999-9999-9999-999999999001",
 		"fields": {
 			"equipment_type": "55555555-5555-5555-5555-555555555001",
-			"name": "Weight",
-			"description": "Javelin weight in grams"
+			"name": "Hmotnost",
+			"description": "Hmotnost oštěpu v gramech"
 		}
 	},
 	{
@@ -13,8 +13,8 @@
 		"pk": "99999999-9999-9999-9999-999999999002",
 		"fields": {
 			"equipment_type": "55555555-5555-5555-5555-555555555001",
-			"name": "Length",
-			"description": "Javelin length in mm"
+			"name": "Celková délka",
+			"description": "Celková délka oštěpu v milimetrech"
 		}
 	},
 	{
@@ -22,8 +22,107 @@
 		"pk": "99999999-9999-9999-9999-999999999003",
 		"fields": {
 			"equipment_type": "55555555-5555-5555-5555-555555555002",
-			"name": "Weight",
-			"description": "Shot put weight in grams"
+			"name": "Hmotnost",
+			"description": "Hmotnost koule v gramech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999004",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555002",
+			"name": "Průměr",
+			"description": "Průměr koule v milimetrech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999005",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555003",
+			"name": "Hmotnost",
+			"description": "Hmotnost disku v gramech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999006",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555003",
+			"name": "Vnější průměr",
+			"description": "Vnější průměr disku v milimetrech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999007",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555003",
+			"name": "Tloušťka středu",
+			"description": "Tloušťka středu disku v milimetrech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999008",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555004",
+			"name": "Hmotnost",
+			"description": "Hmotnost kladiva v gramech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999009",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555004",
+			"name": "Průměr hlavy",
+			"description": "Průměr hlavy kladiva v milimetrech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999010",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555004",
+			"name": "Délka lanka/rukojeti",
+			"description": "Délka lanka nebo rukojeti kladiva v milimetrech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999011",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555005",
+			"name": "Hmotnost",
+			"description": "Hmotnost kuželky v gramech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999012",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555005",
+			"name": "Celková délka",
+			"description": "Celková délka kuželky v milimetrech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999013",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555005",
+			"name": "Průměr v nejširší části",
+			"description": "Průměr kuželky v nejširší části v milimetrech"
+		}
+	},
+	{
+		"model": "measurement.measuredproperty",
+		"pk": "99999999-9999-9999-9999-999999999014",
+		"fields": {
+			"equipment_type": "55555555-5555-5555-5555-555555555005",
+			"name": "Průměr základny (báze)",
+			"description": "Průměr základny kuželky v milimetrech"
 		}
 	}
 ]

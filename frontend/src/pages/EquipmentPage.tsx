@@ -1,16 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
-  LifebuoyIcon,
-  PaperAirplaneIcon,
-  ScaleIcon,
-  Squares2X2Icon,
+  ClipboardDocumentListIcon,
   ChevronDownIcon,
   ChevronUpIcon,
 } from '@heroicons/react/24/outline'
-import EquipmentTile from '../components/EquipmentTile'
+import ActionButton from '../components/ActionButton'
+import EquipmentCard from '../components/EquipmentCard'
 import FilterSidebar from '../components/FilterSidebar'
 import InfoState from '../components/InfoState'
-import ModuleContainer from '../components/ModuleContainer'
 import SearchInput from '../components/SearchInput'
 import StatTile from '../components/StatTile'
 
@@ -37,9 +34,10 @@ const pluralizeType = (type: string): string => {
 
 type EquipmentPageProps = {
   onNavigateToDetail: (uuid: string) => void
+  onNavigate: (path: string) => void
 }
 
-export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps) {
+export default function EquipmentPage({ onNavigateToDetail, onNavigate }: EquipmentPageProps) {
   const [items, setItems] = useState<Equipment[]>([])
   const [search, setSearch] = useState('')
   const [filters, setFilters] = useState<Record<string, string[]>>({})
@@ -101,7 +99,7 @@ export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps
     const categoryFilter = filters['Kategorie'] ?? []
     const measuredFilter = filters['Změřeno'] ?? []
 
-    return items.filter((item) => {
+    const filtered = items.filter((item) => {
       const searchLower = search.toLowerCase()
       const bySearch = item.equipment_number.toLowerCase().includes(searchLower) || 
                        (item.athlete_number?.toLowerCase() || '').includes(searchLower)
@@ -112,6 +110,14 @@ export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps
       const byMeasured = measuredFilter.length === 0 || measuredFilter.includes(measuredText)
 
       return bySearch && byType && byStatus && byCategory && byMeasured
+    })
+
+    return filtered.sort((a, b) => {
+      if (a.measured !== b.measured) {
+        return Number(a.measured) - Number(b.measured)
+      }
+
+      return a.equipment_number.localeCompare(b.equipment_number, 'cs')
     })
   }, [filters, items, search])
 
@@ -154,24 +160,6 @@ export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps
       .sort((a, b) => b.count - a.count)
   }, [items])
 
-  const getTypeIcon = (equipmentType: string) => {
-    const normalized = equipmentType.toLowerCase()
-
-    if (normalized.includes('oštěp') || normalized.includes('ostep')) {
-      return PaperAirplaneIcon
-    }
-
-    if (normalized.includes('koule')) {
-      return ScaleIcon
-    }
-
-    if (normalized.includes('disk')) {
-      return LifebuoyIcon
-    }
-
-    return Squares2X2Icon
-  }
-
   const handleToggleOption = (sectionTitle: string, option: string) => {
     setFilters((previous) => {
       const selectedValues = previous[sectionTitle] ?? []
@@ -187,7 +175,7 @@ export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps
   }
 
   return (
-    <div className="w-full max-w-[1400px] grid gap-4 lg:grid-cols-[17rem_1fr]">
+    <div className="w-full max-w-[1400px] grid gap-5 lg:grid-cols-[15rem_1fr]">
       <FilterSidebar
         sections={sections}
         selectedValues={filters}
@@ -195,13 +183,14 @@ export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps
         onClearAll={() => setFilters({})}
       />
 
-      <ModuleContainer
-        title="Náčiní"
-        subtitle=""
-      >
-        <div className="mb-5 flex flex-col md:flex-row gap-3 items-start md:items-stretch">
-          <div className="flex-1 grid grid-cols-2 gap-3 md:grid-cols-5 md:gap-4 w-full">
-            <StatTile title="Celkem náčiní" value={items.length} highlighted details={totalDetails} showDetails={showStatsDetails} />
+      <section className="min-w-0">
+        <div className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Náčiní</h1>
+        </div>
+
+        <div className="mb-6 flex flex-col md:flex-row gap-3 items-start md:items-stretch">
+          <div className="flex-1 grid grid-cols-2 gap-3 md:grid-cols-5 w-full">
+            <StatTile title="Celkem" value={items.length} highlighted details={totalDetails} showDetails={showStatsDetails} />
 
             {statusStats.map((status) => (
               <StatTile key={status.name} title={status.name} value={status.count} details={status.details} showDetails={showStatsDetails} />
@@ -210,58 +199,65 @@ export default function EquipmentPage({ onNavigateToDetail }: EquipmentPageProps
           
           <button
             onClick={() => setShowStatsDetails(!showStatsDetails)}
-            className="flex h-full min-h-[4rem] items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-semibold text-gray-600 shadow-sm transition hover:bg-gray-50 hover:text-gray-900 md:w-16 md:flex-col md:px-2 md:py-2"
-            title={showStatsDetails ? 'Skrýt detaily statistik' : 'Zobrazit detaily statistik podle typu'}
+            className="flex h-full min-h-[3rem] w-full items-center justify-center gap-2 rounded-lg border border-gray-200 bg-red-600 px-3 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus:ring-2 focus:ring-gray-200 focus:outline-none md:w-12 md:flex-col"
+            title={showStatsDetails ? 'Skrýt detaily' : 'Zobrazit detaily'}
           >
             {showStatsDetails ? (
               <>
-                <ChevronUpIcon className="h-5 w-5" />
+                <ChevronUpIcon className="h-4 w-4" />
                 <span className="md:hidden">Skrýt detaily</span>
               </>
             ) : (
               <>
-                <ChevronDownIcon className="h-5 w-5" />
-                <span className="md:hidden">Rozbalit detaily</span>
+                <ChevronDownIcon className="h-4 w-4" />
+                <span className="md:hidden">Zobrazit detaily</span>
               </>
             )}
           </button>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <SearchInput
             value={search}
             onChange={setSearch}
-            placeholder="Hledat podle čísla atleta nebo čísla náčiní"
-            maxWidthClassName="md:max-w-md"
+            placeholder="Hledat podle celého čísla sportovce nebo náčiní"
+            maxWidthClassName="md:max-w-xl"
           />
+
+          <ActionButton
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-red-700 md:self-stretch"
+            onClick={() => onNavigate('/new-measurement')}
+          >
+            <ClipboardDocumentListIcon className="h-4 w-4" />
+            Nové měření
+          </ActionButton>
         </div>
 
         {loading ? <InfoState text="Načítám seznam náčiní..." /> : null}
         {error ? <InfoState text={error} variant="error" /> : null}
 
         {!loading && !error ? (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid [grid-template-columns:repeat(auto-fill,minmax(200px,1fr))] items-start gap-3 sm:[grid-template-columns:repeat(auto-fill,minmax(210px,1fr))] md:gap-4 lg:[grid-template-columns:repeat(auto-fill,minmax(220px,1fr))]">
             {filteredItems.map((item) => (
-              <EquipmentTile
+              <EquipmentCard
                 key={item.uuid}
                 uuid={item.uuid}
                 equipmentNumber={item.equipment_number}
                 athleteNumber={item.athlete_number ?? ''}
                 equipmentType={item.equipment_type}
                 category={item.category}
-                status={item.status}
                 measured={item.measured}
-                icon={getTypeIcon(item.equipment_type)}
                 onOpenDetail={onNavigateToDetail}
+                onMeasure={(uuid) => onNavigate(`/new-measurement?equipmentId=${uuid}`)}
               />
             ))}
           </div>
         ) : null}
 
         {!loading && !error && filteredItems.length === 0 ? (
-          <InfoState text="Filtrům neodpovídá žádné náčiní." />
+          <InfoState text="Nenalezeno žádné náčiní." />
         ) : null}
-      </ModuleContainer>
+      </section>
     </div>
   )
 }

@@ -3,15 +3,16 @@ import { login, logout, me } from './api/auth'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import {
+  CompletionPage,
   EquipmentDetailPage,
   EquipmentPage,
   EventsPage,
   LoginPage,
-  MeasurementDetailPage,
-  MeasurementsPage,
+  NotFoundPage,
+  NewMeasurementPage,
 } from './pages'
 
-type StaticRoutePath = '/login' | '/equipment' | '/events' | '/measurements'
+type StaticRoutePath = '/login' | '/equipment' | '/events' | '/completion' | '/new-measurement'
 
 type RouteInfo = {
   label: string
@@ -30,15 +31,20 @@ const ROUTES: Record<StaticRoutePath, RouteInfo> = {
     isProtected: true,
     showInNav: true,
   },
-  '/measurements': {
-    label: 'Měření',
-    isProtected: true,
-    showInNav: true,
-  },
   '/events': {
     label: 'Soutěže',
     isProtected: true,
     showInNav: true,
+  },
+  '/completion': {
+    label: 'Kompletace',
+    isProtected: true,
+    showInNav: true,
+  },
+  '/new-measurement': {
+    label: 'Nové měření',
+    isProtected: true,
+    showInNav: false,
   },
 }
 
@@ -46,12 +52,12 @@ function isEquipmentDetailPath(value: string): boolean {
   return /^\/equipment\/[0-9a-fA-F-]{36}\/?$/.test(value)
 }
 
-function isMeasurementDetailPath(value: string): boolean {
-  return /^\/measurements\/[0-9a-fA-F-]{36}\/?$/.test(value)
-}
-
 function getCurrentPath(): string {
   return window.location.pathname
+}
+
+function isKnownPath(path: string): boolean {
+  return path in ROUTES || isEquipmentDetailPath(path) || path === '/'
 }
 
 function App() {
@@ -60,10 +66,12 @@ function App() {
   const [loadingUser, setLoadingUser] = useState(true)
 
   const navigate = (nextPath: string) => {
-    if (window.location.pathname !== nextPath) {
+    // nextPath can contain a query string.
+    const url = new URL(nextPath, window.location.origin)
+    if (window.location.pathname !== url.pathname || window.location.search !== url.search) {
       window.history.pushState({}, '', nextPath)
     }
-    setPath(nextPath)
+    setPath(url.pathname)
   }
 
   useEffect(() => {
@@ -91,25 +99,25 @@ function App() {
     }
 
     if (path === '/') {
-      navigate(username ? '/equipment' : '/login')
+      setTimeout(() => navigate(username ? '/equipment' : '/login'), 0)
       return
     }
 
     if (path === '/login' && username) {
-      navigate('/equipment')
+      setTimeout(() => navigate('/equipment'), 0)
       return
     }
 
     const isStaticProtectedRoute = path in ROUTES && ROUTES[path as StaticRoutePath].isProtected
-    const isProtectedDetailRoute = isEquipmentDetailPath(path) || isMeasurementDetailPath(path)
+    const isProtectedDetailRoute = isEquipmentDetailPath(path)
 
     if ((isStaticProtectedRoute || isProtectedDetailRoute) && !username) {
-      navigate('/login')
+      setTimeout(() => navigate('/login'), 0)
       return
     }
 
-    if (!(path in ROUTES) && !isEquipmentDetailPath(path) && !isMeasurementDetailPath(path)) {
-      navigate(username ? '/equipment' : '/login')
+    if (!isKnownPath(path)) {
+      return
     }
   }, [loadingUser, path, username])
 
@@ -139,20 +147,16 @@ function App() {
       isProtected: routeInfo.isProtected,
     }))
 
-  const currentNavPath = isEquipmentDetailPath(path)
-    ? '/equipment'
-    : isMeasurementDetailPath(path)
-      ? '/measurements'
-      : path
+  const currentNavPath = isEquipmentDetailPath(path) ? '/equipment' : path
 
   const renderPage = () => {
     if (loadingUser) {
       return (
-        <div className="w-full flex justify-center">
-          <section className="w-full max-w-2xl rounded-xl border border-[var(--light_red)] bg-white p-6 shadow-sm">
-            <h1 className="text-2xl font-bold text-gray-900">Nacitani</h1>
-            <p>Zjistuji prihlaseni uzivatele...</p>
-          </section>
+        <div className="w-full flex min-h-[60vh] items-center justify-center">
+          <div className="flex flex-col items-center gap-4 rounded-2xl border border-gray-200 bg-white px-8 py-10 shadow-sm">
+            <span className="h-12 w-12 animate-spin rounded-full border-4 border-red-100 border-t-[var(--dark-red-btn)]" aria-hidden="true" />
+            <p className="text-sm font-semibold text-gray-700">Načítám aplikaci...</p>
+          </div>
         </div>
       )
     }
@@ -165,30 +169,33 @@ function App() {
       )
     }
 
+    if (!isKnownPath(path)) {
+      return <NotFoundPage onGoHome={() => navigate(username ? '/equipment' : '/login')} />
+    }
+
     if (!username) {
       return null
     }
 
     if (path === '/equipment') {
-      return <EquipmentPage onNavigateToDetail={(uuid) => navigate(`/equipment/${uuid}`)} />
+      return <EquipmentPage onNavigateToDetail={(uuid) => navigate(`/equipment/${uuid}`)} onNavigate={navigate} />
     }
 
     if (isEquipmentDetailPath(path)) {
       const uuid = path.split('/')[2]
-      return <EquipmentDetailPage equipmentUuid={uuid} onBack={() => navigate('/equipment')} />
+      return <EquipmentDetailPage equipmentUuid={uuid} onBack={() => navigate('/equipment')} onNavigate={navigate} />
     }
 
     if (path === '/events') {
       return <EventsPage />
     }
 
-    if (path === '/measurements') {
-      return <MeasurementsPage onNavigateToDetail={(uuid) => navigate(`/measurements/${uuid}`)} />
+    if (path === '/completion') {
+      return <CompletionPage />
     }
 
-    if (isMeasurementDetailPath(path)) {
-      const uuid = path.split('/')[2]
-      return <MeasurementDetailPage measurementUuid={uuid} onBack={() => navigate('/measurements')} />
+    if (path === '/new-measurement') {
+      return <NewMeasurementPage onBack={() => window.history.back()} />
     }
 
     return null
@@ -202,7 +209,6 @@ function App() {
         currentPath={currentNavPath}
         navItems={navItems}
         onNavigate={navigate}
-        onNavigateLogin={() => navigate('/login')}
         onLogout={handleLogout}
       />
 

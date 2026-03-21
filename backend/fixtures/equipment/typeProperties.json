@@ -1,0 +1,122 @@
+[
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666001",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555001",
+      "name": "Hmotnost"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666002",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555001",
+      "name": "Celková délka"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666003",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555001",
+      "name": "Vzdálenost těžiště"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666004",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555002",
+      "name": "Hmotnost"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666005",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555002",
+      "name": "Průměr"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666006",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555003",
+      "name": "Hmotnost"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666007",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555003",
+      "name": "Vnější průměr"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666008",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555003",
+      "name": "Tloušťka středu"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666009",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555004",
+      "name": "Hmotnost"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666010",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555004",
+      "name": "Průměr hlavy"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666011",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555004",
+      "name": "Délka lanka/rukojeti"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666012",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555005",
+      "name": "Hmotnost"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666013",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555005",
+      "name": "Celková délka"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666014",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555005",
+      "name": "Průměr v nejširší části"
+    }
+  },
+  {
+    "model": "equipment.equipmenttypeproperty",
+    "pk": "66666666-6666-6666-6666-666666666015",
+    "fields": {
+      "equipment_type": "55555555-5555-5555-5555-555555555005",
+      "name": "Průměr základny (báze)"
+    }
+  }
+]
