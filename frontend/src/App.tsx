@@ -10,9 +10,16 @@ import {
   LoginPage,
   NotFoundPage,
   NewMeasurementPage,
+  NewEquipmentPage,
 } from './pages'
 
-type StaticRoutePath = '/login' | '/equipment' | '/events' | '/completion' | '/new-measurement'
+type StaticRoutePath =
+  | '/login'
+  | '/equipment'
+  | '/events'
+  | '/completion'
+  | '/new-measurement'
+  | '/new-equipment'
 
 type RouteInfo = {
   label: string
@@ -43,6 +50,11 @@ const ROUTES: Record<StaticRoutePath, RouteInfo> = {
   },
   '/new-measurement': {
     label: 'Nové měření',
+    isProtected: true,
+    showInNav: false,
+  },
+  '/new-equipment': {
+    label: 'Nové náčiní',
     isProtected: true,
     showInNav: false,
   },
@@ -196,6 +208,15 @@ function App() {
 
     if (path === '/new-measurement') {
       return <NewMeasurementPage onBack={() => window.history.back()} />
+    }
+
+    if (path === '/new-equipment') {
+      return (
+        <NewEquipmentPage
+          onBack={() => window.history.back()}
+          onSuccess={(uuid) => navigate(`/equipment/${uuid}`)}
+        />
+      )
     }
 
     return null

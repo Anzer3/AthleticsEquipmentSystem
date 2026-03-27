@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
+  ArchiveBoxIcon,
   ClipboardDocumentListIcon,
   ChevronDownIcon,
   ChevronUpIcon,
@@ -37,6 +38,9 @@ type EquipmentPageProps = {
   onNavigate: (path: string) => void
 }
 
+const ISSUED_STATUS_NAME = 'navráceno'
+const SHOW_ISSUED_OPTION = 'Zobrazit navrácená náčiní'
+
 export default function EquipmentPage({ onNavigateToDetail, onNavigate }: EquipmentPageProps) {
   const [items, setItems] = useState<Equipment[]>([])
   const [search, setSearch] = useState('')
@@ -70,6 +74,10 @@ export default function EquipmentPage({ onNavigateToDetail, onNavigate }: Equipm
 
   const sections = [
     {
+      title: 'Vydaná náčiní',
+      options: [SHOW_ISSUED_OPTION],
+    },
+    {
       title: 'Změřeno',
       options: ['Ano', 'Ne'],
     },
@@ -94,22 +102,28 @@ export default function EquipmentPage({ onNavigateToDetail, onNavigate }: Equipm
   ]
 
   const filteredItems = useMemo(() => {
+    const issuedFilter = filters['Vydaná náčiní'] ?? []
     const typeFilter = filters['Typ náčiní'] ?? []
     const statusFilter = filters['Stav'] ?? []
     const categoryFilter = filters['Kategorie'] ?? []
     const measuredFilter = filters['Změřeno'] ?? []
 
+    const showIssuedEquipment = issuedFilter.includes(SHOW_ISSUED_OPTION)
+
     const filtered = items.filter((item) => {
       const searchLower = search.toLowerCase()
       const bySearch = item.equipment_number.toLowerCase().includes(searchLower) || 
                        (item.athlete_number?.toLowerCase() || '').includes(searchLower)
+      const normalizedStatus = item.status.trim().toLowerCase()
+      const isIssued = normalizedStatus === ISSUED_STATUS_NAME
       const measuredText = item.measured ? 'Ano' : 'Ne'
       const byType = typeFilter.length === 0 || typeFilter.includes(item.equipment_type)
       const byStatus = statusFilter.length === 0 || statusFilter.includes(item.status)
       const byCategory = categoryFilter.length === 0 || categoryFilter.includes(item.category)
       const byMeasured = measuredFilter.length === 0 || measuredFilter.includes(measuredText)
+      const byIssued = showIssuedEquipment || !isIssued
 
-      return bySearch && byType && byStatus && byCategory && byMeasured
+      return bySearch && byType && byStatus && byCategory && byMeasured && byIssued
     })
 
     return filtered.sort((a, b) => {
@@ -224,13 +238,23 @@ export default function EquipmentPage({ onNavigateToDetail, onNavigate }: Equipm
             maxWidthClassName="md:max-w-xl"
           />
 
-          <ActionButton
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-red-700 md:self-stretch"
-            onClick={() => onNavigate('/new-measurement')}
-          >
-            <ClipboardDocumentListIcon className="h-4 w-4" />
-            Nové měření
-          </ActionButton>
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+            <ActionButton
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-bold text-red-700 border border-red-200 transition-colors hover:bg-red-50 md:self-stretch"
+              onClick={() => onNavigate('/new-equipment')}
+            >
+              <ArchiveBoxIcon className="h-4 w-4" />
+              Nové náčiní
+            </ActionButton>
+
+            <ActionButton
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-red-700 md:self-stretch"
+              onClick={() => onNavigate('/new-measurement')}
+            >
+              <ClipboardDocumentListIcon className="h-4 w-4" />
+              Nové měření
+            </ActionButton>
+          </div>
         </div>
 
         {loading ? <InfoState text="Načítám seznam náčiní..." /> : null}

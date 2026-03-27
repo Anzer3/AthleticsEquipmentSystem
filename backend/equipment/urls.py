@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('statuses/', views.EquipmentStatusListView.as_view()),
+    path('types/', views.EquipmentTypeListView.as_view()),
     path('', views.EquipmentListView.as_view()),
     path('<uuid:uuid>/', views.EquipmentDetailView.as_view())
 ]
