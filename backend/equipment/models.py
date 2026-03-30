@@ -23,11 +23,17 @@ class EquipmentType(models.Model):
 class Equipment(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     equipment_number = models.CharField(max_length=15, unique=True, null=False, default=0)
-    athlete_number = models.CharField(max_length=15)
+    athlete_number = models.CharField(max_length=120)
+    athlete_numbers = models.JSONField(default=list, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    categories = models.ManyToManyField(Category, blank=True, related_name='equipments')
     equipment_type = models.ForeignKey(EquipmentType, on_delete=models.SET_NULL, null=True)
-    measured = models.BooleanField(default=False)
     status = models.ForeignKey(EquipmentStatus, on_delete=models.SET_NULL, null=True)
+    measured = models.BooleanField(default=False)
+    legal = models.BooleanField(default=False)
+    event = models.ForeignKey('event.Event', on_delete=models.SET_NULL, null=True, blank=True)
+    location = models.ForeignKey('event.Location', on_delete=models.SET_NULL, null=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):

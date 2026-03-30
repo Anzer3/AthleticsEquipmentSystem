@@ -3,32 +3,40 @@
 		"model": "equipment.equipmentstatus",
 		"pk": "66666666-6666-6666-6666-666666666001",
 		"fields": {
-			"name": "Dostupné",
-			"description": "Připravené k vydání"
+			"name": "AVAILABLE",
+			"description": "Změřené a schválené náčiní připravené k použití"
+		}
+	},
+	{
+		"model": "equipment.equipmentstatus",
+		"pk": "66666666-6666-6666-6666-666666666002",
+		"fields": {
+			"name": "REGISTERED",
+			"description": "Nově registrované náčiní před měřením"
 		}
 	},
     {
         "model": "equipment.equipmentstatus",
         "pk": "66666666-6666-6666-6666-666666666004",
         "fields": {
-            "name": "Na sektoru",
-            "description": "Aktuálně se používá"
+            "name": "IN USE",
+            "description": "Náčiní se právě používá."
         }
     },
 	{
 		"model": "equipment.equipmentstatus",
 		"pk": "66666666-6666-6666-6666-666666666003",
 		"fields": {
-			"name": "Navráceno",
-			"description": "Vráceno zpět do skladu"
+			"name": "RETURNED",
+			"description": "Náčiní bylo vydané a následně navrácené"
 		}
 	},
     {
         "model": "equipment.equipmentstatus",
         "pk": "66666666-6666-6666-6666-666666666006",
         "fields": {
-            "name": "Neschváleno",
-            "description": "Nesplňuje požadavky"
+			"name": "ILLEGAL",
+			"description": "Náčiní po měření nevyhovělo pravidlům"
         }
     }
 ]

@@ -20,6 +20,16 @@ type StatusOption = {
   name: string
 }
 
+type EventOption = {
+  uuid: string
+  name: string
+}
+
+type LocationOption = {
+  uuid: string
+  name: string
+}
+
 type NewEquipmentPageProps = {
   onBack: () => void
   onSuccess: (uuid: string) => void
@@ -31,14 +41,19 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
   const [categories, setCategories] = useState<CategoryOption[]>([])
   const [types, setTypes] = useState<EquipmentTypeOption[]>([])
   const [statuses, setStatuses] = useState<StatusOption[]>([])
+  const [events, setEvents] = useState<EventOption[]>([])
+  const [locations, setLocations] = useState<LocationOption[]>([])
   const [loadingOptions, setLoadingOptions] = useState(true)
 
   const [equipmentNumber, setEquipmentNumber] = useState('')
   const [athleteNumber, setAthleteNumber] = useState('')
-  const [categoryUuid, setCategoryUuid] = useState('')
+  const [categoryUuids, setCategoryUuids] = useState<string[]>([])
   const [typeUuid, setTypeUuid] = useState('')
   const [statusUuid, setStatusUuid] = useState('')
+  const [eventUuid, setEventUuid] = useState('')
+  const [locationUuid, setLocationUuid] = useState('')
   const [measured, setMeasured] = useState(false)
+  const [legal, setLegal] = useState(false)
 
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -49,28 +64,34 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
       setError(null)
 
       try {
-        const [categoriesResponse, typesResponse, statusesResponse] = await Promise.all([
+        const [categoriesResponse, typesResponse, statusesResponse, eventsResponse, locationsResponse] = await Promise.all([
           fetch('/api/events/categories/', { credentials: 'include' }),
           fetch('/api/equipment/types/', { credentials: 'include' }),
           fetch('/api/equipment/statuses/', { credentials: 'include' }),
+          fetch('/api/events/', { credentials: 'include' }),
+          fetch('/api/events/locations/', { credentials: 'include' }),
         ])
 
-        if (!categoriesResponse.ok || !typesResponse.ok || !statusesResponse.ok) {
+        if (!categoriesResponse.ok || !typesResponse.ok || !statusesResponse.ok || !eventsResponse.ok || !locationsResponse.ok) {
           throw new Error('API error')
         }
 
-        const [categoriesData, typesData, statusesData] = await Promise.all([
+        const [categoriesData, typesData, statusesData, eventsData, locationsData] = await Promise.all([
           categoriesResponse.json() as Promise<CategoryOption[]>,
           typesResponse.json() as Promise<EquipmentTypeOption[]>,
           statusesResponse.json() as Promise<StatusOption[]>,
+          eventsResponse.json() as Promise<EventOption[]>,
+          locationsResponse.json() as Promise<LocationOption[]>,
         ])
 
         setCategories(categoriesData)
         setTypes(typesData)
         setStatuses(statusesData)
+        setEvents(eventsData)
+        setLocations(locationsData)
 
         const availableStatus = statusesData.find(
-          (status) => status.name.trim().toLowerCase() === 'dostupné',
+          (status) => status.name.trim().toLowerCase() === 'available',
         )
 
         setStatusUuid(availableStatus?.uuid ?? statusesData[0]?.uuid ?? '')
@@ -99,6 +120,16 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
     [statuses],
   )
 
+  const sortedEvents = useMemo(
+    () => [...events].sort((a, b) => a.name.localeCompare(b.name, 'cs')),
+    [events],
+  )
+
+  const sortedLocations = useMemo(
+    () => [...locations].sort((a, b) => a.name.localeCompare(b.name, 'cs')),
+    [locations],
+  )
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -120,6 +151,11 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
       return
     }
 
+    if (categoryUuids.length > 10) {
+      setError('Náčiní může mít maximálně 10 kategorií.')
+      return
+    }
+
     setSaving(true)
     setError(null)
 
@@ -135,10 +171,14 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
         body: JSON.stringify({
           equipment_number: trimmedEquipmentNumber,
           athlete_number: trimmedAthleteNumber,
-          category: categoryUuid || null,
+          category: categoryUuids[0] || null,
+          categories: categoryUuids,
           equipment_type: typeUuid,
           status: statusUuid || null,
+          event: eventUuid || null,
+          location: locationUuid || null,
           measured,
+          legal,
         }),
       })
 
@@ -245,21 +285,25 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
 
             <div>
               <label htmlFor="category" className="mb-2 block text-sm font-semibold text-gray-900">
-                Kategorie
+                Kategorie (max 10)
               </label>
               <select
                 id="category"
-                value={categoryUuid}
-                onChange={(event) => setCategoryUuid(event.target.value)}
+                value={categoryUuids}
+                onChange={(event) => {
+                  const selected = Array.from(event.target.selectedOptions).map((option) => option.value)
+                  setCategoryUuids(selected.slice(0, 10))
+                }}
+                multiple
                 className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               >
-                <option value="">-- Bez kategorie --</option>
                 {sortedCategories.map((category) => (
                   <option key={category.uuid} value={category.uuid}>
                     {category.name}
                   </option>
                 ))}
               </select>
+              <p className="mt-1 text-xs text-gray-500">Pro výběr více kategorií použij Ctrl/Cmd + klik.</p>
             </div>
 
             <div>
@@ -278,6 +322,45 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
                   </option>
                 ))}
               </select>
+              <p className="mt-1 text-xs text-gray-500">Stav je automaticky dopočten podle měření, schválení a vozíku.</p>
+            </div>
+
+            <div>
+              <label htmlFor="location" className="mb-2 block text-sm font-semibold text-gray-900">
+                Lokace
+              </label>
+              <select
+                id="location"
+                value={locationUuid}
+                onChange={(event) => setLocationUuid(event.target.value)}
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              >
+                <option value="">-- Bez lokace --</option>
+                {sortedLocations.map((locationOption) => (
+                  <option key={locationOption.uuid} value={locationOption.uuid}>
+                    {locationOption.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="active-event" className="mb-2 block text-sm font-semibold text-gray-900">
+                Aktivní soutěž
+              </label>
+              <select
+                id="active-event"
+                value={eventUuid}
+                onChange={(event) => setEventUuid(event.target.value)}
+                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              >
+                <option value="">-- Bez soutěže --</option>
+                {sortedEvents.map((eventOption) => (
+                  <option key={eventOption.uuid} value={eventOption.uuid}>
+                    {eventOption.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="flex items-center">
@@ -289,6 +372,18 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
                   className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
                 />
                 Náčiní je již změřeno
+              </label>
+            </div>
+
+            <div className="flex items-center">
+              <label className="inline-flex cursor-pointer items-center gap-2.5 text-sm font-medium text-gray-800 hover:text-gray-900">
+                <input
+                  type="checkbox"
+                  checked={legal}
+                  onChange={(event) => setLegal(event.target.checked)}
+                  className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
+                />
+                Náčiní je schváleno
               </label>
             </div>
           </div>

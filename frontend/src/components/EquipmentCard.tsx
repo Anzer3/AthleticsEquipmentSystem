@@ -6,7 +6,10 @@ type EquipmentCardProps = {
   athleteNumber: string
   equipmentType: string
   category: string
+  event: string
+  location: string
   measured: boolean
+  legal: boolean
   onOpenDetail: (uuid: string) => void
   onMeasure: (uuid: string) => void
 }
@@ -17,7 +20,10 @@ export default function EquipmentCard({
   athleteNumber,
   equipmentType,
   category,
+  event,
+  location,
   measured,
+  legal,
   onOpenDetail,
   onMeasure,
 }: EquipmentCardProps) {
@@ -54,6 +60,25 @@ export default function EquipmentCard({
           <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Kategorie</span>
           <span className="font-medium text-gray-700 truncate" title={category}>{category}</span>
         </div>
+      </div>
+
+      <div className="mt-2 text-xs text-gray-600 truncate" title={event}>
+        Soutěž: {event || 'Bez soutěže'}
+      </div>
+
+      <div className="mt-1 text-xs text-gray-600 truncate" title={location}>
+        Lokace: {location || 'Bez lokace'}
+      </div>
+
+      <div className="mt-2">
+        <span
+          className={[
+            'inline-flex items-center rounded-md px-2.5 py-1 text-xs font-bold',
+            legal ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700',
+          ].join(' ')}
+        >
+          {legal ? 'Schváleno' : 'Neschváleno'}
+        </span>
       </div>
 
       <div className="mt-3.5 pt-3 border-t border-gray-100">

@@ -19,8 +19,10 @@ type Equipment = {
   category: string
   equipment_type: string
   status: string
+  event: string
+  location: string
   measured: boolean
-  location?: string
+  legal: boolean
 }
 
 const pluralizeType = (type: string): string => {
@@ -38,7 +40,7 @@ type EquipmentPageProps = {
   onNavigate: (path: string) => void
 }
 
-const ISSUED_STATUS_NAME = 'navráceno'
+const ISSUED_STATUS_NAME = 'returned'
 const SHOW_ISSUED_OPTION = 'Zobrazit navrácená náčiní'
 
 export default function EquipmentPage({ onNavigateToDetail, onNavigate }: EquipmentPageProps) {
@@ -82,6 +84,22 @@ export default function EquipmentPage({ onNavigateToDetail, onNavigate }: Equipm
       options: ['Ano', 'Ne'],
     },
     {
+      title: 'Schváleno',
+      options: ['Ano', 'Ne'],
+    },
+    {
+      title: 'Soutěž',
+      options: Array.from(new Set(items.map((item) => item.event))).sort((a, b) =>
+        a.localeCompare(b, 'cs'),
+      ),
+    },
+    {
+      title: 'Lokace',
+      options: Array.from(new Set(items.map((item) => item.location))).sort((a, b) =>
+        a.localeCompare(b, 'cs'),
+      ),
+    },
+    {
       title: 'Typ náčiní',
       options: Array.from(new Set(items.map((item) => item.equipment_type))).sort((a, b) =>
         a.localeCompare(b, 'cs'),
@@ -107,6 +125,9 @@ export default function EquipmentPage({ onNavigateToDetail, onNavigate }: Equipm
     const statusFilter = filters['Stav'] ?? []
     const categoryFilter = filters['Kategorie'] ?? []
     const measuredFilter = filters['Změřeno'] ?? []
+    const legalFilter = filters['Schváleno'] ?? []
+    const eventFilter = filters['Soutěž'] ?? []
+    const locationFilter = filters['Lokace'] ?? []
 
     const showIssuedEquipment = issuedFilter.includes(SHOW_ISSUED_OPTION)
 
@@ -117,13 +138,17 @@ export default function EquipmentPage({ onNavigateToDetail, onNavigate }: Equipm
       const normalizedStatus = item.status.trim().toLowerCase()
       const isIssued = normalizedStatus === ISSUED_STATUS_NAME
       const measuredText = item.measured ? 'Ano' : 'Ne'
+      const legalText = item.legal ? 'Ano' : 'Ne'
       const byType = typeFilter.length === 0 || typeFilter.includes(item.equipment_type)
       const byStatus = statusFilter.length === 0 || statusFilter.includes(item.status)
       const byCategory = categoryFilter.length === 0 || categoryFilter.includes(item.category)
       const byMeasured = measuredFilter.length === 0 || measuredFilter.includes(measuredText)
+      const byLegal = legalFilter.length === 0 || legalFilter.includes(legalText)
+      const byEvent = eventFilter.length === 0 || eventFilter.includes(item.event)
+      const byLocation = locationFilter.length === 0 || locationFilter.includes(item.location)
       const byIssued = showIssuedEquipment || !isIssued
 
-      return bySearch && byType && byStatus && byCategory && byMeasured && byIssued
+      return bySearch && byType && byStatus && byCategory && byMeasured && byLegal && byEvent && byLocation && byIssued
     })
 
     return filtered.sort((a, b) => {
@@ -148,7 +173,7 @@ export default function EquipmentPage({ onNavigateToDetail, onNavigate }: Equipm
       typeByStatus.set(item.status, statusTypeCounts)
     }
 
-    const trackedStatuses = ['Dostupné', 'Na sektoru', 'Neschváleno', 'Navráceno']
+    const trackedStatuses = ['REGISTERED', 'AVAILABLE', 'ILLEGAL', 'IN USE', 'RETURNED']
     return trackedStatuses.map((statusName) => {
       const typeCounts = typeByStatus.get(statusName) || {}
       
@@ -270,7 +295,10 @@ export default function EquipmentPage({ onNavigateToDetail, onNavigate }: Equipm
                 athleteNumber={item.athlete_number ?? ''}
                 equipmentType={item.equipment_type}
                 category={item.category}
+                event={item.event}
+                location={item.location}
                 measured={item.measured}
+                legal={item.legal}
                 onOpenDetail={onNavigateToDetail}
                 onMeasure={(uuid) => onNavigate(`/new-measurement?equipmentId=${uuid}`)}
               />

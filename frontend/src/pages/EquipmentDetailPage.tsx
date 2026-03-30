@@ -14,6 +14,11 @@ type EquipmentMeasurement = {
   measured_at: string
 }
 
+type EventOption = {
+  uuid: string
+  name: string
+}
+
 type EquipmentDetailPageProps = {
   equipmentUuid: string
   onBack: () => void
@@ -25,13 +30,26 @@ function toLabel(key: string): string {
     equipment_number: 'Číslo náčiní',
     athlete_number: 'Číslo atleta',
     category_name: 'Kategorie',
+    category_names: 'Kategorie',
     equipment_type_name: 'Typ náčiní',
     status_name: 'Stav',
+    event_name: 'Aktivní soutěž',
+    location_name: 'Lokace',
     measured: 'Změřeno',
+    legal: 'Schváleno',
     created_at: 'Vytvořeno',
     updated_at: 'Naposledy upraveno',
   }
   return translations[key] || key.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
+}
+
+type EditForm = {
+  equipment_number: string
+  athlete_number: string
+  legal: boolean
+  categories: string[]
+  event: string
+  location: string
 }
 
 export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate }: EquipmentDetailPageProps) {
@@ -39,10 +57,20 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isEditing, setIsEditing] = useState(false)
-  const [editForm, setEditForm] = useState<Record<string, string>>({})
+  const [editForm, setEditForm] = useState<EditForm>({
+    equipment_number: '',
+    athlete_number: '',
+    legal: false,
+    categories: [],
+    event: '',
+    location: '',
+  })
   const [saving, setSaving] = useState(false)
   const [measurements, setMeasurements] = useState<EquipmentMeasurement[]>([])
   const [measurementsLoading, setMeasurementsLoading] = useState(true)
+  const [events, setEvents] = useState<EventOption[]>([])
+  const [locations, setLocations] = useState<EventOption[]>([])
+  const [categories, setCategories] = useState<EventOption[]>([])
 
   useEffect(() => {
     const loadDetail = async () => {
@@ -56,10 +84,20 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
         }
 
         const data = await response.json()
+        const categoryIds = Array.isArray(data.categories)
+          ? (data.categories as string[])
+          : data.category
+            ? [String(data.category)]
+            : []
+
         setDetail(data)
         setEditForm({
           equipment_number: String(data.equipment_number || ''),
           athlete_number: String(data.athlete_number || ''),
+          legal: Boolean(data.legal),
+          categories: categoryIds,
+          event: String(data.event || ''),
+          location: String(data.location || ''),
         })
       } catch {
         setError('Detail náčiní se nepodařilo načíst.')
@@ -70,6 +108,54 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
 
     void loadDetail()
   }, [equipmentUuid])
+
+  useEffect(() => {
+    const loadEvents = async () => {
+      try {
+        const response = await fetch('/api/events/', { credentials: 'include' })
+        if (!response.ok) {
+          throw new Error('API error')
+        }
+        setEvents((await response.json()) as EventOption[])
+      } catch {
+        setEvents([])
+      }
+    }
+
+    void loadEvents()
+  }, [])
+
+  useEffect(() => {
+    const loadLocations = async () => {
+      try {
+        const response = await fetch('/api/events/locations/', { credentials: 'include' })
+        if (!response.ok) {
+          throw new Error('API error')
+        }
+        setLocations((await response.json()) as EventOption[])
+      } catch {
+        setLocations([])
+      }
+    }
+
+    void loadLocations()
+  }, [])
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const response = await fetch('/api/events/categories/', { credentials: 'include' })
+        if (!response.ok) {
+          throw new Error('API error')
+        }
+        setCategories((await response.json()) as EventOption[])
+      } catch {
+        setCategories([])
+      }
+    }
+
+    void loadCategories()
+  }, [])
 
   useEffect(() => {
     const loadMeasurements = async () => {
@@ -93,14 +179,27 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
   }, [equipmentUuid])
 
   const handleSave = async () => {
+    if (editForm.categories.length > 10) {
+      alert('Lze vybrat maximálně 10 kategorií.')
+      return
+    }
+
     setSaving(true)
     try {
+      const payload = {
+        ...editForm,
+        category: editForm.categories[0] || null,
+        categories: editForm.categories,
+        event: editForm.event || null,
+        location: editForm.location || null,
+      }
+
       const response = await fetch(`/api/equipment/${equipmentUuid}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(editForm),
+        body: JSON.stringify(payload),
         credentials: 'include',
       })
 
@@ -121,9 +220,19 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
   const handleCancelEdit = () => {
     setIsEditing(false)
     if (detail) {
+      const categoryIds = Array.isArray(detail.categories)
+        ? (detail.categories as string[])
+        : detail.category
+          ? [String(detail.category)]
+          : []
+
       setEditForm({
         equipment_number: String(detail.equipment_number || ''),
         athlete_number: String(detail.athlete_number || ''),
+        legal: Boolean(detail.legal),
+        categories: categoryIds,
+        event: String(detail.event || ''),
+        location: String(detail.location || ''),
       })
     }
   }
@@ -132,9 +241,9 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
     if (!detail) {
       return []
     }
-    
-    const displayKeys = ['equipment_number', 'athlete_number', 'category_name', 'equipment_type_name', 'status_name', 'measured', 'created_at', 'updated_at']
-    return displayKeys.map(key => [key, detail[key]]).filter((kv) => kv[1] !== undefined)
+
+    const displayKeys = ['equipment_number', 'athlete_number', 'category_names', 'equipment_type_name', 'status_name', 'location_name', 'event_name', 'measured', 'legal', 'created_at', 'updated_at']
+    return displayKeys.map((key) => [key, detail[key]]).filter((kv) => kv[1] !== undefined)
   }, [detail])
 
   return (
@@ -208,22 +317,109 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {detailEntries.map(([key, value]) => {
               const k = key as string
-              const isEditable = isEditing && (k === 'equipment_number' || k === 'athlete_number')
+              const isEditableText = isEditing && (k === 'equipment_number' || k === 'athlete_number')
+              const isEditableLegal = isEditing && k === 'legal'
+              const isEditableCategories = isEditing && k === 'category_names'
+              const isEditableActiveEvent = isEditing && k === 'event_name'
+              const isEditableLocation = isEditing && k === 'location_name'
 
               return (
                 <div key={k} className="flex flex-col justify-center rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
                   <dt className="mb-1 text-xs font-bold uppercase tracking-wider text-gray-500">{toLabel(k)}</dt>
                   <dd className="font-semibold text-gray-900">
-                    {isEditable ? (
+                    {isEditableText ? (
                       <input
                         type="text"
-                        value={editForm[k]}
-                        onChange={(e) => setEditForm({ ...editForm, [k]: e.target.value })}
+                        value={k === 'equipment_number' ? editForm.equipment_number : editForm.athlete_number}
+                        onChange={(e) => {
+                          const nextValue = e.target.value
+                          setEditForm((previous) => ({
+                            ...previous,
+                            [k]: nextValue,
+                          }))
+                        }}
                         className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition-all focus:border-[var(--dark-red-btn)] focus:ring-2 focus:ring-red-100"
                       />
+                    ) : isEditableLegal ? (
+                      <label className="inline-flex cursor-pointer items-center gap-2.5 text-sm font-medium text-gray-800 hover:text-gray-900">
+                        <input
+                          type="checkbox"
+                          checked={editForm.legal}
+                          onChange={(e) => {
+                            const nextValue = e.target.checked
+                            setEditForm((previous) => ({
+                              ...previous,
+                              legal: nextValue,
+                            }))
+                          }}
+                          className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
+                        />
+                        Schváleno
+                      </label>
+                    ) : isEditableCategories ? (
+                      <select
+                        multiple
+                        value={editForm.categories}
+                        onChange={(e) => {
+                          const nextValues = Array.from(e.target.selectedOptions, (option) => option.value)
+                          setEditForm((previous) => ({
+                            ...previous,
+                            categories: nextValues.slice(0, 10),
+                          }))
+                        }}
+                        className="mt-1 min-h-[7rem] w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none transition-all focus:border-[var(--dark-red-btn)] focus:ring-2 focus:ring-red-100"
+                      >
+                        {categories.map((categoryOption) => (
+                          <option key={categoryOption.uuid} value={categoryOption.uuid}>
+                            {categoryOption.name}
+                          </option>
+                        ))}
+                      </select>
+                    ) : isEditableActiveEvent ? (
+                      <select
+                        value={editForm.event}
+                        onChange={(e) => {
+                          const nextValue = e.target.value
+                          setEditForm((previous) => ({
+                            ...previous,
+                            event: nextValue,
+                          }))
+                        }}
+                        className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none transition-all focus:border-[var(--dark-red-btn)] focus:ring-2 focus:ring-red-100"
+                      >
+                        <option value="">-- Bez soutěže --</option>
+                        {events.map((eventOption) => (
+                          <option key={eventOption.uuid} value={eventOption.uuid}>
+                            {eventOption.name}
+                          </option>
+                        ))}
+                      </select>
+                    ) : isEditableLocation ? (
+                      <select
+                        value={editForm.location}
+                        onChange={(e) => {
+                          const nextValue = e.target.value
+                          setEditForm((previous) => ({
+                            ...previous,
+                            location: nextValue,
+                          }))
+                        }}
+                        className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none transition-all focus:border-[var(--dark-red-btn)] focus:ring-2 focus:ring-red-100"
+                      >
+                        <option value="">-- Bez lokace --</option>
+                        {locations.map((locationOption) => (
+                          <option key={locationOption.uuid} value={locationOption.uuid}>
+                            {locationOption.name}
+                          </option>
+                        ))}
+                      </select>
                     ) : (
-                      <span className={k === 'measured' ? `inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-bold ${value ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}` : 'text-base'}>
-                        {typeof value === 'boolean' && k === 'measured' ? (value ? 'Ano, Změřeno' : 'Nezměřeno') : (formatValue(value) || String(value))}
+                      <span className={(k === 'measured' || k === 'legal') ? `inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-bold ${value ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}` : 'text-base'}>
+                        {typeof value === 'boolean' && k === 'measured' ? (value ? 'Ano, Změřeno' : 'Nezměřeno') : null}
+                        {typeof value === 'boolean' && k === 'legal' ? (value ? 'Ano, Schváleno' : 'Neschváleno') : null}
+                        {(typeof value !== 'boolean' || (k !== 'measured' && k !== 'legal'))
+                          ? (Array.isArray(value) ? value.join(', ') : (formatValue(value) || String(value)))
+                          : null}
                       </span>
                     )}
                   </dd>

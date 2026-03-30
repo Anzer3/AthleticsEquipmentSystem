@@ -3,7 +3,7 @@
 		"model": "measurement.measurement",
 		"pk": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbb0001",
 		"fields": {
-			"equipment": "77777777-7777-7777-7777-777777777001",
+			"equipment": "77777777-7777-7777-7777-777777777101",
 			"status": "88888888-8888-8888-8888-888888888001",
 			"measured_at": "2026-07-01T08:30:00Z",
 			"property": "99999999-9999-9999-9999-999999999001",
@@ -15,7 +15,7 @@
 		"model": "measurement.measurement",
 		"pk": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbb0002",
 		"fields": {
-			"equipment": "77777777-7777-7777-7777-777777777001",
+			"equipment": "77777777-7777-7777-7777-777777777101",
 			"status": "88888888-8888-8888-8888-888888888001",
 			"measured_at": "2026-07-01T08:31:00Z",
 			"property": "99999999-9999-9999-9999-999999999002",
@@ -27,7 +27,7 @@
 		"model": "measurement.measurement",
 		"pk": "bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbb0003",
 		"fields": {
-			"equipment": "77777777-7777-7777-7777-777777777002",
+			"equipment": "77777777-7777-7777-7777-777777777102",
 			"status": "88888888-8888-8888-8888-888888888002",
 			"measured_at": "2026-07-01T08:40:00Z",
 			"property": "99999999-9999-9999-9999-999999999003",

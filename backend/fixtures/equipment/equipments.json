@@ -1,198 +1,1877 @@
 [
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777001",
-		"fields": {
-			"equipment_number": "1",
-			"athlete_number": "045",
-			"category": "11111111-1111-1111-1111-111111111001",
-			"equipment_type": "55555555-5555-5555-5555-555555555001",
-			"measured": true,
-			"status": "66666666-6666-6666-6666-666666666001",
-			"created_at": "2026-07-01T08:10:00Z",
-			"updated_at": "2026-07-01T08:45:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777002",
-		"fields": {
-			"equipment_number": "2",
-			"athlete_number": "696",
-			"category": "11111111-1111-1111-1111-111111111001",
-			"equipment_type": "55555555-5555-5555-5555-555555555002",
-			"measured": false,
-			"status": "66666666-6666-6666-6666-666666666004",
-			"created_at": "2026-07-01T08:15:00Z",
-			"updated_at": "2026-07-01T08:15:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777003",
-		"fields": {
-			"equipment_number": "3",
-			"athlete_number": "584",
-			"category": "11111111-1111-1111-1111-111111111002",
-			"equipment_type": "55555555-5555-5555-5555-555555555003",
-			"measured": true,
-			"status": "66666666-6666-6666-6666-666666666003",
-			"created_at": "2026-07-01T08:25:00Z",
-			"updated_at": "2026-07-01T09:05:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777004",
-		"fields": {
-			"equipment_number": "4",
-			"athlete_number": "587",
-			"category": "11111111-1111-1111-1111-111111111002",
-			"equipment_type": "55555555-5555-5555-5555-555555555001",
-			"measured": false,
-			"status": "66666666-6666-6666-6666-666666666006",
-			"created_at": "2026-07-01T08:35:00Z",
-			"updated_at": "2026-07-01T08:35:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777005",
-		"fields": {
-			"equipment_number": "5",
-			"athlete_number": "123",
-			"category": "11111111-1111-1111-1111-111111111001",
-			"equipment_type": "55555555-5555-5555-5555-555555555002",
-			"measured": false,
-			"status": "66666666-6666-6666-6666-666666666001",
-			"created_at": "2026-07-01T08:45:00Z",
-			"updated_at": "2026-07-01T08:45:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777006",
-		"fields": {
-			"equipment_number": "6",
-			"athlete_number": "908",
-			"category": "11111111-1111-1111-1111-111111111001",
-			"equipment_type": "55555555-5555-5555-5555-555555555003",
-			"measured": true,
-			"status": "66666666-6666-6666-6666-666666666003",
-			"created_at": "2026-07-01T08:55:00Z",
-			"updated_at": "2026-07-01T09:15:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777007",
-		"fields": {
-			"equipment_number": "7",
-			"athlete_number": "412",
-			"category": "11111111-1111-1111-1111-111111111005",
-			"equipment_type": "55555555-5555-5555-5555-555555555001",
-			"measured": true,
-			"status": "66666666-6666-6666-6666-666666666001",
-			"created_at": "2026-07-01T09:00:00Z",
-			"updated_at": "2026-07-01T09:18:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777008",
-		"fields": {
-			"equipment_number": "8",
-			"athlete_number": "277",
-			"category": "11111111-1111-1111-1111-111111111006",
-			"equipment_type": "55555555-5555-5555-5555-555555555002",
-			"measured": false,
-			"status": "66666666-6666-6666-6666-666666666004",
-			"created_at": "2026-07-01T09:05:00Z",
-			"updated_at": "2026-07-01T09:05:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777009",
-		"fields": {
-			"equipment_number": "9",
-			"athlete_number": "533",
-			"category": "11111111-1111-1111-1111-111111111007",
-			"equipment_type": "55555555-5555-5555-5555-555555555003",
-			"measured": true,
-			"status": "66666666-6666-6666-6666-666666666003",
-			"created_at": "2026-07-01T09:10:00Z",
-			"updated_at": "2026-07-01T09:24:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777010",
-		"fields": {
-			"equipment_number": "10",
-			"athlete_number": "801",
-			"category": "11111111-1111-1111-1111-111111111005",
-			"equipment_type": "55555555-5555-5555-5555-555555555004",
-			"measured": false,
-			"status": "66666666-6666-6666-6666-666666666006",
-			"created_at": "2026-07-01T09:20:00Z",
-			"updated_at": "2026-07-01T09:20:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777011",
-		"fields": {
-			"equipment_number": "11",
-			"athlete_number": "636",
-			"category": "11111111-1111-1111-1111-111111111006",
-			"equipment_type": "55555555-5555-5555-5555-555555555005",
-			"measured": true,
-			"status": "66666666-6666-6666-6666-666666666001",
-			"created_at": "2026-07-01T09:25:00Z",
-			"updated_at": "2026-07-01T09:40:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777012",
-		"fields": {
-			"equipment_number": "12",
-			"athlete_number": "914",
-			"category": "11111111-1111-1111-1111-111111111007",
-			"equipment_type": "55555555-5555-5555-5555-555555555001",
-			"measured": false,
-			"status": "66666666-6666-6666-6666-666666666004",
-			"created_at": "2026-07-01T09:30:00Z",
-			"updated_at": "2026-07-01T09:30:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777013",
-		"fields": {
-			"equipment_number": "13",
-			"athlete_number": "705",
-			"category": "11111111-1111-1111-1111-111111111011",
-			"equipment_type": "55555555-5555-5555-5555-555555555002",
-			"measured": true,
-			"status": "66666666-6666-6666-6666-666666666003",
-			"created_at": "2026-07-01T09:35:00Z",
-			"updated_at": "2026-07-01T09:55:00Z"
-		}
-	},
-	{
-		"model": "equipment.equipment",
-		"pk": "77777777-7777-7777-7777-777777777014",
-		"fields": {
-			"equipment_number": "14",
-			"athlete_number": "990",
-			"category": "11111111-1111-1111-1111-111111111011",
-			"equipment_type": "55555555-5555-5555-5555-555555555003",
-			"measured": false,
-			"status": "66666666-6666-6666-6666-666666666001",
-			"created_at": "2026-07-01T09:40:00Z",
-			"updated_at": "2026-07-01T09:40:00Z"
-		}
-	}
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777101",
+        "fields":  {
+                       "equipment_number":  "1",
+                       "athlete_number":  "26294",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "26294"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777102",
+        "fields":  {
+                       "equipment_number":  "2",
+                       "athlete_number":  "35790, AK",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "35790",
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777103",
+        "fields":  {
+                       "equipment_number":  "3",
+                       "athlete_number":  "44011",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "44011"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777104",
+        "fields":  {
+                       "equipment_number":  "4",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777105",
+        "fields":  {
+                       "equipment_number":  "5",
+                       "athlete_number":  "27139",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "27139"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777106",
+        "fields":  {
+                       "equipment_number":  "6",
+                       "athlete_number":  "4703",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "4703"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777107",
+        "fields":  {
+                       "equipment_number":  "7",
+                       "athlete_number":  "16130, 1804",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "16130",
+                                               "1804"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777108",
+        "fields":  {
+                       "equipment_number":  "8",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777109",
+        "fields":  {
+                       "equipment_number":  "9",
+                       "athlete_number":  "56254",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "56254"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777110",
+        "fields":  {
+                       "equipment_number":  "10",
+                       "athlete_number":  "AK, 9988",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK",
+                                               "9988"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777111",
+        "fields":  {
+                       "equipment_number":  "11",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777112",
+        "fields":  {
+                       "equipment_number":  "12",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777113",
+        "fields":  {
+                       "equipment_number":  "13",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777114",
+        "fields":  {
+                       "equipment_number":  "14",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777115",
+        "fields":  {
+                       "equipment_number":  "15",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777116",
+        "fields":  {
+                       "equipment_number":  "16",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555002",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777117",
+        "fields":  {
+                       "equipment_number":  "O01",
+                       "athlete_number":  "26294",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "26294"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777118",
+        "fields":  {
+                       "equipment_number":  "O02",
+                       "athlete_number":  "35790, AK",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "35790",
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777119",
+        "fields":  {
+                       "equipment_number":  "O03",
+                       "athlete_number":  "44011",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "44011"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777120",
+        "fields":  {
+                       "equipment_number":  "O04",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777121",
+        "fields":  {
+                       "equipment_number":  "O05",
+                       "athlete_number":  "27139",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "27139"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777122",
+        "fields":  {
+                       "equipment_number":  "O06",
+                       "athlete_number":  "4703",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "4703"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777123",
+        "fields":  {
+                       "equipment_number":  "O07",
+                       "athlete_number":  "16130, 1804",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "16130",
+                                               "1804"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777124",
+        "fields":  {
+                       "equipment_number":  "O08",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777125",
+        "fields":  {
+                       "equipment_number":  "O09",
+                       "athlete_number":  "56254",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "56254"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777126",
+        "fields":  {
+                       "equipment_number":  "O10",
+                       "athlete_number":  "AK, 9988",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK",
+                                               "9988"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777127",
+        "fields":  {
+                       "equipment_number":  "O11",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777128",
+        "fields":  {
+                       "equipment_number":  "O12",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777129",
+        "fields":  {
+                       "equipment_number":  "O13",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777130",
+        "fields":  {
+                       "equipment_number":  "O14",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777131",
+        "fields":  {
+                       "equipment_number":  "O15",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777132",
+        "fields":  {
+                       "equipment_number":  "O16",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555001",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777133",
+        "fields":  {
+                       "equipment_number":  "D01",
+                       "athlete_number":  "26294",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "26294"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777134",
+        "fields":  {
+                       "equipment_number":  "D02",
+                       "athlete_number":  "35790, AK",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "35790",
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777135",
+        "fields":  {
+                       "equipment_number":  "D03",
+                       "athlete_number":  "44011",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "44011"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777136",
+        "fields":  {
+                       "equipment_number":  "D04",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777137",
+        "fields":  {
+                       "equipment_number":  "D05",
+                       "athlete_number":  "27139",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "27139"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777138",
+        "fields":  {
+                       "equipment_number":  "D06",
+                       "athlete_number":  "4703",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "4703"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777139",
+        "fields":  {
+                       "equipment_number":  "D07",
+                       "athlete_number":  "16130, 1804",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "16130",
+                                               "1804"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777140",
+        "fields":  {
+                       "equipment_number":  "D08",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777141",
+        "fields":  {
+                       "equipment_number":  "D09",
+                       "athlete_number":  "56254",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "56254"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777142",
+        "fields":  {
+                       "equipment_number":  "D10",
+                       "athlete_number":  "AK, 9988",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK",
+                                               "9988"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777143",
+        "fields":  {
+                       "equipment_number":  "D11",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777144",
+        "fields":  {
+                       "equipment_number":  "D12",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777145",
+        "fields":  {
+                       "equipment_number":  "D13",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777146",
+        "fields":  {
+                       "equipment_number":  "D14",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777147",
+        "fields":  {
+                       "equipment_number":  "D15",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777148",
+        "fields":  {
+                       "equipment_number":  "D16",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555003",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777149",
+        "fields":  {
+                       "equipment_number":  "H01",
+                       "athlete_number":  "26294",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "26294"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777150",
+        "fields":  {
+                       "equipment_number":  "H02",
+                       "athlete_number":  "35790, AK",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "35790",
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777151",
+        "fields":  {
+                       "equipment_number":  "H03",
+                       "athlete_number":  "44011",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "44011"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777152",
+        "fields":  {
+                       "equipment_number":  "H04",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777153",
+        "fields":  {
+                       "equipment_number":  "H05",
+                       "athlete_number":  "27139",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "27139"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777154",
+        "fields":  {
+                       "equipment_number":  "H06",
+                       "athlete_number":  "4703",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "4703"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777155",
+        "fields":  {
+                       "equipment_number":  "H07",
+                       "athlete_number":  "16130, 1804",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "16130",
+                                               "1804"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777156",
+        "fields":  {
+                       "equipment_number":  "H08",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777157",
+        "fields":  {
+                       "equipment_number":  "H09",
+                       "athlete_number":  "56254",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "56254"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777158",
+        "fields":  {
+                       "equipment_number":  "H10",
+                       "athlete_number":  "AK, 9988",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK",
+                                               "9988"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777159",
+        "fields":  {
+                       "equipment_number":  "H11",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777160",
+        "fields":  {
+                       "equipment_number":  "H12",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777161",
+        "fields":  {
+                       "equipment_number":  "H13",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777162",
+        "fields":  {
+                       "equipment_number":  "H14",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777163",
+        "fields":  {
+                       "equipment_number":  "H15",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777164",
+        "fields":  {
+                       "equipment_number":  "H16",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555004",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777165",
+        "fields":  {
+                       "equipment_number":  "U01",
+                       "athlete_number":  "26294",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "26294"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777166",
+        "fields":  {
+                       "equipment_number":  "U02",
+                       "athlete_number":  "35790, AK",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "35790",
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777167",
+        "fields":  {
+                       "equipment_number":  "U03",
+                       "athlete_number":  "44011",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "44011"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777168",
+        "fields":  {
+                       "equipment_number":  "U04",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777169",
+        "fields":  {
+                       "equipment_number":  "U05",
+                       "athlete_number":  "27139",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "27139"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777170",
+        "fields":  {
+                       "equipment_number":  "U06",
+                       "athlete_number":  "4703",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "4703"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777171",
+        "fields":  {
+                       "equipment_number":  "U07",
+                       "athlete_number":  "16130, 1804",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "16130",
+                                               "1804"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777172",
+        "fields":  {
+                       "equipment_number":  "U08",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777173",
+        "fields":  {
+                       "equipment_number":  "U09",
+                       "athlete_number":  "56254",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "56254"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777174",
+        "fields":  {
+                       "equipment_number":  "U10",
+                       "athlete_number":  "AK, 9988",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK",
+                                               "9988"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777175",
+        "fields":  {
+                       "equipment_number":  "U11",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777176",
+        "fields":  {
+                       "equipment_number":  "U12",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777177",
+        "fields":  {
+                       "equipment_number":  "U13",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111016",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111016",
+                                          "11111111-1111-1111-1111-111111111015"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777178",
+        "fields":  {
+                       "equipment_number":  "U14",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111013",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111013"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777179",
+        "fields":  {
+                       "equipment_number":  "U15",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111017",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111017"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    },
+    {
+        "model":  "equipment.equipment",
+        "pk":  "77777777-7777-7777-7777-777777777180",
+        "fields":  {
+                       "equipment_number":  "U16",
+                       "athlete_number":  "AK",
+                       "category":  "11111111-1111-1111-1111-111111111014",
+                       "categories":  [
+                                          "11111111-1111-1111-1111-111111111014"
+                                      ],
+                       "equipment_type":  "55555555-5555-5555-5555-555555555005",
+                       "measured":  true,
+                       "legal":  true,
+                       "status":  "66666666-6666-6666-6666-666666666002",
+                       "event":  null,
+                       "location":  "22222222-2222-2222-2222-222222222001",
+                       "created_at":  "2026-03-30T08:00:00Z",
+                       "updated_at":  "2026-03-30T08:00:00Z",
+                       "athlete_numbers":  [
+                                               "AK"
+                                           ]
+                   }
+    }
 ]

@@ -7,6 +7,7 @@ import {
   EquipmentDetailPage,
   EquipmentPage,
   EventsPage,
+  LocationsPage,
   LoginPage,
   NotFoundPage,
   NewMeasurementPage,
@@ -17,6 +18,7 @@ type StaticRoutePath =
   | '/login'
   | '/equipment'
   | '/events'
+  | '/locations'
   | '/completion'
   | '/new-measurement'
   | '/new-equipment'
@@ -40,6 +42,11 @@ const ROUTES: Record<StaticRoutePath, RouteInfo> = {
   },
   '/events': {
     label: 'Soutěže',
+    isProtected: true,
+    showInNav: true,
+  },
+  '/locations': {
+    label: 'Lokace',
     isProtected: true,
     showInNav: true,
   },
@@ -200,6 +207,10 @@ function App() {
 
     if (path === '/events') {
       return <EventsPage />
+    }
+
+    if (path === '/locations') {
+      return <LocationsPage />
     }
 
     if (path === '/completion') {

@@ -28,11 +28,14 @@ class EventStatus(models.Model):
 # overall event model
 class Event(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=120)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    compatible_equipment_type = models.ForeignKey('equipment.EquipmentType', on_delete=models.SET_NULL, null=True, blank=True)
     status = models.ForeignKey(EventStatus, on_delete=models.SET_NULL, null=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True)
+    column = models.PositiveSmallIntegerField(default=0)
+    assigned_equipment = models.PositiveIntegerField(default=0)
     def __str__(self):
         return self.name

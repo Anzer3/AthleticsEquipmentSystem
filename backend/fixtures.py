@@ -11,7 +11,7 @@ import sys
 # TADY SE DÁ NAVOLIT, KTERÉ FIXTURES SE MAJÍ NAČÍTAT - ZAKOMENTOVAT TO, CO NECHCI
 FIXTURES = [
     "fixtures/event/categories.json",
-    "fixtures/event/locations.json",
+    "fixtures/locations.json",
     "fixtures/event/statuses.json",
     "fixtures/event/events.json",
 

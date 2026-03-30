@@ -5,6 +5,7 @@ import {
   UserCircleIcon,
   WrenchScrewdriverIcon,
   ClipboardDocumentIcon,
+  MapPinIcon,
 } from '@heroicons/react/24/outline'
 import ActionButton from './ActionButton'
 import logo from '../assets/WPA_icon.webp'
@@ -28,6 +29,7 @@ const iconByPath: Record<string, ComponentType<{ className?: string }>> = {
   '/login': UserCircleIcon,
   '/equipment': CubeIcon,
   '/events': TrophyIcon,
+  '/locations': MapPinIcon,
   '/completion': WrenchScrewdriverIcon,
   '/new-measurement': ClipboardDocumentIcon,
 }

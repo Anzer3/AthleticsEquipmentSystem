@@ -17,6 +17,86 @@
 	},
 	{
 		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111003",
+		"fields": {
+			"name": "F13",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111004",
+		"fields": {
+			"name": "F20",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111008",
+		"fields": {
+			"name": "F31",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111009",
+		"fields": {
+			"name": "F32",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111013",
+		"fields": {
+			"name": "F33",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111010",
+		"fields": {
+			"name": "F34",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111014",
+		"fields": {
+			"name": "F35",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111019",
+		"fields": {
+			"name": "F36",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111015",
+		"fields": {
+			"name": "F37",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111012",
+		"fields": {
+			"name": "F38",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
 		"pk": "11111111-1111-1111-1111-111111111005",
 		"fields": {
 			"name": "F40",
@@ -33,6 +113,38 @@
 	},
 	{
 		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111020",
+		"fields": {
+			"name": "F42",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111021",
+		"fields": {
+			"name": "F43",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111018",
+		"fields": {
+			"name": "F44",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111022",
+		"fields": {
+			"name": "F45",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
 		"pk": "11111111-1111-1111-1111-111111111007",
 		"fields": {
 			"name": "F46",
@@ -41,9 +153,89 @@
 	},
 	{
 		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111023",
+		"fields": {
+			"name": "F51",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111024",
+		"fields": {
+			"name": "F52",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111025",
+		"fields": {
+			"name": "F53",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111026",
+		"fields": {
+			"name": "F54",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111016",
+		"fields": {
+			"name": "F55",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111017",
+		"fields": {
+			"name": "F56",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
 		"pk": "11111111-1111-1111-1111-111111111011",
 		"fields": {
 			"name": "F57",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111027",
+		"fields": {
+			"name": "F61",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111028",
+		"fields": {
+			"name": "F62",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111029",
+		"fields": {
+			"name": "F63",
+			"gender": 0
+		}
+	},
+	{
+		"model": "event.category",
+		"pk": "11111111-1111-1111-1111-111111111030",
+		"fields": {
+			"name": "F64",
 			"gender": 0
 		}
 	}
