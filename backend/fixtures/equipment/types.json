@@ -25,14 +25,6 @@
     },
     {
         "model": "equipment.equipmenttype",
-        "pk": "55555555-5555-5555-5555-555555555004",
-        "fields": {
-            "name": "Kladivo",
-            "description": "Kladivo pro hod kladivem"
-        }
-    },   
-    {
-        "model": "equipment.equipmenttype",
         "pk": "55555555-5555-5555-5555-555555555005",
         "fields": {
             "name": "Kuželka",

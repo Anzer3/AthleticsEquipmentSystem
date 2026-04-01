@@ -6,6 +6,7 @@ import {
   WrenchScrewdriverIcon,
   ClipboardDocumentIcon,
   MapPinIcon,
+  ArrowUturnLeftIcon,
 } from '@heroicons/react/24/outline'
 import ActionButton from './ActionButton'
 import logo from '../assets/WPA_icon.webp'
@@ -28,6 +29,7 @@ type HeaderProps = {
 const iconByPath: Record<string, ComponentType<{ className?: string }>> = {
   '/login': UserCircleIcon,
   '/equipment': CubeIcon,
+  '/equipment-return': ArrowUturnLeftIcon,
   '/events': TrophyIcon,
   '/locations': MapPinIcon,
   '/completion': WrenchScrewdriverIcon,
@@ -45,7 +47,7 @@ export default function Header({
   const visibleItems = navItems.filter((item) => isLoggedIn || !item.isProtected)
 
   return (
-    <header className="border-b-[10px] border-[#ececec] bg-[var(--dark-red-header)]">
+    <header className="sticky top-0 z-50 border-b-[10px] border-[#ececec] bg-[var(--dark-red-header)]">
       <div className="flex flex-col items-start justify-between gap-3 px-4 py-3 sm:flex-row sm:items-center md:px-6">
         <div className="flex min-w-0 items-center gap-3">
           <img

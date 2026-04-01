@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Event, Category, Location, EventStatus
+from .models import Event, Category, Location, EventType
 from equipment.models import EquipmentType
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -20,21 +20,25 @@ class LocationSerializer(serializers.ModelSerializer):
             'description'
             ]
         
-class EventStatusSerializer(serializers.ModelSerializer):
+class EventTypeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EventStatus
+        model = EventType
         fields = [
             'uuid',
-            'display_text',
-            'description'
+            'name'
             ]
 
 class EventSerializer(serializers.ModelSerializer):
     compatible_equipment_type = serializers.PrimaryKeyRelatedField(
         queryset=EquipmentType.objects.all(),
-        required=False,
-        allow_null=True,
+        required=True,
+        allow_null=False,
     )
+
+    def validate_name(self, value):
+        if not EventType.objects.filter(name=value).exists():
+            raise serializers.ValidationError('Neplatný typ soutěže.')
+        return value
 
     class Meta:
         model = Event
@@ -43,13 +47,23 @@ class EventSerializer(serializers.ModelSerializer):
             'name',
             'category',
             'compatible_equipment_type',
-            'status',
             'start_time',
             'end_time',
             'location',
+            'equipment_distributed',
+            'equipment_unloaded',
             'column',
             'assigned_equipment'
             ]
         read_only_fields = [
             'assigned_equipment',
+            'equipment_distributed',
+            'equipment_unloaded',
         ]
+        extra_kwargs = {
+            'name': {'required': True, 'allow_blank': False},
+            'category': {'required': True, 'allow_null': False},
+            'location': {'required': True, 'allow_null': False},
+            'start_time': {'required': True},
+            'end_time': {'required': True},
+        }

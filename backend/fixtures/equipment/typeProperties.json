@@ -65,30 +65,6 @@
   },
   {
     "model": "equipment.equipmenttypeproperty",
-    "pk": "66666666-6666-6666-6666-666666666009",
-    "fields": {
-      "equipment_type": "55555555-5555-5555-5555-555555555004",
-      "name": "Hmotnost"
-    }
-  },
-  {
-    "model": "equipment.equipmenttypeproperty",
-    "pk": "66666666-6666-6666-6666-666666666010",
-    "fields": {
-      "equipment_type": "55555555-5555-5555-5555-555555555004",
-      "name": "Průměr hlavy"
-    }
-  },
-  {
-    "model": "equipment.equipmenttypeproperty",
-    "pk": "66666666-6666-6666-6666-666666666011",
-    "fields": {
-      "equipment_type": "55555555-5555-5555-5555-555555555004",
-      "name": "Délka lanka/rukojeti"
-    }
-  },
-  {
-    "model": "equipment.equipmenttypeproperty",
     "pk": "66666666-6666-6666-6666-666666666012",
     "fields": {
       "equipment_type": "55555555-5555-5555-5555-555555555005",

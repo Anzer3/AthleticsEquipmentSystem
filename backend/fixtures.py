@@ -12,7 +12,7 @@ import sys
 FIXTURES = [
     "fixtures/event/categories.json",
     "fixtures/locations.json",
-    "fixtures/event/statuses.json",
+    "fixtures/event/types.json",
     "fixtures/event/events.json",
 
     "fixtures/equipment/types.json",

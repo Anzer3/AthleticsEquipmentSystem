@@ -22,8 +22,7 @@ class EquipmentType(models.Model):
 # overall equipment model
 class Equipment(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    equipment_number = models.CharField(max_length=15, unique=True, null=False, default=0)
-    athlete_number = models.CharField(max_length=120)
+    equipment_number = models.CharField(max_length=15, null=False, default=0)
     athlete_numbers = models.JSONField(default=list, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     categories = models.ManyToManyField(Category, blank=True, related_name='equipments')
@@ -38,6 +37,14 @@ class Equipment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return f"UUID: {str(self.uuid)[:8]} - Type: {self.equipment_type.name if self.equipment_type else 'N/A'} - Status: {self.status.name if self.status else 'N/A'}"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['equipment_type', 'equipment_number'],
+                name='unique_equipment_number_per_type',
+            )
+        ]
     
 
 class EquipmentTypeProperty(models.Model):

@@ -1,5 +1,6 @@
 export { default as EquipmentDetailPage } from './EquipmentDetailPage'
 export { default as EquipmentPage } from './EquipmentPage'
+export { default as EquipmentReturnPage } from './EquipmentReturnPage'
 export { default as EventsPage } from './EventsPage'
 export { default as CompletionPage } from './CompletionPage'
 export { default as LoginPage } from './LoginPage'

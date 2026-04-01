@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from django.db.models import Q
 
-from .models import Category, Event, EventStatus, Location
-from .serializers import CategorySerializer, EventSerializer, EventStatusSerializer, LocationSerializer
+from .models import Category, Event, EventType, Location
+from .serializers import CategorySerializer, EventSerializer, EventTypeSerializer, LocationSerializer
 
 
 class CategoryListView(APIView):
@@ -14,10 +14,10 @@ class CategoryListView(APIView):
         return Response(serializer.data)
 
 
-class EventStatusListView(APIView):
+class EventTypeListView(APIView):
     def get(self, request):
-        statuses = EventStatus.objects.all()
-        serializer = EventStatusSerializer(statuses, many=True)
+        event_types = EventType.objects.all()
+        serializer = EventTypeSerializer(event_types, many=True)
         return Response(serializer.data)
 
 
@@ -90,6 +90,9 @@ class EventColumnUpdateView(APIView):
         except Event.DoesNotExist:
             return Response({'detail': 'Event not found.'}, status=404)
 
+        if (event.equipment_distributed or event.equipment_unloaded) and serializer.validated_data['column'] != event.column:
+            return Response({'detail': 'Equipment already distributed.'}, status=400)
+
         event.column = serializer.validated_data['column']
         event.save(update_fields=['column'])
 
@@ -127,7 +130,7 @@ class EventEquipmentBoardView(APIView):
         if query:
             compatible_queryset = compatible_queryset.filter(
                 Q(equipment_number__icontains=query)
-                | Q(athlete_number__icontains=query)
+                | Q(athlete_numbers__icontains=query)
                 | Q(equipment_type__name__icontains=query)
             )
 
@@ -138,8 +141,9 @@ class EventEquipmentBoardView(APIView):
             return {
                 'uuid': str(item.uuid),
                 'equipment_number': item.equipment_number,
-                'athlete_number': item.athlete_number,
+                'athlete_numbers': item.athlete_numbers,
                 'equipment_type': item.equipment_type.name if item.equipment_type else 'Neznamy typ',
+                'legal': item.legal,
                 'measured': item.measured,
             }
 
@@ -154,6 +158,7 @@ class EventEquipmentBoardView(APIView):
 class EventEquipmentAssignmentSerializer(serializers.Serializer):
     equipment = serializers.UUIDField()
     event = serializers.UUIDField(allow_null=True)
+    status = serializers.CharField(required=False, allow_blank=True)
 
 
 class EventEquipmentAssignmentView(APIView):
@@ -204,7 +209,7 @@ class EventEquipmentAssignmentView(APIView):
         if not payload.is_valid():
             return Response(payload.errors, status=400)
 
-        from equipment.models import Equipment
+        from equipment.models import Equipment, EquipmentStatus
         from equipment.serializers import EquipmentWriteSerializer
 
         equipment = Equipment.objects.filter(uuid=payload.validated_data['equipment']).first()
@@ -223,15 +228,29 @@ class EventEquipmentAssignmentView(APIView):
             if not self._is_equipment_compatible(target_event, equipment):
                 return Response({'detail': 'Equipment is not compatible with this event.'}, status=400)
 
+        status_name = payload.validated_data.get('status', '').strip()
+        status_value = None
+        if status_name:
+            status = EquipmentStatus.objects.filter(name__iexact=status_name).first()
+            if status is None:
+                return Response({'detail': 'Equipment status not found.'}, status=400)
+            status_value = str(status.uuid)
+
+        update_payload = {'event': target_event_uuid}
+        if status_value:
+            update_payload['status'] = status_value
+
         serializer = EquipmentWriteSerializer(
             equipment,
-            data={'event': target_event_uuid},
+            data=update_payload,
             partial=True,
         )
         if not serializer.is_valid():
             return Response(serializer.errors, status=400)
 
-        serializer.save()
+        updated_equipment = serializer.save()
+        from equipment.streaming import publish_equipment_upsert
+        publish_equipment_upsert(updated_equipment)
 
         self._refresh_assigned_equipment(old_event_uuid)
         self._refresh_assigned_equipment(target_event_uuid)
@@ -248,6 +267,107 @@ class EventEquipmentAssignmentView(APIView):
             },
             status=200,
         )
+
+
+class EventDistributionSerializer(serializers.Serializer):
+    distributed = serializers.BooleanField()
+
+
+class EventDistributionView(APIView):
+    def post(self, request, uuid):
+        payload = EventDistributionSerializer(data=request.data)
+        if not payload.is_valid():
+            return Response(payload.errors, status=400)
+
+        event = Event.objects.filter(uuid=uuid).first()
+        if event is None:
+            return Response({'detail': 'Event not found.'}, status=404)
+
+        if event.location_id is None:
+            return Response({'detail': 'Event location is missing.'}, status=400)
+
+        from equipment.models import Equipment
+
+        distributed = payload.validated_data['distributed']
+
+        if distributed:
+            Equipment.objects.filter(event_id=uuid).update(location_id=event.location_id)
+        else:
+            garage_id = Location.objects.filter(name__iexact='Garáž').values_list('uuid', flat=True).first()
+            if garage_id is None:
+                return Response({'detail': 'Garage location not found.'}, status=400)
+            Equipment.objects.filter(event_id=uuid).update(location_id=garage_id)
+
+        Event.objects.filter(uuid=uuid).update(equipment_distributed=distributed)
+
+        from equipment.streaming import publish_equipment_bulk
+        equipment_queryset = Equipment.objects.filter(event_id=uuid)
+        publish_equipment_bulk(
+            equipment_queryset.select_related('category', 'equipment_type', 'event', 'location', 'status')
+            .prefetch_related('categories')
+        )
+
+        return Response({'uuid': str(uuid), 'equipment_distributed': distributed}, status=200)
+
+
+class EventUnloadView(APIView):
+    def post(self, request, uuid):
+        event = Event.objects.filter(uuid=uuid).first()
+        if event is None:
+            return Response({'detail': 'Event not found.'}, status=404)
+
+        from equipment.models import Equipment, EquipmentStatus
+
+        available_status_id = EquipmentStatus.objects.filter(name__iexact='available').values_list('uuid', flat=True).first()
+        in_use_status_id = EquipmentStatus.objects.filter(name__iexact='in use').values_list('uuid', flat=True).first()
+
+        if not available_status_id or not in_use_status_id:
+            return Response({'detail': 'Equipment status missing.'}, status=400)
+
+        queryset = Equipment.objects.filter(event_id=uuid)
+        equipment_ids = list(queryset.values_list('uuid', flat=True))
+        queryset.filter(status_id=in_use_status_id).update(status_id=available_status_id)
+        queryset.update(event=None)
+
+        Event.objects.filter(uuid=uuid).update(assigned_equipment=0, equipment_unloaded=True)
+
+        from equipment.streaming import publish_equipment_bulk
+        if equipment_ids:
+            publish_equipment_bulk(
+                Equipment.objects.filter(uuid__in=equipment_ids)
+                .select_related('category', 'equipment_type', 'event', 'location', 'status')
+                .prefetch_related('categories')
+            )
+
+        return Response({'uuid': str(uuid), 'assigned_equipment': 0, 'equipment_unloaded': True}, status=200)
+
+
+class EventClearEquipmentView(APIView):
+    def post(self, request, uuid):
+        event = Event.objects.filter(uuid=uuid).first()
+        if event is None:
+            return Response({'detail': 'Event not found.'}, status=404)
+
+        from equipment.models import Equipment
+
+        queryset = Equipment.objects.filter(event_id=uuid)
+        equipment_ids = list(queryset.values_list('uuid', flat=True))
+        queryset.update(event=None)
+        Event.objects.filter(uuid=uuid).update(
+            assigned_equipment=0,
+            equipment_distributed=False,
+            equipment_unloaded=False,
+        )
+
+        from equipment.streaming import publish_equipment_bulk
+        if equipment_ids:
+            publish_equipment_bulk(
+                Equipment.objects.filter(uuid__in=equipment_ids)
+                .select_related('category', 'equipment_type', 'event', 'location', 'status')
+                .prefetch_related('categories')
+            )
+
+        return Response({'uuid': str(uuid), 'assigned_equipment': 0}, status=200)
     
 class EventDetailView(APIView):
     def get_object(self, uuid):

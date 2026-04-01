@@ -15,21 +15,6 @@ type EquipmentTypeOption = {
   name: string
 }
 
-type StatusOption = {
-  uuid: string
-  name: string
-}
-
-type EventOption = {
-  uuid: string
-  name: string
-}
-
-type LocationOption = {
-  uuid: string
-  name: string
-}
-
 type NewEquipmentPageProps = {
   onBack: () => void
   onSuccess: (uuid: string) => void
@@ -40,20 +25,13 @@ type BackendValidationError = Record<string, string[]>
 export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPageProps) {
   const [categories, setCategories] = useState<CategoryOption[]>([])
   const [types, setTypes] = useState<EquipmentTypeOption[]>([])
-  const [statuses, setStatuses] = useState<StatusOption[]>([])
-  const [events, setEvents] = useState<EventOption[]>([])
-  const [locations, setLocations] = useState<LocationOption[]>([])
   const [loadingOptions, setLoadingOptions] = useState(true)
 
   const [equipmentNumber, setEquipmentNumber] = useState('')
-  const [athleteNumber, setAthleteNumber] = useState('')
-  const [categoryUuids, setCategoryUuids] = useState<string[]>([])
+  const [athleteNumbers, setAthleteNumbers] = useState<string[]>([''])
+  const [categoryUuids, setCategoryUuids] = useState<string[]>([''])
   const [typeUuid, setTypeUuid] = useState('')
-  const [statusUuid, setStatusUuid] = useState('')
-  const [eventUuid, setEventUuid] = useState('')
-  const [locationUuid, setLocationUuid] = useState('')
-  const [measured, setMeasured] = useState(false)
-  const [legal, setLegal] = useState(false)
+  const [equipmentNumberLoading, setEquipmentNumberLoading] = useState(false)
 
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -64,37 +42,22 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
       setError(null)
 
       try {
-        const [categoriesResponse, typesResponse, statusesResponse, eventsResponse, locationsResponse] = await Promise.all([
+        const [categoriesResponse, typesResponse] = await Promise.all([
           fetch('/api/events/categories/', { credentials: 'include' }),
           fetch('/api/equipment/types/', { credentials: 'include' }),
-          fetch('/api/equipment/statuses/', { credentials: 'include' }),
-          fetch('/api/events/', { credentials: 'include' }),
-          fetch('/api/events/locations/', { credentials: 'include' }),
         ])
 
-        if (!categoriesResponse.ok || !typesResponse.ok || !statusesResponse.ok || !eventsResponse.ok || !locationsResponse.ok) {
+        if (!categoriesResponse.ok || !typesResponse.ok) {
           throw new Error('API error')
         }
 
-        const [categoriesData, typesData, statusesData, eventsData, locationsData] = await Promise.all([
+        const [categoriesData, typesData] = await Promise.all([
           categoriesResponse.json() as Promise<CategoryOption[]>,
           typesResponse.json() as Promise<EquipmentTypeOption[]>,
-          statusesResponse.json() as Promise<StatusOption[]>,
-          eventsResponse.json() as Promise<EventOption[]>,
-          locationsResponse.json() as Promise<LocationOption[]>,
         ])
 
         setCategories(categoriesData)
         setTypes(typesData)
-        setStatuses(statusesData)
-        setEvents(eventsData)
-        setLocations(locationsData)
-
-        const availableStatus = statusesData.find(
-          (status) => status.name.trim().toLowerCase() === 'available',
-        )
-
-        setStatusUuid(availableStatus?.uuid ?? statusesData[0]?.uuid ?? '')
       } catch {
         setError('Nepodařilo se načíst číselníky pro vytvoření náčiní.')
       } finally {
@@ -115,34 +78,66 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
     [types],
   )
 
-  const sortedStatuses = useMemo(
-    () => [...statuses].sort((a, b) => a.name.localeCompare(b.name, 'cs')),
-    [statuses],
-  )
+  useEffect(() => {
+    if (!typeUuid) {
+      setEquipmentNumber('')
+      setEquipmentNumberLoading(false)
+      return
+    }
 
-  const sortedEvents = useMemo(
-    () => [...events].sort((a, b) => a.name.localeCompare(b.name, 'cs')),
-    [events],
-  )
+    let cancelled = false
 
-  const sortedLocations = useMemo(
-    () => [...locations].sort((a, b) => a.name.localeCompare(b.name, 'cs')),
-    [locations],
-  )
+    const loadNextNumber = async () => {
+      setEquipmentNumber('')
+      setEquipmentNumberLoading(true)
+      setError(null)
+
+      try {
+        const response = await fetch(
+          `/api/equipment/next-number/?equipment_type=${encodeURIComponent(typeUuid)}`,
+          { credentials: 'include' },
+        )
+
+        if (!response.ok) {
+          throw new Error('API error')
+        }
+
+        const data = (await response.json()) as { equipment_number?: string }
+        if (!cancelled) {
+          setEquipmentNumber(data.equipment_number ?? '')
+        }
+      } catch {
+        if (!cancelled) {
+          setEquipmentNumber('')
+          setError('Nepodařilo se načíst evidenční číslo náčiní.')
+        }
+      } finally {
+        if (!cancelled) {
+          setEquipmentNumberLoading(false)
+        }
+      }
+    }
+
+    void loadNextNumber()
+
+    return () => {
+      cancelled = true
+    }
+  }, [typeUuid])
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const trimmedEquipmentNumber = equipmentNumber.trim()
-    const trimmedAthleteNumber = athleteNumber.trim()
+    const cleanedAthleteNumbers = athleteNumbers
+      .map((value) => value.trim())
+      .filter(Boolean)
+    const cleanedCategories = categoryUuids
+      .map((value) => value.trim())
+      .filter(Boolean)
 
-    if (!trimmedEquipmentNumber) {
-      setError('Vyplňte prosím evidenční číslo náčiní.')
-      return
-    }
-
-    if (!trimmedAthleteNumber) {
-      setError('Vyplňte prosím číslo sportovce.')
+    if (cleanedAthleteNumbers.length === 0) {
+      setError('Vyplňte prosím alespoň jedno číslo sportovce.')
       return
     }
 
@@ -151,7 +146,12 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
       return
     }
 
-    if (categoryUuids.length > 10) {
+    if (!trimmedEquipmentNumber) {
+      setError('Evidenční číslo náčiní se nepodařilo vygenerovat.')
+      return
+    }
+
+    if (cleanedCategories.length > 10) {
       setError('Náčiní může mít maximálně 10 kategorií.')
       return
     }
@@ -170,15 +170,10 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
         credentials: 'include',
         body: JSON.stringify({
           equipment_number: trimmedEquipmentNumber,
-          athlete_number: trimmedAthleteNumber,
-          category: categoryUuids[0] || null,
-          categories: categoryUuids,
+          athlete_numbers: cleanedAthleteNumbers,
+          category: cleanedCategories[0] || null,
+          categories: cleanedCategories,
           equipment_type: typeUuid,
-          status: statusUuid || null,
-          event: eventUuid || null,
-          location: locationUuid || null,
-          measured,
-          legal,
         }),
       })
 
@@ -225,42 +220,57 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
 
       {!loadingOptions ? (
         <form
-          onSubmit={(event) => {
-            void handleSubmit(event)
+          onSubmit={(formEvent) => {
+            void handleSubmit(formEvent)
           }}
           className="mx-auto max-w-2xl rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8"
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
-              <label htmlFor="equipment-number" className="mb-2 block text-sm font-semibold text-gray-900">
-                Evidenční číslo náčiní
+              <label className="mb-2 block text-sm font-semibold text-gray-900">
+                Čísla sportovců
               </label>
-              <input
-                id="equipment-number"
-                type="text"
-                value={equipmentNumber}
-                onChange={(event) => setEquipmentNumber(event.target.value)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                placeholder="Např. D-101"
-                maxLength={15}
-                required
-              />
-            </div>
-
-            <div className="sm:col-span-2">
-              <label htmlFor="athlete-number" className="mb-2 block text-sm font-semibold text-gray-900">
-                Číslo sportovce
-              </label>
-              <input
-                id="athlete-number"
-                type="text"
-                value={athleteNumber}
-                onChange={(event) => setAthleteNumber(event.target.value)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                placeholder="Např. 245"
-                maxLength={15}
-                required
-              />
+              <div className="space-y-2">
+                {athleteNumbers.map((value, index) => (
+                  <div key={`athlete-${index}`} className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    <input
+                      type="text"
+                      value={value}
+                      onChange={(formEvent) => {
+                        const nextValue = formEvent.target.value
+                        setAthleteNumbers((previous) =>
+                          previous.map((item, idx) => (idx === index ? nextValue : item)),
+                        )
+                      }}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                      placeholder="Např. 245"
+                      maxLength={30}
+                      required
+                    />
+                    {athleteNumbers.length > 1 ? (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setAthleteNumbers((previous) => previous.filter((_, idx) => idx !== index))
+                        }
+                        className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 transition hover:bg-gray-50"
+                      >
+                        Odebrat
+                      </button>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-2 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setAthleteNumbers((previous) => [...previous, ''])}
+                  className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-700 transition hover:bg-gray-50"
+                >
+                  + Přidat číslo
+                </button>
+                <span className="text-xs text-gray-500">Každé číslo zvlášť.</span>
+              </div>
             </div>
 
             <div>
@@ -270,7 +280,7 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
               <select
                 id="equipment-type"
                 value={typeUuid}
-                onChange={(event) => setTypeUuid(event.target.value)}
+                onChange={(formEvent) => setTypeUuid(formEvent.target.value)}
                 className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 required
               >
@@ -283,108 +293,76 @@ export default function NewEquipmentPage({ onBack, onSuccess }: NewEquipmentPage
               </select>
             </div>
 
-            <div>
-              <label htmlFor="category" className="mb-2 block text-sm font-semibold text-gray-900">
+            <div className="sm:col-span-2">
+              <label className="mb-2 block text-sm font-semibold text-gray-900">
                 Kategorie (max 10)
               </label>
-              <select
-                id="category"
-                value={categoryUuids}
-                onChange={(event) => {
-                  const selected = Array.from(event.target.selectedOptions).map((option) => option.value)
-                  setCategoryUuids(selected.slice(0, 10))
-                }}
-                multiple
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-              >
-                {sortedCategories.map((category) => (
-                  <option key={category.uuid} value={category.uuid}>
-                    {category.name}
-                  </option>
+              <div className="space-y-2">
+                {categoryUuids.map((value, index) => (
+                  <div key={`category-${index}`} className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    <select
+                      value={value}
+                      onChange={(formEvent) => {
+                        const nextValue = formEvent.target.value
+                        setCategoryUuids((previous) =>
+                          previous.map((item, idx) => (idx === index ? nextValue : item)),
+                        )
+                      }}
+                      className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                    >
+                      <option value="">-- Vyberte kategorii --</option>
+                      {sortedCategories.map((category) => (
+                        <option key={category.uuid} value={category.uuid}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </select>
+                    {categoryUuids.length > 1 ? (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setCategoryUuids((previous) => previous.filter((_, idx) => idx !== index))
+                        }
+                        className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-600 transition hover:bg-gray-50"
+                      >
+                        Odebrat
+                      </button>
+                    ) : null}
+                  </div>
                 ))}
-              </select>
-              <p className="mt-1 text-xs text-gray-500">Pro výběr více kategorií použij Ctrl/Cmd + klik.</p>
+              </div>
+              <div className="mt-2 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (categoryUuids.length < 10) {
+                      setCategoryUuids((previous) => [...previous, ''])
+                    }
+                  }}
+                  className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-700 transition hover:bg-gray-50"
+                >
+                  + Přidat kategorii
+                </button>
+                <span className="text-xs text-gray-500">Maximálně 10 kategorií.</span>
+              </div>
             </div>
 
-            <div>
-              <label htmlFor="status" className="mb-2 block text-sm font-semibold text-gray-900">
-                Stav
+            <div className="sm:col-span-2">
+              <label htmlFor="equipment-number" className="mb-2 block text-sm font-semibold text-gray-900">
+                Evidenční číslo náčiní
               </label>
-              <select
-                id="status"
-                value={statusUuid}
-                onChange={(event) => setStatusUuid(event.target.value)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-              >
-                {sortedStatuses.map((status) => (
-                  <option key={status.uuid} value={status.uuid}>
-                    {status.name}
-                  </option>
-                ))}
-              </select>
-              <p className="mt-1 text-xs text-gray-500">Stav je automaticky dopočten podle měření, schválení a vozíku.</p>
-            </div>
-
-            <div>
-              <label htmlFor="location" className="mb-2 block text-sm font-semibold text-gray-900">
-                Lokace
-              </label>
-              <select
-                id="location"
-                value={locationUuid}
-                onChange={(event) => setLocationUuid(event.target.value)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-              >
-                <option value="">-- Bez lokace --</option>
-                {sortedLocations.map((locationOption) => (
-                  <option key={locationOption.uuid} value={locationOption.uuid}>
-                    {locationOption.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="active-event" className="mb-2 block text-sm font-semibold text-gray-900">
-                Aktivní soutěž
-              </label>
-              <select
-                id="active-event"
-                value={eventUuid}
-                onChange={(event) => setEventUuid(event.target.value)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-              >
-                <option value="">-- Bez soutěže --</option>
-                {sortedEvents.map((eventOption) => (
-                  <option key={eventOption.uuid} value={eventOption.uuid}>
-                    {eventOption.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex items-center">
-              <label className="inline-flex cursor-pointer items-center gap-2.5 text-sm font-medium text-gray-800 hover:text-gray-900">
-                <input
-                  type="checkbox"
-                  checked={measured}
-                  onChange={(event) => setMeasured(event.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
-                />
-                Náčiní je již změřeno
-              </label>
-            </div>
-
-            <div className="flex items-center">
-              <label className="inline-flex cursor-pointer items-center gap-2.5 text-sm font-medium text-gray-800 hover:text-gray-900">
-                <input
-                  type="checkbox"
-                  checked={legal}
-                  onChange={(event) => setLegal(event.target.checked)}
-                  className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
-                />
-                Náčiní je schváleno
-              </label>
+              <input
+                id="equipment-number"
+                type="text"
+                value={equipmentNumberLoading ? 'Načítám...' : equipmentNumber}
+                readOnly
+                disabled={!typeUuid || equipmentNumberLoading}
+                className="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-sm text-gray-700 outline-none"
+                placeholder="Automaticky po výběru typu"
+                maxLength={15}
+                required
+              />
+              <p className="mt-1 text-xs text-gray-500">Číslo se generuje automaticky podle typu náčiní.</p>
             </div>
           </div>
 

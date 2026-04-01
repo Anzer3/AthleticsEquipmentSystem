@@ -1,3 +1,5 @@
+from django.http import StreamingHttpResponse
+from django.views import View
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -5,10 +7,17 @@ from .models import Equipment, EquipmentStatus, EquipmentType
 from .serializers import (
     EquipmentDetailSerializer,
     EquipmentListSerializer,
+    EquipmentReturnSerializer,
     EquipmentStatusSerializer,
     EquipmentTypeSerializer,
     EquipmentWriteSerializer,
 )
+from .streaming import (
+    publish_equipment_delete,
+    publish_equipment_upsert,
+    stream_equipment,
+)
+from .utils import get_next_equipment_number
 
 # ---------------------
 # Equipment list
@@ -24,6 +33,7 @@ class EquipmentListView(APIView):
         serializer = EquipmentWriteSerializer(data=request.data)
         if serializer.is_valid():
             equipment = serializer.save()
+            publish_equipment_upsert(equipment)
             return Response(EquipmentDetailSerializer(equipment).data, status=201)
         return Response(serializer.errors, status=400)
     
@@ -52,6 +62,7 @@ class EquipmentDetailView(APIView):
         serializer = EquipmentWriteSerializer(equipment, data=request.data, partial=True)
         if serializer.is_valid():
             equipment = serializer.save()
+            publish_equipment_upsert(equipment)
             return Response(EquipmentDetailSerializer(equipment).data)
         return Response(serializer.errors, status=400)
 
@@ -59,8 +70,18 @@ class EquipmentDetailView(APIView):
         equipment = self.get_object(uuid)
         if equipment is None:
             return Response(status=404)
+        deleted_uuid = equipment.uuid
         equipment.delete()
+        publish_equipment_delete(deleted_uuid)
         return Response(status=204)
+
+
+class EquipmentStreamView(View):
+    def get(self, request):
+        response = StreamingHttpResponse(stream_equipment(), content_type='text/event-stream')
+        response['Cache-Control'] = 'no-cache'
+        response['X-Accel-Buffering'] = 'no'
+        return response
 
 
 class EquipmentStatusListView(APIView):
@@ -68,6 +89,56 @@ class EquipmentStatusListView(APIView):
         statuses = EquipmentStatus.objects.all()
         serializer = EquipmentStatusSerializer(statuses, many=True)
         return Response(serializer.data)
+
+
+class EquipmentReturnView(APIView):
+    def get(self, request):
+        athlete_number = request.query_params.get('athlete_number', '').strip()
+
+        equipments = Equipment.objects.all()
+        if athlete_number:
+            equipments = equipments.filter(athlete_numbers__contains=[athlete_number])
+
+        equipments = equipments.select_related('equipment_type', 'status', 'event', 'location')
+        serializer = EquipmentReturnSerializer(equipments, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        equipment_uuid = request.data.get('uuid')
+        if not equipment_uuid:
+            return Response({'detail': 'uuid is required.'}, status=400)
+
+        equipment = (
+            Equipment.objects.filter(uuid=equipment_uuid)
+            .select_related('equipment_type', 'status', 'event', 'location')
+            .first()
+        )
+        if equipment is None:
+            return Response({'detail': 'Equipment not found.'}, status=404)
+
+        returned_status = EquipmentStatus.objects.filter(name__iexact='returned').first()
+        if returned_status is None:
+            return Response({'detail': 'Returned status not found.'}, status=400)
+
+        equipment.status = returned_status
+        equipment.location = None
+        equipment.save(update_fields=['status', 'location'])
+        publish_equipment_upsert(equipment)
+
+        serializer = EquipmentReturnSerializer(equipment)
+        return Response(serializer.data, status=200)
+
+
+class EquipmentNextNumberView(APIView):
+    def get(self, request):
+        equipment_type_id = request.query_params.get('equipment_type')
+        if not equipment_type_id:
+            return Response({'detail': 'equipment_type is required.'}, status=400)
+
+        if not EquipmentType.objects.filter(uuid=equipment_type_id).exists():
+            return Response({'detail': 'Equipment type not found.'}, status=404)
+
+        return Response({'equipment_number': get_next_equipment_number(equipment_type_id)})
     
 # ---------------------
 # EquipmentType list

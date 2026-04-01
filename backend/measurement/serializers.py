@@ -21,9 +21,16 @@ class MeasurementListSerializer(serializers.ModelSerializer):
         if not obj.equipment:
             return '-'
 
-        athlete_number = obj.equipment.athlete_number or '-'
+        athlete_number = self._format_athlete_numbers(obj.equipment)
         equipment_type = obj.equipment.equipment_type.name if obj.equipment.equipment_type else 'Neznámý typ'
         return f"{athlete_number} - {equipment_type}"
+
+    def _format_athlete_numbers(self, equipment):
+        numbers = equipment.athlete_numbers if equipment else []
+        if isinstance(numbers, list):
+            joined = ', '.join([str(item).strip() for item in numbers if str(item).strip()])
+            return joined or '-'
+        return '-'
 
     def get_measured_property(self, obj):
         return obj.property.name if obj.property else '-'
@@ -37,7 +44,7 @@ class MeasurementDetailSerializer(serializers.ModelSerializer):
     measured_property = serializers.SerializerMethodField()
     measurement_status = serializers.SerializerMethodField()
     equipment_uuid = serializers.SerializerMethodField()
-    equipment_athlete_number = serializers.SerializerMethodField()
+    equipment_athlete_numbers = serializers.SerializerMethodField()
     equipment_type = serializers.SerializerMethodField()
     equipment_category = serializers.SerializerMethodField()
     equipment_status = serializers.SerializerMethodField()
@@ -56,7 +63,7 @@ class MeasurementDetailSerializer(serializers.ModelSerializer):
             'unit_name',
             'measurement_status',
             'equipment_uuid',
-            'equipment_athlete_number',
+            'equipment_athlete_numbers',
             'equipment_type',
             'equipment_category',
             'equipment_status',
@@ -68,7 +75,7 @@ class MeasurementDetailSerializer(serializers.ModelSerializer):
         if not obj.equipment:
             return '-'
 
-        athlete_number = obj.equipment.athlete_number or '-'
+        athlete_number = self._format_athlete_numbers(obj.equipment)
         equipment_type = obj.equipment.equipment_type.name if obj.equipment.equipment_type else 'Neznámý typ'
         return f"{athlete_number} - {equipment_type}"
 
@@ -81,8 +88,19 @@ class MeasurementDetailSerializer(serializers.ModelSerializer):
     def get_equipment_uuid(self, obj):
         return obj.equipment.uuid if obj.equipment else None
 
-    def get_equipment_athlete_number(self, obj):
-        return obj.equipment.athlete_number if obj.equipment else '-'
+    def get_equipment_athlete_numbers(self, obj):
+        if not obj.equipment:
+            return []
+        if isinstance(obj.equipment.athlete_numbers, list):
+            return [str(item).strip() for item in obj.equipment.athlete_numbers if str(item).strip()]
+        return []
+
+    def _format_athlete_numbers(self, equipment):
+        numbers = equipment.athlete_numbers if equipment else []
+        if isinstance(numbers, list):
+            joined = ', '.join([str(item).strip() for item in numbers if str(item).strip()])
+            return joined or '-'
+        return '-'
 
     def get_equipment_type(self, obj):
         if not obj.equipment or not obj.equipment.equipment_type:

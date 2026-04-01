@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from event.models import Category
+from event.models import Category, Location
 from .models import Equipment, EquipmentStatus, EquipmentType
+from .utils import get_next_equipment_number
 
 
 class EquipmentListSerializer(serializers.ModelSerializer):
@@ -11,9 +12,6 @@ class EquipmentListSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
     event = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
-
-    def _parse_athlete_numbers(self, value):
-        return [part.strip() for part in (value or '').split(',') if part.strip()]
 
     def get_category(self, obj):
         names = [category.name for category in obj.categories.all()]
@@ -31,9 +29,9 @@ class EquipmentListSerializer(serializers.ModelSerializer):
         return obj.equipment_type.name if obj.equipment_type else 'Neznámý typ'
 
     def get_athlete_numbers(self, obj):
-        if isinstance(obj.athlete_numbers, list) and obj.athlete_numbers:
+        if isinstance(obj.athlete_numbers, list):
             return [str(item).strip() for item in obj.athlete_numbers if str(item).strip()]
-        return self._parse_athlete_numbers(obj.athlete_number)
+        return []
 
     def get_status(self, obj):
         return obj.status.name if obj.status else 'Neznámý stav'
@@ -49,7 +47,6 @@ class EquipmentListSerializer(serializers.ModelSerializer):
         fields = [
             'uuid',
             'equipment_number',
-            'athlete_number',
             'athlete_numbers',
             'category',
             'categories',
@@ -85,16 +82,15 @@ class EquipmentDetailSerializer(serializers.ModelSerializer):
         return [obj.category.name] if obj.category else []
 
     def get_athlete_numbers(self, obj):
-        if isinstance(obj.athlete_numbers, list) and obj.athlete_numbers:
+        if isinstance(obj.athlete_numbers, list):
             return [str(item).strip() for item in obj.athlete_numbers if str(item).strip()]
-        return [part.strip() for part in (obj.athlete_number or '').split(',') if part.strip()]
+        return []
 
     class Meta:
         model = Equipment
         fields = [
             'uuid',
             'equipment_number',
-            'athlete_number',
             'athlete_numbers',
             'category',
             'category_name',
@@ -113,6 +109,48 @@ class EquipmentDetailSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at'
             ]
+
+
+class EquipmentReturnSerializer(serializers.ModelSerializer):
+    athlete_numbers = serializers.SerializerMethodField()
+    equipment_type = serializers.SerializerMethodField()
+    status = serializers.SerializerMethodField()
+    event = serializers.SerializerMethodField()
+    event_end_time = serializers.SerializerMethodField()
+    location = serializers.SerializerMethodField()
+
+    def get_athlete_numbers(self, obj):
+        if isinstance(obj.athlete_numbers, list):
+            return [str(item).strip() for item in obj.athlete_numbers if str(item).strip()]
+        return []
+
+    def get_equipment_type(self, obj):
+        return obj.equipment_type.name if obj.equipment_type else 'Neznámý typ'
+
+    def get_status(self, obj):
+        return obj.status.name if obj.status else 'Neznámý stav'
+
+    def get_event(self, obj):
+        return obj.event.name if obj.event else None
+
+    def get_event_end_time(self, obj):
+        return obj.event.end_time if obj.event else None
+
+    def get_location(self, obj):
+        return obj.location.name if obj.location else None
+
+    class Meta:
+        model = Equipment
+        fields = [
+            'uuid',
+            'equipment_number',
+            'athlete_numbers',
+            'equipment_type',
+            'status',
+            'event',
+            'event_end_time',
+            'location',
+        ]
 
 
 class EquipmentWriteSerializer(serializers.ModelSerializer):
@@ -137,7 +175,6 @@ class EquipmentWriteSerializer(serializers.ModelSerializer):
         model = Equipment
         fields = [
             'equipment_number',
-            'athlete_number',
             'athlete_numbers',
             'category',
             'categories',
@@ -199,27 +236,51 @@ class EquipmentWriteSerializer(serializers.ModelSerializer):
         return value
 
     def validate_athlete_numbers(self, value):
-        cleaned = [item.strip() for item in value if item and item.strip()]
+        cleaned = [str(item).strip() for item in value if str(item).strip()]
         if not cleaned:
-            raise serializers.ValidationError('Musí být uveden alespoň jeden athlete_number.')
+            raise serializers.ValidationError('Musí být uvedeno alespoň jedno číslo sportovce.')
         return cleaned
 
     def _apply_athlete_numbers(self, validated_data):
-        athlete_numbers = validated_data.pop('athlete_numbers', None)
-        if athlete_numbers is not None:
-            validated_data['athlete_numbers'] = athlete_numbers
-            validated_data['athlete_number'] = ', '.join(athlete_numbers)
+        if 'athlete_numbers' not in validated_data:
             return validated_data
 
-        athlete_number = validated_data.get('athlete_number')
-        if athlete_number is not None:
-            parsed = [part.strip() for part in str(athlete_number).split(',') if part.strip()]
-            validated_data['athlete_numbers'] = parsed
+        cleaned = [str(item).strip() for item in validated_data.get('athlete_numbers') or [] if str(item).strip()]
+        validated_data['athlete_numbers'] = cleaned
         return validated_data
+
+    def validate(self, attrs):
+        if self.instance is None:
+            if not attrs.get('athlete_numbers'):
+                raise serializers.ValidationError({'athlete_numbers': 'Musí být uvedeno alespoň jedno číslo sportovce.'})
+            if not attrs.get('equipment_type'):
+                raise serializers.ValidationError({'equipment_type': 'Typ náčiní je povinný.'})
+        return attrs
 
     def create(self, validated_data):
         categories = validated_data.pop('categories', None)
         validated_data = self._apply_athlete_numbers(validated_data)
+        validated_data['measured'] = False
+        validated_data['legal'] = False
+        validated_data['event'] = None
+
+        equipment_type = validated_data.get('equipment_type')
+        if equipment_type is None:
+            raise serializers.ValidationError({'equipment_type': 'Typ náčiní je povinný.'})
+
+        if not validated_data.get('equipment_number'):
+            validated_data['equipment_number'] = get_next_equipment_number(str(equipment_type.uuid))
+
+        garage = Location.objects.filter(name__iexact='Garáž').first()
+        if garage is None:
+            raise serializers.ValidationError({'location': 'Lokace Garáž nebyla nalezena.'})
+        validated_data['location'] = garage
+
+        registered_status = self._get_status(self.STATUS_REGISTERED)
+        if registered_status is None:
+            raise serializers.ValidationError({'status': 'Stav REGISTERED nebyl nalezen.'})
+        validated_data['status'] = registered_status
+
         validated_data = self._apply_rules(validated_data)
         equipment = super().create(validated_data)
 

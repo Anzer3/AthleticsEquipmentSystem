@@ -3,7 +3,10 @@ from . import views
 
 urlpatterns = [
     path('statuses/', views.EquipmentStatusListView.as_view()),
+    path('next-number/', views.EquipmentNextNumberView.as_view()),
     path('types/', views.EquipmentTypeListView.as_view()),
+    path('return/', views.EquipmentReturnView.as_view()),
+    path('stream/', views.EquipmentStreamView.as_view()),
     path('', views.EquipmentListView.as_view()),
     path('<uuid:uuid>/', views.EquipmentDetailView.as_view())
 ]

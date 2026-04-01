@@ -64,33 +64,6 @@
 	},
 	{
 		"model": "measurement.measuredproperty",
-		"pk": "99999999-9999-9999-9999-999999999008",
-		"fields": {
-			"equipment_type": "55555555-5555-5555-5555-555555555004",
-			"name": "Hmotnost",
-			"description": "Hmotnost kladiva v gramech"
-		}
-	},
-	{
-		"model": "measurement.measuredproperty",
-		"pk": "99999999-9999-9999-9999-999999999009",
-		"fields": {
-			"equipment_type": "55555555-5555-5555-5555-555555555004",
-			"name": "Průměr hlavy",
-			"description": "Průměr hlavy kladiva v milimetrech"
-		}
-	},
-	{
-		"model": "measurement.measuredproperty",
-		"pk": "99999999-9999-9999-9999-999999999010",
-		"fields": {
-			"equipment_type": "55555555-5555-5555-5555-555555555004",
-			"name": "Délka lanka/rukojeti",
-			"description": "Délka lanka nebo rukojeti kladiva v milimetrech"
-		}
-	},
-	{
-		"model": "measurement.measuredproperty",
 		"pk": "99999999-9999-9999-9999-999999999011",
 		"fields": {
 			"equipment_type": "55555555-5555-5555-5555-555555555005",

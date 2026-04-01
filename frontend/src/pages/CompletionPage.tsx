@@ -12,13 +12,21 @@ type EventItem = {
   category: string | null
   column?: number
   assigned_equipment?: number
+  equipment_distributed?: boolean
+  equipment_unloaded?: boolean
+}
+
+type CategoryOption = {
+  uuid: string
+  name: string
 }
 
 type EquipmentItem = {
   uuid: string
   equipment_number: string
-  athlete_number: string
+  athlete_numbers: string[]
   equipment_type: string
+  legal: boolean
   measured: boolean
 }
 
@@ -36,6 +44,7 @@ const COLUMNS: Column[] = [
 
 export default function CompletionPage() {
   const [events, setEvents] = useState<EventItem[]>([])
+  const [categories, setCategories] = useState<CategoryOption[]>([])
   const [loading, setLoading] = useState(true)
   const [moving, setMoving] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -45,7 +54,13 @@ export default function CompletionPage() {
   const [modalActionUuid, setModalActionUuid] = useState<string | null>(null)
   const [availableEquipment, setAvailableEquipment] = useState<EquipmentItem[]>([])
   const [assignedEquipment, setAssignedEquipment] = useState<EquipmentItem[]>([])
+  const [assignedByEvent, setAssignedByEvent] = useState<Record<string, EquipmentItem[]>>({})
   const [equipmentSearch, setEquipmentSearch] = useState('')
+  const [confirmResetEvent, setConfirmResetEvent] = useState<EventItem | null>(null)
+  const [pendingMove, setPendingMove] = useState<{ uuid: string; next: number; current: number } | null>(null)
+  const [confirmingReset, setConfirmingReset] = useState(false)
+  const [distributionUpdating, setDistributionUpdating] = useState<string | null>(null)
+  const [unloadingEventUuid, setUnloadingEventUuid] = useState<string | null>(null)
 
   const fetchEvents = async (): Promise<EventItem[]> => {
     const response = await fetch('/api/events/', { credentials: 'include' })
@@ -84,18 +99,147 @@ export default function CompletionPage() {
     void loadEvents()
   }, [])
 
-  const moveEvent = async (eventUuid: string, direction: -1 | 1) => {
-    const target = events.find((item) => item.uuid === eventUuid)
-    if (!target) {
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const response = await fetch('/api/events/categories/', { credentials: 'include' })
+        if (!response.ok) {
+          return
+        }
+        setCategories((await response.json()) as CategoryOption[])
+      } catch {
+        // Ignore categories load failures.
+      }
+    }
+
+    void loadCategories()
+  }, [])
+
+  const categoryById = useMemo(() => {
+    return new Map(categories.map((item) => [item.uuid, item.name]))
+  }, [categories])
+
+  useEffect(() => {
+    let cancelled = false
+    const activeEvents = events.filter((event) => {
+      const column = event.column ?? 0
+      return column === 1 || column === 2 || column === 3
+    })
+    if (activeEvents.length === 0) {
+      setAssignedByEvent((previous) => (Object.keys(previous).length ? {} : previous))
+      return () => {
+        cancelled = true
+      }
+    }
+
+    const loadAssigned = async () => {
+      const results = await Promise.all(
+        activeEvents.map(async (event) => {
+          try {
+            const response = await fetch(`/api/events/${event.uuid}/equipment/`, { credentials: 'include' })
+            if (!response.ok) {
+              return { uuid: event.uuid, assigned: [] as EquipmentItem[] }
+            }
+            const data = (await response.json()) as { assigned: EquipmentItem[] }
+            return { uuid: event.uuid, assigned: data.assigned }
+          } catch {
+            return { uuid: event.uuid, assigned: [] as EquipmentItem[] }
+          }
+        })
+      )
+
+      if (cancelled) {
+        return
+      }
+
+      const next: Record<string, EquipmentItem[]> = {}
+      for (const result of results) {
+        next[result.uuid] = result.assigned
+      }
+      setAssignedByEvent(next)
+    }
+
+    void loadAssigned()
+
+    return () => {
+      cancelled = true
+    }
+  }, [events])
+
+  const toggleDistribution = async (event: EventItem) => {
+    if (!event.uuid) {
       return
     }
 
-    const current = target.column ?? 0
-    const next = Math.min(COLUMNS.length - 1, Math.max(0, current + direction))
-    if (next === current) {
+    const nextDistributed = !event.equipment_distributed
+    setDistributionUpdating(event.uuid)
+    setError(null)
+
+    try {
+      const csrfToken = getCsrfToken()
+      const response = await fetch(`/api/events/${event.uuid}/distribution/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {}),
+        },
+        credentials: 'include',
+        body: JSON.stringify({ distributed: nextDistributed }),
+      })
+
+      if (!response.ok) {
+        throw new Error('API error')
+      }
+
+      setEvents((previous) => previous.map((item) => (
+        item.uuid === event.uuid
+          ? { ...item, equipment_distributed: nextDistributed }
+          : item
+      )))
+    } catch {
+      setError('Nepodarilo se zmenit stav distribuce.')
+    } finally {
+      setDistributionUpdating(null)
+    }
+  }
+
+  const unloadEvent = async (event: EventItem) => {
+    if (!event.uuid) {
       return
     }
 
+    setUnloadingEventUuid(event.uuid)
+    setError(null)
+
+    try {
+      const csrfToken = getCsrfToken()
+      const response = await fetch(`/api/events/${event.uuid}/unload/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {}),
+        },
+        credentials: 'include',
+      })
+
+      if (!response.ok) {
+        throw new Error('API error')
+      }
+
+      setEvents((previous) => previous.map((item) => (
+        item.uuid === event.uuid
+          ? { ...item, equipment_unloaded: true, assigned_equipment: 0 }
+          : item
+      )))
+      setAssignedByEvent((previous) => ({ ...previous, [event.uuid]: [] }))
+    } catch {
+      setError('Nepodarilo se vylozit nacini.')
+    } finally {
+      setUnloadingEventUuid(null)
+    }
+  }
+
+  const performMove = async (eventUuid: string, next: number, current: number) => {
     setError(null)
     setMoving(eventUuid)
 
@@ -129,6 +273,71 @@ export default function CompletionPage() {
     }
   }
 
+  const moveEvent = async (eventUuid: string, direction: -1 | 1) => {
+    const target = events.find((item) => item.uuid === eventUuid)
+    if (!target) {
+      return
+    }
+
+    if (target.equipment_distributed || target.equipment_unloaded) {
+      return
+    }
+
+    const current = target.column ?? 0
+    const next = Math.min(COLUMNS.length - 1, Math.max(0, current + direction))
+    if (next === current) {
+      return
+    }
+
+    if (next === 0 && (target.assigned_equipment ?? 0) > 0) {
+      setPendingMove({ uuid: eventUuid, next, current })
+      setConfirmResetEvent(target)
+      return
+    }
+
+    await performMove(eventUuid, next, current)
+  }
+
+  const handleConfirmReset = async () => {
+    if (!pendingMove || !confirmResetEvent) {
+      return
+    }
+
+    setConfirmingReset(true)
+    setError(null)
+
+    try {
+      const csrfToken = getCsrfToken()
+      const response = await fetch(`/api/events/${pendingMove.uuid}/clear-equipment/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {}),
+        },
+        credentials: 'include',
+      })
+
+      if (!response.ok) {
+        throw new Error('API error')
+      }
+
+      setEvents((previous) => previous.map((item) => (
+        item.uuid === pendingMove.uuid
+          ? { ...item, assigned_equipment: 0 }
+          : item
+      )))
+      setAssignedByEvent((previous) => ({ ...previous, [pendingMove.uuid]: [] }))
+
+      await performMove(pendingMove.uuid, pendingMove.next, pendingMove.current)
+      setConfirmResetEvent(null)
+      setPendingMove(null)
+    } catch {
+      setError('Nepodarilo se odebrat nacini ze souteze.')
+    } finally {
+      setConfirmingReset(false)
+    }
+  }
+
   const loadEventEquipment = async (eventUuid: string) => {
     setModalLoading(true)
     setModalError(null)
@@ -149,6 +358,7 @@ export default function CompletionPage() {
 
       setAvailableEquipment(data.available)
       setAssignedEquipment(data.assigned)
+      setAssignedByEvent((previous) => ({ ...previous, [eventUuid]: data.assigned }))
     } catch {
       setModalError('Nepodarilo se nacist nacini pro vybranou soutez.')
     } finally {
@@ -175,7 +385,7 @@ export default function CompletionPage() {
 
   const assignEquipment = async (eventUuid: string, equipmentUuid: string) => {
     const movingItem = availableEquipment.find((item) => item.uuid === equipmentUuid)
-    if (!movingItem || !movingItem.measured) {
+    if (!movingItem || !movingItem.legal) {
       return
     }
 
@@ -185,6 +395,10 @@ export default function CompletionPage() {
     // Optimistic modal update without full-page reload.
     setAvailableEquipment((previous) => previous.filter((item) => item.uuid !== equipmentUuid))
     setAssignedEquipment((previous) => [movingItem, ...previous])
+    setAssignedByEvent((previous) => {
+      const current = previous[eventUuid] ?? assignedEquipment
+      return { ...previous, [eventUuid]: [movingItem, ...current] }
+    })
     setEvents((previous) => previous.map((item) => {
       if (item.uuid !== eventUuid) {
         return item
@@ -204,7 +418,7 @@ export default function CompletionPage() {
           ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {}),
         },
         credentials: 'include',
-        body: JSON.stringify({ equipment: equipmentUuid, event: eventUuid }),
+        body: JSON.stringify({ equipment: equipmentUuid, event: eventUuid, status: 'IN USE' }),
       })
 
       if (!response.ok) {
@@ -217,6 +431,10 @@ export default function CompletionPage() {
     } catch {
       setAssignedEquipment((previous) => previous.filter((item) => item.uuid !== equipmentUuid))
       setAvailableEquipment((previous) => [movingItem, ...previous])
+      setAssignedByEvent((previous) => {
+        const current = previous[eventUuid] ?? []
+        return { ...previous, [eventUuid]: current.filter((item) => item.uuid !== equipmentUuid) }
+      })
       setEvents((previous) => previous.map((item) => {
         if (item.uuid !== eventUuid) {
           return item
@@ -243,6 +461,10 @@ export default function CompletionPage() {
 
     setAssignedEquipment((previous) => previous.filter((item) => item.uuid !== equipmentUuid))
     setAvailableEquipment((previous) => [movingItem, ...previous])
+    setAssignedByEvent((previous) => {
+      const current = previous[eventUuid] ?? assignedEquipment
+      return { ...previous, [eventUuid]: current.filter((item) => item.uuid !== equipmentUuid) }
+    })
     setEvents((previous) => previous.map((item) => {
       if (item.uuid !== eventUuid) {
         return item
@@ -275,6 +497,10 @@ export default function CompletionPage() {
     } catch {
       setAvailableEquipment((previous) => previous.filter((item) => item.uuid !== equipmentUuid))
       setAssignedEquipment((previous) => [movingItem, ...previous])
+      setAssignedByEvent((previous) => {
+        const current = previous[eventUuid] ?? []
+        return { ...previous, [eventUuid]: [movingItem, ...current] }
+      })
       setEvents((previous) => previous.map((item) => {
         if (item.uuid !== eventUuid) {
           return item
@@ -297,7 +523,8 @@ export default function CompletionPage() {
     }
 
     return availableEquipment.filter((item) => {
-      const label = `${item.equipment_type} ${item.equipment_number} ${item.athlete_number}`.toLowerCase()
+      const athleteLabel = item.athlete_numbers.join(', ')
+      const label = `${item.equipment_type} ${item.equipment_number} ${athleteLabel}`.toLowerCase()
       return label.includes(query)
     })
   }, [availableEquipment, equipmentSearch])
@@ -354,18 +581,55 @@ export default function CompletionPage() {
                     const canMoveLeft = currentIndex > 0
                     const canMoveRight = currentIndex < COLUMNS.length - 1
                     const isMoving = moving === event.uuid
+                    const isLocked = Boolean(event.equipment_distributed || event.equipment_unloaded)
+                    const isUnloaded = Boolean(event.equipment_unloaded)
+                    const assignedList = assignedByEvent[event.uuid]
+                    const showAssignedSection = currentIndex === 1 || currentIndex === 2 || currentIndex === 3
+                    const showAssignedLoading =
+                      showAssignedSection
+                      && assignedList === undefined
+                      && (event.assigned_equipment ?? 0) > 0
+                    const cardClassName = [
+                      'rounded-xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-4 shadow-sm transition',
+                      isUnloaded ? 'opacity-60 grayscale' : 'hover:shadow-md',
+                    ].join(' ')
 
                     return (
-                      <article key={event.uuid} className="rounded-xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-4 shadow-sm transition hover:shadow-md">
+                      <article key={event.uuid} className={cardClassName}>
                         <div className="flex items-start justify-between gap-3">
-                          <h3 className="text-sm font-extrabold tracking-tight text-slate-900">{event.name}</h3>
+                          <h3 className="text-sm font-extrabold tracking-tight text-slate-900">
+                            {event.name} · {event.category ? categoryById.get(event.category) ?? event.category : 'Bez kategorie'}
+                          </h3>
                           <span className="shrink-0 rounded-full border border-blue-300 bg-blue-50 px-2.5 py-1 text-xs font-extrabold text-blue-800">
                             Náčiní: {event.assigned_equipment ?? 0}
                           </span>
                         </div>
-
+                        {event.equipment_distributed ? (
+                          <span className="mt-2 inline-flex rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-extrabold text-emerald-700">
+                            Odvezeno
+                          </span>
+                        ) : null}
                         <p className="mt-2 text-xs text-slate-600">Start: {formatValue(event.start_time)}</p>
                         <p className="text-xs text-slate-600">Konec: {formatValue(event.end_time)}</p>
+
+                        {showAssignedSection ? (
+                          <div className="mt-3">
+                            <p className="text-xs font-semibold text-slate-700">Přiřazená náčiní</p>
+                            {showAssignedLoading ? (
+                              <p className="mt-1 text-xs text-slate-500">Načítám...</p>
+                            ) : assignedList && assignedList.length > 0 ? (
+                              <ul className="mt-1 space-y-1 text-xs text-slate-600">
+                                {assignedList.map((item) => (
+                                  <li key={item.uuid} className="truncate">
+                                    {item.equipment_type} {item.equipment_number}
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p className="mt-1 text-xs text-slate-500">Zatím žádné náčiní.</p>
+                            )}
+                          </div>
+                        ) : null}
 
                         <div className="mt-3 flex items-center justify-between gap-2">
                           {canMoveLeft ? (
@@ -374,7 +638,7 @@ export default function CompletionPage() {
                               onClick={() => {
                                 void moveEvent(event.uuid, -1)
                               }}
-                              disabled={isMoving}
+                              disabled={isMoving || isLocked}
                               className="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white p-1.5 text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
                               aria-label="Posunout vlevo"
                             >
@@ -388,7 +652,7 @@ export default function CompletionPage() {
                               onClick={() => {
                                 void moveEvent(event.uuid, 1)
                               }}
-                              disabled={isMoving}
+                              disabled={isMoving || isLocked}
                               className="inline-flex items-center justify-center rounded-md border border-slate-300 bg-white p-1.5 text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40"
                               aria-label="Posunout vpravo"
                             >
@@ -408,16 +672,36 @@ export default function CompletionPage() {
                               Pridat nacini
                             </button>
                           ) : null}
+
+                          {currentIndex === 2 ? (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                void toggleDistribution(event)
+                              }}
+                              disabled={distributionUpdating === event.uuid}
+                              className="inline-flex items-center rounded-md border border-amber-300 bg-amber-50 px-2 py-1 text-xs font-bold text-amber-700 hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              {event.equipment_distributed ? 'Přivezeno' : 'Odvézt'}
+                            </button>
+                          ) : null}
+
+                          {currentIndex === 3 && !event.equipment_unloaded ? (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                void unloadEvent(event)
+                              }}
+                              disabled={unloadingEventUuid === event.uuid}
+                              className="inline-flex items-center rounded-md border border-slate-300 bg-slate-100 px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-200 disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              Vyložit
+                            </button>
+                          ) : null}
                         </div>
                       </article>
                     )
                   })}
-
-                  {columnEvents.length === 0 ? (
-                    <p className="rounded-md border border-dashed border-gray-200 px-3 py-2 text-xs text-gray-500">
-                      Zadna soutez v tomto sloupci.
-                    </p>
-                  ) : null}
                 </div>
               </div>
             )
@@ -460,20 +744,20 @@ export default function CompletionPage() {
                       key={item.uuid}
                       className={[
                         'flex items-center justify-between rounded-md border px-3 py-2',
-                        item.measured
+                        item.legal
                           ? 'border-emerald-200 bg-emerald-50/40'
                           : 'border-rose-300 bg-rose-50',
                       ].join(' ')}
                     >
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold text-gray-900">{item.equipment_type} {item.equipment_number}</p>
-                        <p className="text-xs text-gray-600">Atlet: {item.athlete_number || 'Neznamy'}</p>
-                        {!item.measured ? (
-                          <p className="mt-1 text-xs font-extrabold uppercase tracking-wide text-rose-700">Nezměřeno</p>
+                        <p className="text-xs text-gray-600">Atlet: {item.athlete_numbers.join(', ') || 'Neznamy'}</p>
+                        {!item.legal ? (
+                          <p className="mt-1 text-xs font-extrabold uppercase tracking-wide text-rose-700">Neschváleno</p>
                         ) : null}
                       </div>
 
-                      {item.measured ? (
+                      {item.legal ? (
                         <button
                           type="button"
                           onClick={() => {
@@ -504,7 +788,7 @@ export default function CompletionPage() {
                     <article key={item.uuid} className="flex items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-3 py-2">
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold text-gray-900">{item.equipment_type} {item.equipment_number}</p>
-                        <p className="text-xs text-gray-600">Atlet: {item.athlete_number || 'Neznamy'}</p>
+                        <p className="text-xs text-gray-600">Atlet: {item.athlete_numbers.join(', ') || 'Neznamy'}</p>
                       </div>
 
                       <button
@@ -533,6 +817,44 @@ export default function CompletionPage() {
             <div className="border-t border-gray-100 px-5 py-3">
               {modalLoading ? <InfoState text="Nacitam nacini pro vybranou soutez..." /> : null}
               {modalError ? <InfoState text={modalError} variant="error" /> : null}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {confirmResetEvent ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-lg rounded-2xl border border-gray-200 bg-white p-6 shadow-xl">
+            <h2 className="text-lg font-bold text-gray-900">Vrácení soutěže</h2>
+            <p className="mt-2 text-sm text-gray-700">
+              Pro tuto soutěž již byla přiřazena náčiní. Přesunutím do sloupce nadcházející
+              budou aktuální náčiní ze soutěže odebrána.
+            </p>
+            <p className="mt-2 text-sm font-semibold text-gray-800">
+              {confirmResetEvent.name}
+            </p>
+            <div className="mt-6 flex justify-end gap-2">
+              <button
+                type="button"
+                className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-50"
+                onClick={() => {
+                  setConfirmResetEvent(null)
+                  setPendingMove(null)
+                }}
+                disabled={confirmingReset}
+              >
+                Zrušit
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center justify-center rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white hover:bg-red-700 disabled:opacity-70"
+                onClick={() => {
+                  void handleConfirmReset()
+                }}
+                disabled={confirmingReset}
+              >
+                Provést vrácení
+              </button>
             </div>
           </div>
         </div>

@@ -1,92 +1,144 @@
-import { CheckIcon } from '@heroicons/react/24/solid'
+import { MapPinIcon } from '@heroicons/react/24/outline'
+import diskIcon from '../assets/disk.png'
+import kouleIcon from '../assets/koule.png'
+import kuzelkaIcon from '../assets/kuzelka.png'
+import ostepIcon from '../assets/ostep.png'
+import fallbackIcon from '../assets/WPA_icon.webp'
 
 type EquipmentCardProps = {
   uuid: string
   equipmentNumber: string
-  athleteNumber: string
+  athleteNumbers: string
   equipmentType: string
   category: string
-  event: string
   location: string
   measured: boolean
-  legal: boolean
+  status: string
   onOpenDetail: (uuid: string) => void
   onMeasure: (uuid: string) => void
+  onNavigateToLocation: () => void
+}
+
+const STATUS_TRIANGLE_COLORS: Record<string, string> = {
+  registered: 'bg-red-600',
+  available: 'bg-green-500',
+  'in use': 'bg-blue-500',
+  returned: 'bg-gray-400',
+  illegal: 'bg-black',
+}
+
+const STATUS_LABELS: Record<string, string> = {
+  registered: 'Registrováno',
+  available: 'Dostupné',
+  'in use': 'V použití',
+  returned: 'Navráceno',
+  illegal: 'Nepovolené',
+}
+
+const normalizeText = (value: string) => value
+  .toLowerCase()
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+
+const getEquipmentIcon = (equipmentType: string) => {
+  const normalized = normalizeText(equipmentType)
+
+  if (normalized.includes('disk')) {
+    return { src: diskIcon, alt: 'Disk' }
+  }
+  if (normalized.includes('koule')) {
+    return { src: kouleIcon, alt: 'Koule' }
+  }
+  if (normalized.includes('kuzelka')) {
+    return { src: kuzelkaIcon, alt: 'Kuželka' }
+  }
+  if (normalized.includes('ostep')) {
+    return { src: ostepIcon, alt: 'Oštěp' }
+  }
+
+  return { src: fallbackIcon, alt: 'Náčiní' }
 }
 
 export default function EquipmentCard({
   uuid,
   equipmentNumber,
-  athleteNumber,
+  athleteNumbers,
   equipmentType,
   category,
-  event,
   location,
   measured,
-  legal,
+  status,
   onOpenDetail,
   onMeasure,
+  onNavigateToLocation,
 }: EquipmentCardProps) {
+  const normalizedStatus = status.trim().toLowerCase()
+  const statusTriangle = STATUS_TRIANGLE_COLORS[normalizedStatus] ?? 'bg-gray-300'
+  const statusLabel = STATUS_LABELS[normalizedStatus] ?? status
+  const icon = getEquipmentIcon(equipmentType)
+  const locationLabel = location || 'Bez lokace'
+  const hasLocation = Boolean(location && location.trim())
+
   return (
     <article
       className={[
-        'flex w-full flex-col justify-between rounded-lg border bg-white p-3.5 text-left shadow-sm transition-colors duration-200',
+        'relative flex w-full flex-col justify-between overflow-hidden rounded-3xl border bg-white p-4 text-left shadow-sm transition-transform duration-200 hover:-translate-y-0.5',
         measured
-          ? 'border-gray-200 hover:border-gray-400'
-          : 'border-red-500 shadow-[0_0_8px_rgba(239,68,68,0.2)] hover:border-red-600',
+          ? 'border-gray-200'
+          : 'border-red-600 shadow-[0_0_10px_rgba(239,68,68,0.15)]',
       ].join(' ')}
     >
-      <div className="flex items-start justify-between gap-2">
-        <h2 className="text-base font-black leading-tight text-gray-900">
+      <span
+        className={`absolute right-0 top-0 h-17 w-17 ${statusTriangle}`}
+        style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }}
+        title={`Stav: ${statusLabel}`}
+        aria-hidden="true"
+      />
+
+      <div className="flex items-center gap-2">
+        <img src={icon.src} alt={icon.alt} className="h-10 w-10 object-contain" />
+        <h2 className="truncate text-base font-bold text-gray-900">
           {equipmentType} {equipmentNumber}
         </h2>
-        {measured ? (
-          <span
-            className="mt-0.5 inline-flex shrink-0 items-center justify-center text-green-600"
-            title="Změřeno"
-            aria-label="Změřeno"
-          >
-            <CheckIcon className="h-5 w-5" />
+      </div>
+
+      <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
+        <div className="flex flex-col">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Atlet</span>
+          <span className="truncate font-semibold text-gray-900" title={athleteNumbers || 'Neznámý'}>
+            {athleteNumbers || 'Neznámý'}
           </span>
-        ) : null}
-      </div>
-
-      <div className="mt-2.5 grid grid-cols-2 gap-3 text-sm">
-        <div className="flex flex-col">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Atlet</span>
-          <span className="font-semibold text-gray-900 truncate" title={athleteNumber || 'Neznámý'}>{athleteNumber || 'Neznámý'}</span>
         </div>
         <div className="flex flex-col">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">Kategorie</span>
-          <span className="font-medium text-gray-700 truncate" title={category}>{category}</span>
+          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Kategorie</span>
+          <span className="truncate font-medium text-gray-700" title={category}>
+            {category}
+          </span>
         </div>
       </div>
 
-      <div className="mt-2 text-xs text-gray-600 truncate" title={event}>
-        Soutěž: {event || 'Bez soutěže'}
+      <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-gray-900">
+        <MapPinIcon className="h-4 w-4 text-gray-500" />
+        {hasLocation ? (
+          <button
+            type="button"
+            onClick={onNavigateToLocation}
+            className="truncate text-left  hover:underline focus:outline-none focus:ring-2 focus:ring-blue-100"
+            title={locationLabel}
+          >
+            {locationLabel}
+          </button>
+        ) : (
+          <span className="truncate text-gray-600" title={locationLabel}>{locationLabel}</span>
+        )}
       </div>
 
-      <div className="mt-1 text-xs text-gray-600 truncate" title={location}>
-        Lokace: {location || 'Bez lokace'}
-      </div>
-
-      <div className="mt-2">
-        <span
-          className={[
-            'inline-flex items-center rounded-md px-2.5 py-1 text-xs font-bold',
-            legal ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700',
-          ].join(' ')}
-        >
-          {legal ? 'Schváleno' : 'Neschváleno'}
-        </span>
-      </div>
-
-      <div className="mt-3.5 pt-3 border-t border-gray-100">
+      <div className="mt-3.5 border-t border-gray-100 pt-3">
         <div className={`grid gap-2 ${measured ? 'grid-cols-1' : 'grid-cols-2'}`}>
           <button
             type="button"
             onClick={() => onOpenDetail(uuid)}
-            className="flex w-full items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-bold text-gray-700 transition hover:bg-gray-50 hover:text-gray-900 focus:ring-2 focus:ring-gray-200 focus:outline-none"
+            className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-bold text-gray-800 transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
           >
             Podrobnosti
           </button>
@@ -95,7 +147,7 @@ export default function EquipmentCard({
             <button
               type="button"
               onClick={() => onMeasure(uuid)}
-              className="flex w-full items-center justify-center rounded-md border border-red-600 bg-red-600 px-3 py-1.5 text-xs font-black tracking-wide text-white transition hover:bg-red-700 hover:border-red-700 focus:ring-2 focus:ring-red-500 focus:outline-none"
+              className="flex w-full items-center justify-center rounded-md border border-red-600 bg-red-600 px-3 py-1.5 text-xs font-black tracking-wide text-white transition hover:border-red-700 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
             >
               Změřit
             </button>

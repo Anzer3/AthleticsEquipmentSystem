@@ -1,0 +1,30 @@
+[
+    {
+        "model": "event.eventtype",
+        "pk": "77777777-7777-7777-7777-777777777001",
+        "fields": {
+            "name": "Vrh koulí"
+        }
+    },
+    {
+        "model": "event.eventtype",
+        "pk": "77777777-7777-7777-7777-777777777002",
+        "fields": {
+            "name": "Hod diskem"
+        }
+    },
+    {
+        "model": "event.eventtype",
+        "pk": "77777777-7777-7777-7777-777777777003",
+        "fields": {
+            "name": "Hod kuželkou"
+        }
+    },
+    {
+        "model": "event.eventtype",
+        "pk": "77777777-7777-7777-7777-777777777004",
+        "fields": {
+            "name": "Hod oštěpem"
+        }
+    }
+]

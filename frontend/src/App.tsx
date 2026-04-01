@@ -6,6 +6,7 @@ import {
   CompletionPage,
   EquipmentDetailPage,
   EquipmentPage,
+  EquipmentReturnPage,
   EventsPage,
   LocationsPage,
   LoginPage,
@@ -17,6 +18,7 @@ import {
 type StaticRoutePath =
   | '/login'
   | '/equipment'
+  | '/equipment-return'
   | '/events'
   | '/locations'
   | '/completion'
@@ -37,6 +39,11 @@ const ROUTES: Record<StaticRoutePath, RouteInfo> = {
   },
   '/equipment': {
     label: 'Náčiní',
+    isProtected: true,
+    showInNav: true,
+  },
+  '/equipment-return': {
+    label: 'Výdej náčiní',
     isProtected: true,
     showInNav: true,
   },
@@ -63,7 +70,7 @@ const ROUTES: Record<StaticRoutePath, RouteInfo> = {
   '/new-equipment': {
     label: 'Nové náčiní',
     isProtected: true,
-    showInNav: false,
+    showInNav: true,
   },
 }
 
@@ -200,6 +207,10 @@ function App() {
       return <EquipmentPage onNavigateToDetail={(uuid) => navigate(`/equipment/${uuid}`)} onNavigate={navigate} />
     }
 
+    if (path === '/equipment-return') {
+      return <EquipmentReturnPage />
+    }
+
     if (isEquipmentDetailPath(path)) {
       const uuid = path.split('/')[2]
       return <EquipmentDetailPage equipmentUuid={uuid} onBack={() => navigate('/equipment')} onNavigate={navigate} />
@@ -225,7 +236,7 @@ function App() {
       return (
         <NewEquipmentPage
           onBack={() => window.history.back()}
-          onSuccess={(uuid) => navigate(`/equipment/${uuid}`)}
+          onSuccess={(uuid: string) => navigate(`/equipment/${uuid}`)}
         />
       )
     }

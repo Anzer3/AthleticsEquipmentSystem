@@ -179,7 +179,7 @@ export default function NewMeasurementPage({ onBack }: NewMeasurementPageProps) 
           ...(csrfToken ? { 'X-CSRFToken': csrfToken } : {}),
         },
         credentials: 'include',
-        body: JSON.stringify({ measured: true }),
+        body: JSON.stringify({ measured: true, legal: true }),
       })
 
       onBack()

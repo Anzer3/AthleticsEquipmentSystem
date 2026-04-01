@@ -28,7 +28,7 @@ type EquipmentDetailPageProps = {
 function toLabel(key: string): string {
   const translations: Record<string, string> = {
     equipment_number: 'Číslo náčiní',
-    athlete_number: 'Číslo atleta',
+    athlete_numbers: 'Čísla atletů',
     category_name: 'Kategorie',
     category_names: 'Kategorie',
     equipment_type_name: 'Typ náčiní',
@@ -43,9 +43,19 @@ function toLabel(key: string): string {
   return translations[key] || key.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
+const STATUS_LABELS: Record<string, string> = {
+  REGISTERED: 'Registrováno',
+  AVAILABLE: 'Dostupné',
+  'IN USE': 'V použití',
+  RETURNED: 'Navráceno',
+  ILLEGAL: 'Nepovolené',
+}
+
+const getStatusLabel = (status: string) => STATUS_LABELS[status.trim().toUpperCase()] ?? status
+
 type EditForm = {
   equipment_number: string
-  athlete_number: string
+  athlete_numbers: string
   legal: boolean
   categories: string[]
   event: string
@@ -59,7 +69,7 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
   const [isEditing, setIsEditing] = useState(false)
   const [editForm, setEditForm] = useState<EditForm>({
     equipment_number: '',
-    athlete_number: '',
+    athlete_numbers: '',
     legal: false,
     categories: [],
     event: '',
@@ -90,10 +100,14 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
             ? [String(data.category)]
             : []
 
+        const athleteNumbers = Array.isArray(data.athlete_numbers)
+          ? (data.athlete_numbers as string[])
+          : []
+
         setDetail(data)
         setEditForm({
           equipment_number: String(data.equipment_number || ''),
-          athlete_number: String(data.athlete_number || ''),
+          athlete_numbers: athleteNumbers.join(', '),
           legal: Boolean(data.legal),
           categories: categoryIds,
           event: String(data.event || ''),
@@ -184,10 +198,16 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
       return
     }
 
+    const athleteNumbers = editForm.athlete_numbers
+      .split(',')
+      .map((value) => value.trim())
+      .filter(Boolean)
+
     setSaving(true)
     try {
       const payload = {
         ...editForm,
+        athlete_numbers: athleteNumbers,
         category: editForm.categories[0] || null,
         categories: editForm.categories,
         event: editForm.event || null,
@@ -228,7 +248,9 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
 
       setEditForm({
         equipment_number: String(detail.equipment_number || ''),
-        athlete_number: String(detail.athlete_number || ''),
+        athlete_numbers: Array.isArray(detail.athlete_numbers)
+          ? (detail.athlete_numbers as string[]).join(', ')
+          : '',
         legal: Boolean(detail.legal),
         categories: categoryIds,
         event: String(detail.event || ''),
@@ -242,7 +264,7 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
       return []
     }
 
-    const displayKeys = ['equipment_number', 'athlete_number', 'category_names', 'equipment_type_name', 'status_name', 'location_name', 'event_name', 'measured', 'legal', 'created_at', 'updated_at']
+    const displayKeys = ['equipment_number', 'athlete_numbers', 'category_names', 'equipment_type_name', 'status_name', 'location_name', 'event_name', 'measured', 'legal', 'created_at', 'updated_at']
     return displayKeys.map((key) => [key, detail[key]]).filter((kv) => kv[1] !== undefined)
   }, [detail])
 
@@ -317,7 +339,7 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {detailEntries.map(([key, value]) => {
               const k = key as string
-              const isEditableText = isEditing && (k === 'equipment_number' || k === 'athlete_number')
+              const isEditableText = isEditing && (k === 'equipment_number' || k === 'athlete_numbers')
               const isEditableLegal = isEditing && k === 'legal'
               const isEditableCategories = isEditing && k === 'category_names'
               const isEditableActiveEvent = isEditing && k === 'event_name'
@@ -330,7 +352,7 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
                     {isEditableText ? (
                       <input
                         type="text"
-                        value={k === 'equipment_number' ? editForm.equipment_number : editForm.athlete_number}
+                        value={k === 'equipment_number' ? editForm.equipment_number : editForm.athlete_numbers}
                         onChange={(e) => {
                           const nextValue = e.target.value
                           setEditForm((previous) => ({
@@ -418,7 +440,11 @@ export default function EquipmentDetailPage({ equipmentUuid, onBack, onNavigate 
                         {typeof value === 'boolean' && k === 'measured' ? (value ? 'Ano, Změřeno' : 'Nezměřeno') : null}
                         {typeof value === 'boolean' && k === 'legal' ? (value ? 'Ano, Schváleno' : 'Neschváleno') : null}
                         {(typeof value !== 'boolean' || (k !== 'measured' && k !== 'legal'))
-                          ? (Array.isArray(value) ? value.join(', ') : (formatValue(value) || String(value)))
+                          ? (Array.isArray(value)
+                            ? value.join(', ')
+                            : (k === 'status_name' && typeof value === 'string'
+                              ? getStatusLabel(value)
+                              : (formatValue(value) || String(value))))
                           : null}
                       </span>
                     )}
